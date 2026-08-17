@@ -6,8 +6,6 @@ import { deriveNextAction, type NextLearningAction } from "@/lib/progress";
 import {
   deriveCourseReadiness,
   pickPrimaryReadiness,
-  quizReadinessBadgeClasses,
-  readinessBadgeClasses,
   recommendedActionHref,
   recommendedActionLabel,
   type CourseReadiness,
@@ -16,7 +14,12 @@ import {
   loadStudentLearningData,
   type StudentLearningData,
 } from "@/lib/analytics";
-import { MetricCard, MetricGrid } from "./analytics/ui";
+import { MetricCard, MetricGrid, ProgressBar } from "./analytics/ui";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
+import { AlertCircle, User, Users, LineChart, BookOpen, ChevronRight, GraduationCap } from "lucide-react";
 import LogoutButton from "./logout-button";
 
 function AccessMessage({
@@ -27,19 +30,13 @@ function AccessMessage({
   message: string;
 }) {
   return (
-    <div className="flex flex-1 items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
-          AI Learning &amp; CRM Hub
-        </h1>
-        <div className="mt-8 rounded-md border border-amber-200 bg-amber-50 px-4 py-3">
-          <p className="text-sm font-medium text-amber-900">{title}</p>
-          <p className="mt-1 text-sm text-amber-800">{message}</p>
-        </div>
-        <div className="mt-6">
-          <LogoutButton />
-        </div>
-      </div>
+    <div className="flex flex-1 items-center justify-center p-6 h-full min-h-[60vh]">
+      <EmptyState
+        icon={AlertCircle}
+        title={title}
+        description={message}
+        action={<LogoutButton />}
+      />
     </div>
   );
 }
@@ -48,18 +45,26 @@ function StatCard({
   href,
   label,
   value,
+  icon: Icon,
 }: {
   href: string;
   label: string;
   value: number;
+  icon: React.ElementType;
 }) {
   return (
-    <Link
-      href={href}
-      className="rounded-md border border-zinc-200 bg-white px-4 py-3 transition-colors hover:bg-zinc-50"
-    >
-      <p className="text-xs font-medium text-zinc-500">{label}</p>
-      <p className="mt-1 text-2xl font-semibold text-zinc-900">{value}</p>
+    <Link href={href} className="block group">
+      <Card className="transition-all hover:bg-[#181B21] hover:border-[#6366F1]/50 border-transparent bg-[#111318]">
+        <CardContent className="p-5 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-wider text-[#A1A1AA] group-hover:text-[#F4F4F5] transition-colors">{label}</p>
+            <p className="mt-2 text-3xl font-semibold tracking-tight text-[#F4F4F5]">{value}</p>
+          </div>
+          <div className="h-12 w-12 rounded-full bg-[#181B21] flex items-center justify-center text-[#6366F1] group-hover:scale-110 transition-transform">
+            <Icon className="h-6 w-6" />
+          </div>
+        </CardContent>
+      </Card>
     </Link>
   );
 }
@@ -113,7 +118,7 @@ export default async function DashboardPage() {
 
   const showCrm = isCrmRole(profile.role);
 
-  const [totalLeads, newLeads, pipelineLeads, pendingFollowups, studentCount] =
+  const [totalLeads, newLeads, pipelineLeads, , studentCount] =
     showCrm
       ? await Promise.all([
           supabase
@@ -176,16 +181,7 @@ export default async function DashboardPage() {
         const completed = publishedLessons.filter(
           (lesson) => progressMap.get(lesson.lesson_id) === "completed"
         ).length;
-        const courseQuizzes: {
-          quiz_id: string;
-          title: string;
-          pass_threshold: number;
-          attempts: {
-            submitted_at: string | null;
-            score: number | null;
-            max_score: number | null;
-          }[];
-        }[] = data.quizzes
+        const courseQuizzes = data.quizzes
           .filter((quiz) => quiz.course_id === enrollment.course_id)
           .map((quiz) => ({
             quiz_id: quiz.quiz_id,
@@ -227,365 +223,281 @@ export default async function DashboardPage() {
   );
 
   return (
-    <div className="flex flex-1 items-center justify-center px-4 py-12">
-      <div className={`w-full ${isStudent ? "max-w-3xl" : "max-w-md"}`}>
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
-          AI Learning &amp; CRM Hub
-        </h1>
-        <p className="mt-1 text-sm text-zinc-500">
-          Welcome to your workspace.
-        </p>
-
-        <dl className="mt-8 divide-y divide-zinc-200 rounded-md border border-zinc-200">
-          <div className="flex items-center justify-between px-4 py-3">
-            <dt className="text-sm text-zinc-500">Name</dt>
-            <dd className="text-sm font-medium text-zinc-900">
-              {profile.full_name}
-            </dd>
-          </div>
-          <div className="flex items-center justify-between px-4 py-3">
-            <dt className="text-sm text-zinc-500">Email</dt>
-            <dd className="text-sm font-medium text-zinc-900">
-              {profile.email}
-            </dd>
-          </div>
-          <div className="flex items-center justify-between px-4 py-3">
-            <dt className="text-sm text-zinc-500">Role</dt>
-            <dd className="text-sm font-medium capitalize text-zinc-900">
-              {profile.role}
-            </dd>
-          </div>
-          <div className="flex items-center justify-between px-4 py-3">
-            <dt className="text-sm text-zinc-500">Organization</dt>
-            <dd className="text-sm font-medium text-zinc-900">
-              {organization?.name ?? "—"}
-            </dd>
-          </div>
-        </dl>
-
-        {showCrm && (
-          <div className="mt-8">
-            <h2 className="text-sm font-semibold text-zinc-900">
-              CRM overview
-            </h2>
-            <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              <StatCard
-                href="/dashboard/leads"
-                label="Total leads"
-                value={totalLeads?.count ?? 0}
-              />
-              <StatCard
-                href="/dashboard/leads?status=new"
-                label="New leads"
-                value={newLeads?.count ?? 0}
-              />
-              <StatCard
-                href="/dashboard/leads"
-                label="Pipeline"
-                value={pipelineLeads?.count ?? 0}
-              />
-              <StatCard
-                href="/dashboard/leads"
-                label="Follow-ups due"
-                value={pendingFollowups?.count ?? 0}
-              />
-              <StatCard
-                href="/dashboard/students"
-                label="Students"
-                value={studentCount?.count ?? 0}
-              />
-            </div>
-          </div>
-        )}
-
-                {isStudent && (
-          <div className="mt-8">
-            <h2 className="text-sm font-semibold text-zinc-900">
-              Learning readiness
-            </h2>
-            {enrolledCourses.length > 0 ? (
-              <>
-                {primaryReadiness ? (
-                  <div className="mt-3 rounded-md border border-zinc-200 bg-white px-4 py-3">
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span
-                          className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${readinessBadgeClasses(primaryReadiness.state)}`}
-                        >
-                          {primaryReadiness.label}
-                        </span>
-                        <span className="text-sm text-zinc-500">
-                          {primaryReadiness.message}
-                        </span>
-                      </div>
-                      {(() => {
-                        const href = recommendedActionHref(
-                          enrolledCourses.find(
-                            (course) =>
-                              course.readiness === primaryReadiness
-                          )?.course_id ?? "",
-                          primaryReadiness.recommendedAction
-                        );
-                        const label = recommendedActionLabel(
-                          primaryReadiness.recommendedAction
-                        );
-                        return href && label ? (
-                          <Link
-                            href={href}
-                            className="rounded-md bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-zinc-700"
-                          >
-                            {label} →
-                          </Link>
-                        ) : null;
-                      })()}
-                    </div>
-                  </div>
-                ) : (
-                  <p className="mt-2 text-sm text-zinc-500">
-                    All your active courses are complete. Great work.
-                  </p>
-                )}
-                <ul className="mt-3 space-y-3">
-                  {enrolledCourses.map((course) => (
-                    <li
-                      key={course.enrollment_id}
-                      className="rounded-md border border-zinc-200 bg-white px-4 py-3"
-                    >
-                      <div className="flex flex-wrap items-center justify-between gap-3">
-                        <Link
-                          href={`/dashboard/courses/${course.course_id}`}
-                          className="text-sm font-medium text-zinc-900 underline-offset-4 hover:underline"
-                        >
-                          {course.title}
-                        </Link>
-                        <span
-                          className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${readinessBadgeClasses(course.readiness.state)}`}
-                        >
-                          {course.readiness.label}
-                        </span>
-                      </div>
-                      <div className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-1 text-xs text-zinc-500">
-                        <span>
-                          {course.readiness.lessonsCompleted} of{" "}
-                          {course.readiness.totalPublishedLessons} lessons
-                          completed · {course.readiness.lessonsPercent}%
-                        </span>
-                        {course.readiness.quizzes.length > 0 && (
-                          <span>
-                            {course.readiness.passedQuizzes} passed ·{" "}
-                            {course.readiness.availableQuizzes} remaining
-                          </span>
-                        )}
-                      </div>
-                      {course.readiness.quizzes.length > 0 && (
-                        <ul className="mt-2 space-y-1">
-                          {course.readiness.quizzes.map((quiz) => (
-                            <li
-                              key={quiz.quiz_id}
-                              className="flex flex-wrap items-center justify-between gap-2 text-xs"
-                            >
-                              <span className="text-zinc-600">
-                                {quiz.title}
-                                {quiz.bestPercent !== null
-                                  ? ` · best ${quiz.bestPercent}%`
-                                  : ""}
-                              </span>
-                              <span
-                                className={`inline-flex rounded-full px-2 py-0.5 font-medium ${quizReadinessBadgeClasses(quiz.state)}`}
-                              >
-                                {quiz.state.replace("_", " ")}
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                      {course.readiness.recommendedAction &&
-                        course.readiness.recommendedAction.kind !==
-                          "completed" &&
-                        (() => {
-                          const href = recommendedActionHref(
-                            course.course_id,
-                            course.readiness.recommendedAction
-                          );
-                          const label = recommendedActionLabel(
-                            course.readiness.recommendedAction
-                          );
-                          return href && label ? (
-                            <Link
-                              href={href}
-                              className="mt-3 inline-block rounded-md bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-zinc-700"
-                            >
-                              {label} →
-                            </Link>
-                          ) : null;
-                        })()}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            ) : (
-              <p className="mt-2 text-sm text-zinc-500">
-                You are not enrolled in any active courses yet.
-              </p>
-            )}
-          </div>
-        )}
-
-                {isStudent && learningAnalytics && (
-          <div className="mt-8">
-            <h2 className="text-sm font-semibold text-zinc-900">
-              My learning analytics
-            </h2>
-            {learningAnalytics.totalEnrolledCourses > 0 ? (
-              <MetricGrid>
-                <MetricCard
-                  label="Enrolled courses"
-                  value={learningAnalytics.totalEnrolledCourses}
-                />
-                <MetricCard
-                  label="Active courses"
-                  value={learningAnalytics.activeCourses}
-                />
-                <MetricCard
-                  label="Completed courses"
-                  value={learningAnalytics.completedCourses}
-                />
-                <MetricCard
-                  label="Overall completion"
-                  value={`${learningAnalytics.overallCompletionPercent}%`}
-                />
-                <MetricCard
-                  label="Lessons completed"
-                  value={learningAnalytics.publishedLessonsCompleted}
-                  sub={`${learningAnalytics.publishedLessonsRemaining} remaining`}
-                />
-                <MetricCard
-                  label="Quizzes attempted"
-                  value={learningAnalytics.quizzesAttempted}
-                  sub={`${learningAnalytics.quizzesSubmitted} submitted`}
-                />
-                <MetricCard
-                  label="Quizzes passed"
-                  value={learningAnalytics.quizzesPassed}
-                />
-                <MetricCard
-                  label="Quiz pass rate"
-                  value={
-                    learningAnalytics.quizPassRate === null
-                      ? "—"
-                      : `${learningAnalytics.quizPassRate}%`
-                  }
-                  sub={
-                    learningAnalytics.averageQuizScorePercent === null
-                      ? undefined
-                      : `Average score ${learningAnalytics.averageQuizScorePercent}%`
-                  }
-                />
-              </MetricGrid>
-            ) : (
-              <p className="mt-2 text-sm text-zinc-500">
-                No learning analytics available yet. Analytics appear once you
-                are enrolled in a course.
-              </p>
-            )}
-          </div>
-        )}
-
-        {isStudent && (
-          <div className="mt-8">
-            <h2 className="text-sm font-semibold text-zinc-900">My courses</h2>
-            {enrolledCourses.length > 0 ? (
-              <ul className="mt-3 space-y-3">
-                {enrolledCourses.map((course) => {
-                  const actionHref =
-                    course.nextAction?.kind === "lesson"
-                      ? `/dashboard/courses/${course.course_id}/lessons/${course.nextAction.lessonId}`
-                      : course.nextAction?.kind === "quiz"
-                        ? `/dashboard/courses/${course.course_id}/quizzes/${course.nextAction.quizId}`
-                        : null;
-                  const actionLabel =
-                    course.nextAction?.kind === "lesson"
-                      ? course.nextAction.status === "in_progress"
-                        ? `Continue: ${course.nextAction.moduleTitle} → ${course.nextAction.lessonTitle}`
-                        : `Start: ${course.nextAction.moduleTitle} → ${course.nextAction.lessonTitle}`
-                      : course.nextAction?.kind === "quiz"
-                        ? `Take quiz: ${course.nextAction.quizTitle}`
-                        : null;
-                  return (
-                    <li
-                      key={course.enrollment_id}
-                      className="rounded-md border border-zinc-200 bg-white px-4 py-3"
-                    >
-                      <div className="flex items-center justify-between gap-4">
-                        <Link
-                          href={`/dashboard/courses/${course.course_id}`}
-                          className="text-sm font-medium text-zinc-900 underline-offset-4 hover:underline"
-                        >
-                          {course.title}
-                        </Link>
-                        {course.total > 0 && (
-                          <span className="text-sm font-medium text-zinc-900">
-                            {course.percent}%
-                          </span>
-                        )}
-                      </div>
-                      {course.total > 0 ? (
-                        <>
-                          <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-zinc-100">
-                            <div
-                              className="h-full rounded-full bg-green-500"
-                              style={{ width: `${course.percent}%` }}
-                            />
-                          </div>
-                          <div className="mt-2 flex items-center justify-between gap-4">
-                            <p className="text-xs text-zinc-500">
-                              {course.completed} of {course.total} lessons
-                              completed
-                            </p>
-                            {course.nextAction?.kind === "completed" && (
-                              <span className="text-xs font-medium text-green-700">
-                                ✓ Course completed
-                              </span>
-                            )}
-                          </div>
-                          {actionHref && (
-                            <Link
-                              href={actionHref}
-                              className="mt-3 inline-block rounded-md bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-zinc-700"
-                            >
-                              {actionLabel} →
-                            </Link>
-                          )}
-                        </>
-                      ) : (
-                        <p className="mt-1 text-xs text-zinc-500">
-                          No lessons available yet.
-                        </p>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            ) : (
-              <p className="mt-2 text-sm text-zinc-500">
-                You are not enrolled in any active courses yet.
-              </p>
-            )}
-          </div>
-        )}
-
-        <div className="mt-6 flex items-center gap-4">
-          {profile.role === "admin" && (
-            <Link
-              href="/dashboard/users"
-              className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100"
-            >
-              Manage users
-            </Link>
-          )}
-          <LogoutButton />
+    <div className="flex flex-col gap-8 pb-12 w-full animate-in fade-in duration-500">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-semibold tracking-tight text-[#F4F4F5]">
+            Welcome back, {profile.full_name.split(' ')[0]}
+          </h1>
+          <p className="mt-2 text-sm text-[#A1A1AA]">
+            Here is what&apos;s happening with your learning and CRM today.
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Badge variant="secondary" className="text-xs px-3 py-1">
+            <User className="w-3 h-3 mr-2" />
+            {profile.role}
+          </Badge>
+          <Badge variant="outline" className="text-xs px-3 py-1">
+            {organization?.name ?? "No Organization"}
+          </Badge>
         </div>
       </div>
+
+      {showCrm && (
+        <section>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-[#F4F4F5] tracking-tight">
+              CRM Overview
+            </h2>
+            <Link href="/dashboard/leads" className="text-sm font-medium text-[#6366F1] hover:text-[#4F46E5] transition-colors inline-flex items-center">
+              View all leads <ChevronRight className="w-4 h-4 ml-1" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <StatCard
+              href="/dashboard/leads"
+              label="Total Leads"
+              value={totalLeads?.count ?? 0}
+              icon={Users}
+            />
+            <StatCard
+              href="/dashboard/leads?status=new"
+              label="New Leads"
+              value={newLeads?.count ?? 0}
+              icon={User}
+            />
+            <StatCard
+              href="/dashboard/leads"
+              label="Pipeline"
+              value={pipelineLeads?.count ?? 0}
+              icon={LineChart}
+            />
+            <StatCard
+              href="/dashboard/students"
+              label="Students"
+              value={studentCount?.count ?? 0}
+              icon={GraduationCap}
+            />
+          </div>
+        </section>
+      )}
+
+      {isStudent && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          {/* Main Content Area (2/3 width on desktop) */}
+          <div className="lg:col-span-2 space-y-8">
+            <section>
+              <h2 className="text-lg font-semibold text-[#F4F4F5] tracking-tight mb-4">
+                My Courses
+              </h2>
+              {enrolledCourses.length > 0 ? (
+                <div className="grid gap-4">
+                  {enrolledCourses.map((course) => {
+                    const actionHref =
+                      course.nextAction?.kind === "lesson"
+                        ? `/dashboard/courses/${course.course_id}/lessons/${course.nextAction.lessonId}`
+                        : course.nextAction?.kind === "quiz"
+                          ? `/dashboard/courses/${course.course_id}/quizzes/${course.nextAction.quizId}`
+                          : null;
+                    const actionLabel =
+                      course.nextAction?.kind === "lesson"
+                        ? course.nextAction.status === "in_progress"
+                          ? `Continue ${course.nextAction.lessonTitle}`
+                          : `Start ${course.nextAction.lessonTitle}`
+                        : course.nextAction?.kind === "quiz"
+                          ? `Take quiz: ${course.nextAction.quizTitle}`
+                          : null;
+                    
+                    return (
+                      <Card key={course.enrollment_id} className="overflow-hidden hover:border-[#6366F1]/50 transition-colors">
+                        <CardContent className="p-0">
+                          <div className="p-6">
+                            <div className="flex items-start justify-between gap-4 mb-6">
+                              <div>
+                                <Link
+                                  href={`/dashboard/courses/${course.course_id}`}
+                                  className="text-lg font-medium text-[#F4F4F5] hover:text-[#6366F1] transition-colors"
+                                >
+                                  {course.title}
+                                </Link>
+                                <p className="text-sm text-[#A1A1AA] mt-1">
+                                  {course.completed} of {course.total} lessons completed
+                                </p>
+                              </div>
+                              {course.total > 0 && (
+                                <div className="text-right">
+                                  <span className="text-2xl font-bold text-[#F4F4F5]">
+                                    {course.percent}%
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+
+                            {course.total > 0 ? (
+                              <div className="space-y-6">
+                                <ProgressBar percent={course.percent} tone="indigo" />
+                                
+                                <div className="flex items-center justify-between">
+                                  {course.nextAction?.kind === "completed" ? (
+                                    <Badge variant="success">Course completed</Badge>
+                                  ) : actionHref ? (
+                                    <Button asChild size="sm">
+                                      <Link href={actionHref}>
+                                        {actionLabel} <ChevronRight className="w-4 h-4 ml-1" />
+                                      </Link>
+                                    </Button>
+                                  ) : (
+                                    <span />
+                                  )}
+                                </div>
+                              </div>
+                            ) : (
+                              <p className="mt-1 text-xs text-[#A1A1AA]">
+                                No lessons available yet.
+                              </p>
+                            )}
+                          </div>
+                          
+                          {/* Readiness breakdown attached to course */}
+                          <div className="bg-[#09090B] px-6 py-4 border-t border-[#272B33] flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <span className="text-sm font-medium text-[#A1A1AA]">Readiness:</span>
+                              <Badge variant={course.readiness.state === "passed" || course.readiness.state === "completed" ? "success" : course.readiness.state === "needs_review" ? "warning" : "default"}>
+                                {course.readiness.label}
+                              </Badge>
+                            </div>
+                            {course.readiness.quizzes.length > 0 && (
+                              <div className="text-xs text-[#A1A1AA]">
+                                {course.readiness.passedQuizzes} / {course.readiness.availableQuizzes} Quizzes Passed
+                              </div>
+                            )}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              ) : (
+                <EmptyState
+                  icon={BookOpen}
+                  title="No active courses"
+                  description="You are not enrolled in any active courses yet. Check back later or contact your administrator."
+                />
+              )}
+            </section>
+
+            {learningAnalytics && (
+              <section>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-semibold text-[#F4F4F5] tracking-tight">
+                    Learning Analytics
+                  </h2>
+                </div>
+                {learningAnalytics.totalEnrolledCourses > 0 ? (
+                  <MetricGrid>
+                    <MetricCard
+                      label="Enrolled"
+                      value={learningAnalytics.totalEnrolledCourses}
+                    />
+                    <MetricCard
+                      label="Completed"
+                      value={learningAnalytics.completedCourses}
+                    />
+                    <MetricCard
+                      label="Overall Progress"
+                      value={`${learningAnalytics.overallCompletionPercent}%`}
+                    />
+                    <MetricCard
+                      label="Pass Rate"
+                      value={
+                        learningAnalytics.quizPassRate === null
+                          ? "—"
+                          : `${learningAnalytics.quizPassRate}%`
+                      }
+                    />
+                  </MetricGrid>
+                ) : (
+                  <EmptyState 
+                    icon={LineChart}
+                    title="No analytics yet"
+                    description="Learning analytics will appear once you start making progress in a course."
+                    className="min-h-[200px]"
+                  />
+                )}
+              </section>
+            )}
+          </div>
+
+          {/* Sidebar Area (1/3 width on desktop) */}
+          <div className="space-y-8">
+            <section>
+              <h2 className="text-lg font-semibold text-[#F4F4F5] tracking-tight mb-4">
+                Primary Action
+              </h2>
+              {enrolledCourses.length > 0 ? (
+                <>
+                  {primaryReadiness ? (
+                    <Card className="bg-[#6366F1]/10 border-[#6366F1]/20">
+                      <CardContent className="p-6">
+                        <div className="flex flex-col gap-4">
+                          <div className="flex items-start gap-3">
+                            <div className="mt-1">
+                              <Badge variant={primaryReadiness.state === "passed" || primaryReadiness.state === "completed" ? "success" : primaryReadiness.state === "needs_review" ? "warning" : "default"}>
+                                {primaryReadiness.label}
+                              </Badge>
+                            </div>
+                            <p className="text-sm font-medium text-[#F4F4F5] leading-relaxed">
+                              {primaryReadiness.message}
+                            </p>
+                          </div>
+                          {(() => {
+                            const course = enrolledCourses.find(
+                              (c) => c.readiness === primaryReadiness
+                            );
+                            const href = recommendedActionHref(
+                              course?.course_id ?? "",
+                              primaryReadiness.recommendedAction
+                            );
+                            const label = recommendedActionLabel(
+                              primaryReadiness.recommendedAction
+                            );
+                            return href && label ? (
+                              <Button asChild className="w-full mt-2">
+                                <Link href={href}>
+                                  {label} <ChevronRight className="w-4 h-4 ml-1" />
+                                </Link>
+                              </Button>
+                            ) : null;
+                          })()}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ) : (
+                    <Card>
+                      <CardContent className="p-6 text-center">
+                        <p className="text-sm text-[#A1A1AA]">
+                          All your active courses are complete. Great work.
+                        </p>
+                      </CardContent>
+                    </Card>
+                  )}
+                </>
+              ) : (
+                <Card>
+                  <CardContent className="p-6 text-center">
+                    <p className="text-sm text-[#A1A1AA]">
+                      No actions required at this time.
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
+            </section>
+          </div>
+
+        </div>
+      )}
     </div>
   );
 }

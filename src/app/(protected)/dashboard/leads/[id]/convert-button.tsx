@@ -33,8 +33,8 @@ export default function ConvertButton({ leadId }: { leadId: string }) {
   return (
     <form action={formAction} className="flex flex-wrap items-center gap-3">
       <input type="hidden" name="leadId" value={leadId} />
-      <p className="text-sm text-zinc-600">
-        Convert this lead to a student? Contact details are copied into the
+      <p className="text-sm text-[#A1A1AA]">
+        Converting a lead creates a student record.ntact details are copied into the
         student record and the lead is marked as converted.
       </p>
       <button
@@ -48,7 +48,7 @@ export default function ConvertButton({ leadId }: { leadId: string }) {
         type="button"
         onClick={() => setConfirming(false)}
         disabled={isPending}
-        className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50"
+        className="rounded-md border border-[#272B33] bg-[#181B21] px-4 py-2 text-sm font-medium text-[#F4F4F5] transition-colors hover:bg-emerald-600 hover:text-white hover:border-emerald-600 disabled:cursor-not-allowed disabled:opacity-50"
       >
         Cancel
       </button>

@@ -11,10 +11,16 @@ import type { EnrollmentStatus, Student } from "@/types/crm";
 import AccessDenied from "../../access-denied";
 import {
   AnalyticsSection,
-  EmptyState,
   MetricCard,
   MetricGrid,
 } from "../../analytics/ui";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Progress } from "@/components/ui/progress";
+import { ArrowLeft, User, Mail, Phone, Building2, UserPlus, Link as LinkIcon, CheckCircle2, GraduationCap, Award, Activity } from "lucide-react";
 
 function formatDateTime(iso: string): string {
   return new Intl.DateTimeFormat("en-GB", {
@@ -26,27 +32,30 @@ function formatDateTime(iso: string): string {
 function enrollmentBadgeClasses(status: EnrollmentStatus): string {
   switch (status) {
     case "active":
-      return "bg-green-100 text-green-700";
+      return "bg-emerald-500/10 text-emerald-500 border-emerald-500/20";
     case "paused":
-      return "bg-amber-100 text-amber-700";
+      return "bg-amber-500/10 text-amber-500 border-amber-500/20";
     case "completed":
-      return "bg-blue-100 text-blue-700";
+      return "bg-blue-500/10 text-blue-500 border-blue-500/20";
     case "cancelled":
-      return "bg-zinc-100 text-zinc-500";
+      return "bg-zinc-500/10 text-zinc-500 border-zinc-500/20";
   }
 }
 
 function InfoRow({
   label,
   value,
+  icon: Icon
 }: {
   label: string;
   value: React.ReactNode;
+  icon?: React.ElementType;
 }) {
   return (
-    <div className="flex items-center justify-between gap-4 px-4 py-3">
-      <dt className="text-sm text-zinc-500">{label}</dt>
-      <dd className="text-sm font-medium text-zinc-900">{value}</dd>
+    <div className="flex items-start gap-4 px-4 py-3 sm:px-6 hover:bg-[#181B21]/50 transition-colors">
+      {Icon && <Icon className="w-4 h-4 text-[#A1A1AA] mt-0.5" />}
+      <dt className="text-sm font-medium text-[#A1A1AA] w-1/3 sm:w-1/4 shrink-0">{label}</dt>
+      <dd className="text-sm text-[#F4F4F5]">{value}</dd>
     </div>
   );
 }
@@ -76,21 +85,19 @@ export default async function StudentDetailPage({
     console.error("StudentDetail: student not found", id, error?.message);
     return (
       <div className="flex flex-1 items-center justify-center px-4 py-12">
-        <div className="w-full max-w-md">
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
-            Student not found
-          </h1>
-          <p className="mt-2 text-sm text-zinc-500">
-            The student you are looking for does not exist or is no longer
-            available.
-          </p>
-          <Link
-            href="/dashboard/students"
-            className="mt-6 inline-block rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700"
-          >
-            Back to students
-          </Link>
-        </div>
+        <Card className="w-full max-w-md bg-[#111318] border-[#272B33]">
+          <CardHeader>
+            <CardTitle className="text-xl text-[#F4F4F5]">Student not found</CardTitle>
+            <CardDescription className="text-[#A1A1AA]">
+              The student you are looking for does not exist or is no longer available.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button asChild className="w-full bg-[#272B33] text-[#F4F4F5] hover:bg-[#323642]">
+              <Link href="/dashboard/students">Back to students</Link>
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
@@ -252,390 +259,366 @@ export default async function StudentDetailPage({
   );
 
   return (
-    <div className="flex flex-1 justify-center px-4 py-8">
-      <div className="w-full max-w-3xl">
+    <div className="flex flex-1 flex-col pb-12 w-full animate-in fade-in duration-500 max-w-5xl mx-auto px-4">
+      <div className="mb-8">
         <Link
           href="/dashboard/students"
-          className="text-sm text-zinc-500 underline-offset-4 hover:text-zinc-900 hover:underline"
+          className="inline-flex items-center text-sm font-medium text-[#A1A1AA] hover:text-[#F4F4F5] transition-colors mb-6"
         >
-          ← Back to students
+          <ArrowLeft className="w-4 h-4 mr-2" /> Back to students
         </Link>
+        <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="h-16 w-16 rounded-full bg-[#272B33] flex items-center justify-center text-2xl font-medium text-[#F4F4F5]">
+              {student.first_name.charAt(0)}{student.last_name.charAt(0)}
+            </div>
+            <div>
+              <div className="flex items-center gap-3">
+                <h1 className="text-3xl font-semibold tracking-tight text-[#F4F4F5]">
+                  {student.first_name} {student.last_name}
+                </h1>
+                {student.profile_id && (
+                  <Badge variant="success" className="bg-emerald-500/10 text-emerald-500 border-emerald-500/20">
+                    Account linked
+                  </Badge>
+                )}
+              </div>
+              <p className="mt-1 text-sm text-[#A1A1AA]">
+                Student record created {formatDateTime(student.created_at)}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        <div className="mt-4 flex flex-wrap items-center gap-3">
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
-            {student.first_name} {student.last_name}
-          </h1>
-          {student.profile_id && (
-            <span className="inline-flex rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">
-              Account linked
-            </span>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-1 space-y-6">
+          <Card className="bg-[#111318] border-[#272B33]">
+            <CardHeader className="border-b border-[#272B33] pb-4">
+              <CardTitle className="text-lg font-medium text-[#F4F4F5]">Details</CardTitle>
+            </CardHeader>
+            <div className="divide-y divide-[#272B33]">
+              <InfoRow icon={Mail} label="Email" value={student.email ?? "—"} />
+              <InfoRow icon={Phone} label="Phone" value={student.phone ?? "—"} />
+              <InfoRow icon={Building2} label="Organization" value={organization?.name ?? "—"} />
+              <InfoRow icon={UserPlus} label="Created by" value={creator?.full_name ?? "—"} />
+              <InfoRow
+                icon={LinkIcon}
+                label="Origin"
+                value={
+                  lead ? (
+                    <Link
+                      href={`/dashboard/leads/${lead.lead_id}`}
+                      className="text-[#6366F1] hover:text-[#818CF8] hover:underline"
+                    >
+                      Lead {lead.converted_at ? `(converted ${formatDateTime(lead.converted_at)})` : ""}
+                    </Link>
+                  ) : (
+                    "Direct record"
+                  )
+                }
+              />
+              {profile && (
+                <InfoRow icon={User} label="Account" value={profile.email} />
+              )}
+            </div>
+          </Card>
+
+          {student.notes && (
+            <Card className="bg-[#111318] border-[#272B33]">
+              <CardHeader className="border-b border-[#272B33] pb-4">
+                <CardTitle className="text-lg font-medium text-[#F4F4F5]">Notes</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-4">
+                <p className="whitespace-pre-wrap text-sm text-[#A1A1AA]">
+                  {student.notes}
+                </p>
+              </CardContent>
+            </Card>
           )}
         </div>
-        <p className="mt-1 text-sm text-zinc-500">
-          Created {formatDateTime(student.created_at)}
-        </p>
 
-        <dl className="mt-6 divide-y divide-zinc-200 rounded-md border border-zinc-200">
-          <InfoRow label="Email" value={student.email ?? "—"} />
-          <InfoRow label="Phone" value={student.phone ?? "—"} />
-          <InfoRow
-            label="Organization"
-            value={organization?.name ?? "—"}
-          />
-          <InfoRow
-            label="Created by"
-            value={creator?.full_name ?? "—"}
-          />
-          <InfoRow
-            label="Origin"
-            value={
-              lead ? (
-                <Link
-                  href={`/dashboard/leads/${lead.lead_id}`}
-                  className="underline-offset-4 hover:text-zinc-900 hover:underline"
-                >
-                  Lead {lead.converted_at ? `(converted ${formatDateTime(lead.converted_at)})` : ""}
-                </Link>
-              ) : (
-                "Direct record"
-              )
-            }
-          />
-          {profile && (
-            <InfoRow
-              label="Account"
-              value={profile.email}
-            />
+        <div className="lg:col-span-2 space-y-6">
+          {learning.courses.length > 0 && (
+            <AnalyticsSection title="Learning analytics">
+              <MetricGrid>
+                <MetricCard
+                  label="Enrolled courses"
+                  value={learning.courses.length}
+                />
+                <MetricCard
+                  label="Active courses"
+                  value={
+                    learning.courses.filter(
+                      (course) => course.enrollment_status === "active"
+                    ).length
+                  }
+                />
+                <MetricCard
+                  label="Completed courses"
+                  value={
+                    learning.courses.filter((course) => course.isComplete).length
+                  }
+                />
+                <MetricCard
+                  label="Overall completion"
+                  value={`${learning.analytics.overallCompletionPercent}%`}
+                />
+                <MetricCard
+                  label="Lessons completed"
+                  value={learning.analytics.publishedLessonsCompleted}
+                  sub={`${learning.analytics.publishedLessonsRemaining} remaining`}
+                />
+                <MetricCard
+                  label="Quizzes attempted"
+                  value={totalQuizAttempts}
+                  sub={`${submittedAttempts.length} submitted`}
+                />
+                <MetricCard
+                  label="Quizzes passed"
+                  value={learning.analytics.quizzesPassed}
+                />
+                <MetricCard
+                  label="Quiz pass rate"
+                  value={
+                    learning.analytics.quizPassRate === null
+                      ? "—"
+                      : `${learning.analytics.quizPassRate}%`
+                  }
+                  sub={
+                    learning.analytics.averageQuizScorePercent === null
+                      ? undefined
+                      : `Average score ${learning.analytics.averageQuizScorePercent}%`
+                  }
+                />
+              </MetricGrid>
+            </AnalyticsSection>
           )}
-        </dl>
 
-        {student.notes && (
-          <div className="mt-4 rounded-md border border-zinc-200 px-4 py-3">
-            <h2 className="text-sm font-semibold text-zinc-900">Notes</h2>
-            <p className="mt-1 whitespace-pre-wrap text-sm text-zinc-600">
-              {student.notes}
-            </p>
-          </div>
-        )}
+          {learning.courses.length > 0 ? (
+            <AnalyticsSection
+              title="Per-course learning"
+              subtitle="Progress and quiz performance for each enrollment."
+            >
+              <Card className="bg-[#111318] border-[#272B33] overflow-hidden">
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader className="bg-[#181B21]">
+                      <TableRow className="border-[#272B33] hover:bg-transparent">
+                        <TableHead className="text-[#A1A1AA] font-medium h-12">Course</TableHead>
+                        <TableHead className="text-[#A1A1AA] font-medium h-12">Status</TableHead>
+                        <TableHead className="text-[#A1A1AA] font-medium h-12">Completion</TableHead>
+                        <TableHead className="text-[#A1A1AA] font-medium h-12">Lessons</TableHead>
+                        <TableHead className="text-[#A1A1AA] font-medium h-12">Quizzes</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {learning.courses.map((course) => (
+                        <TableRow key={course.enrollment_id} className="border-[#272B33] hover:bg-[#181B21]/50 group">
+                          <TableCell className="py-4">
+                            <Link
+                              href={`/dashboard/courses/${course.course_id}`}
+                              className="font-medium text-[#F4F4F5] hover:text-[#6366F1] transition-colors"
+                            >
+                              {course.course_title}
+                            </Link>
+                          </TableCell>
+                          <TableCell className="py-4">
+                            <Badge variant="outline" className={enrollmentBadgeClasses(course.enrollment_status)}>
+                              {course.enrollment_status}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="py-4">
+                            <div className="space-y-1.5">
+                              <div className="flex items-center justify-between text-xs">
+                                <span className="font-medium text-[#F4F4F5]">{course.percent}%</span>
+                              </div>
+                              <Progress value={course.percent} className="h-1.5 bg-[#272B33]" />
+                              {course.isComplete && (
+                                <p className="text-[10px] font-medium text-emerald-500 uppercase tracking-wider flex items-center gap-1">
+                                  <CheckCircle2 className="w-3 h-3" /> Completed
+                                </p>
+                              )}
+                            </div>
+                          </TableCell>
+                          <TableCell className="py-4 text-[#A1A1AA]">
+                            <div className="text-sm">{course.completedLessons}/{course.totalPublishedLessons}</div>
+                            <div className="text-xs text-[#71717A]">{course.remainingLessons} remaining</div>
+                          </TableCell>
+                          <TableCell className="py-4 text-[#A1A1AA]">
+                            <div className="text-sm">{course.quizAttempts} attempts</div>
+                            <div className="text-xs text-[#71717A]">{course.quizzesPassed} passed</div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </Card>
+            </AnalyticsSection>
+          ) : (
+            <Card className="bg-[#111318] border-[#272B33]">
+              <CardHeader>
+                <CardTitle className="text-lg font-medium text-[#F4F4F5]">Learning analytics</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <EmptyState
+                  icon={GraduationCap}
+                  title="No enrollments"
+                  description="This student is not enrolled in any courses yet."
+                />
+              </CardContent>
+            </Card>
+          )}
 
-        {learning.courses.length > 0 && (
-          <AnalyticsSection title="Learning analytics">
-            <MetricGrid>
-              <MetricCard
-                label="Enrolled courses"
-                value={learning.courses.length}
-              />
-              <MetricCard
-                label="Active courses"
-                value={
-                  learning.courses.filter(
-                    (course) => course.enrollment_status === "active"
-                  ).length
-                }
-              />
-              <MetricCard
-                label="Completed courses"
-                value={
-                  learning.courses.filter((course) => course.isComplete).length
-                }
-              />
-              <MetricCard
-                label="Overall completion"
-                value={`${learning.analytics.overallCompletionPercent}%`}
-              />
-              <MetricCard
-                label="Lessons completed"
-                value={learning.analytics.publishedLessonsCompleted}
-                sub={`${learning.analytics.publishedLessonsRemaining} remaining`}
-              />
-              <MetricCard
-                label="Quizzes attempted"
-                value={totalQuizAttempts}
-                sub={`${submittedAttempts.length} submitted`}
-              />
-              <MetricCard
-                label="Quizzes passed"
-                value={learning.analytics.quizzesPassed}
-              />
-              <MetricCard
-                label="Quiz pass rate"
-                value={
-                  learning.analytics.quizPassRate === null
-                    ? "—"
-                    : `${learning.analytics.quizPassRate}%`
-                }
-                sub={
-                  learning.analytics.averageQuizScorePercent === null
-                    ? undefined
-                    : `Average score ${learning.analytics.averageQuizScorePercent}%`
-                }
-              />
-            </MetricGrid>
-          </AnalyticsSection>
-        )}
-
-        {learning.courses.length > 0 ? (
-          <AnalyticsSection
-            title="Per-course learning"
-            subtitle="Progress and quiz performance for each enrollment."
-          >
-            <div className="overflow-x-auto rounded-md border border-zinc-200">
-              <table className="w-full text-left text-sm">
-                <thead className="border-b border-zinc-200 bg-zinc-50">
-                  <tr>
-                    <th className="px-4 py-3 font-medium text-zinc-500">Course</th>
-                    <th className="px-4 py-3 font-medium text-zinc-500">Status</th>
-                    <th className="px-4 py-3 font-medium text-zinc-500">Completion</th>
-                    <th className="px-4 py-3 font-medium text-zinc-500">Lessons</th>
-                    <th className="px-4 py-3 font-medium text-zinc-500">Quiz attempts</th>
-                    <th className="px-4 py-3 font-medium text-zinc-500">Pass rate</th>
-                    <th className="px-4 py-3 font-medium text-zinc-500">Avg score</th>
-                    <th className="px-4 py-3 font-medium text-zinc-500">Last activity</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-200">
-                  {learning.courses.map((course) => (
-                    <tr key={course.enrollment_id} className="hover:bg-zinc-50">
-                      <td className="px-4 py-3">
-                        <Link
-                          href={`/dashboard/courses/${course.course_id}`}
-                          className="font-medium text-zinc-900 underline-offset-4 hover:underline"
-                        >
-                          {course.course_title}
-                        </Link>
-                      </td>
-                      <td className="px-4 py-3">
-                        <span
-                          className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${enrollmentBadgeClasses(course.enrollment_status)}`}
-                        >
-                          {course.enrollment_status}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-2">
-                          <div className="h-1.5 w-20 overflow-hidden rounded-full bg-zinc-100">
-                            <div
-                              className="h-full rounded-full bg-green-500"
-                              style={{
-                                width: `${course.percent}%`,
-                              }}
-                            />
-                          </div>
-                          <span className="text-xs font-medium text-zinc-900">
-                            {course.percent}%
-                          </span>
-                        </div>
-                        {course.isComplete && (
-                          <p className="text-xs font-medium text-green-700">
-                            ✓ Course completed
-                          </p>
-                        )}
-                      </td>
-                      <td className="px-4 py-3 text-zinc-600">
-                        {course.completedLessons}/{course.totalPublishedLessons}
-                        <span className="text-zinc-400">
-                          {" "}
-                          ({course.remainingLessons} remaining)
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-zinc-600">
-                        {course.quizAttempts}
-                        {course.quizSubmitted > 0 && (
-                          <span className="text-zinc-400">
-                            {" "}
-                            ({course.quizzesPassed} passed)
-                          </span>
-                        )}
-                      </td>
-                      <td className="px-4 py-3 text-zinc-600">
-                        {course.quizPassRate === null
-                          ? "—"
-                          : `${course.quizPassRate}%`}
-                      </td>
-                      <td className="px-4 py-3 text-zinc-600">
-                        {course.averageQuizScorePercent === null
-                          ? "—"
-                          : `${course.averageQuizScorePercent}%`}
-                      </td>
-                      <td className="px-4 py-3 text-xs text-zinc-500">
-                        {course.lastActivityAt
-                          ? formatDateTime(course.lastActivityAt)
-                          : "—"}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </AnalyticsSection>
-        ) : (
-          <div className="mt-4 rounded-md border border-zinc-200 px-4 py-3">
-            <h2 className="text-sm font-semibold text-zinc-900">
-              Learning analytics
-            </h2>
-            <div className="mt-2">
-              <EmptyState message="This student is not enrolled in any courses yet." />
-            </div>
-          </div>
-        )}
-
-        <div className="mt-4 rounded-md border border-zinc-200 px-4 py-3">
-          <h2 className="text-sm font-semibold text-zinc-900">
-            Enrollments
-          </h2>
-          {learning.enrollments.length > 0 ? (
-            <ul className="mt-2 divide-y divide-zinc-100">
-              {learning.enrollments.map((enrollment) => {
-                const course = courseByEnrollment.get(
-                  enrollment.enrollment_id
-                );
-                return (
-                  <li
-                    key={enrollment.enrollment_id}
-                    className="flex flex-wrap items-center justify-between gap-3 py-2"
-                  >
-                    <div className="text-sm">
-                      <Link
-                        href={`/dashboard/courses/${enrollment.course_id}`}
-                        className="font-medium text-zinc-900 underline-offset-4 hover:underline"
+          <Card className="bg-[#111318] border-[#272B33]">
+            <CardHeader className="border-b border-[#272B33] pb-4">
+              <CardTitle className="text-lg font-medium text-[#F4F4F5]">Enrollments</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              {learning.enrollments.length > 0 ? (
+                <ul className="divide-y divide-[#272B33]">
+                  {learning.enrollments.map((enrollment) => {
+                    const course = courseByEnrollment.get(enrollment.enrollment_id);
+                    return (
+                      <li
+                        key={enrollment.enrollment_id}
+                        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 hover:bg-[#181B21]/50 transition-colors"
                       >
-                        {enrollment.course_title}
-                      </Link>
-                      <p className="text-xs text-zinc-400">
-                        Enrolled {formatDateTime(enrollment.created_at)}
-                        {enrollment.ended_at
-                          ? ` · ended ${formatDateTime(enrollment.ended_at)}`
-                          : ""}
-                      </p>
-                      {course && course.totalPublishedLessons > 0 && (
-                        <div className="mt-2 w-48">
-                          <div className="flex items-center justify-between gap-4">
-                            <span className="text-xs text-zinc-400">
-                              {course.completedLessons} of{" "}
-                              {course.totalPublishedLessons} published lessons
-                            </span>
-                            <span className="text-xs font-medium text-zinc-900">
-                              {course.percent}%
-                            </span>
-                          </div>
-                          <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-zinc-100">
-                            <div
-                              className="h-full rounded-full bg-green-500"
-                              style={{ width: `${course.percent}%` }}
-                            />
-                          </div>
-                          {course.isComplete && (
-                            <p className="mt-1 text-xs font-medium text-green-700">
-                              ✓ Course completed
-                            </p>
+                        <div className="flex-1">
+                          <Link
+                            href={`/dashboard/courses/${enrollment.course_id}`}
+                            className="font-medium text-[#F4F4F5] hover:text-[#6366F1] transition-colors"
+                          >
+                            {enrollment.course_title}
+                          </Link>
+                          <p className="text-xs text-[#A1A1AA] mt-1">
+                            Enrolled {formatDateTime(enrollment.created_at)}
+                            {enrollment.ended_at ? ` · ended ${formatDateTime(enrollment.ended_at)}` : ""}
+                          </p>
+                          {course && course.totalPublishedLessons > 0 && (
+                            <div className="mt-3 max-w-xs space-y-1.5">
+                              <div className="flex items-center justify-between text-xs">
+                                <span className="text-[#A1A1AA]">
+                                  {course.completedLessons} of {course.totalPublishedLessons} lessons
+                                </span>
+                                <span className="font-medium text-[#F4F4F5]">{course.percent}%</span>
+                              </div>
+                              <Progress value={course.percent} className="h-1.5 bg-[#272B33]" />
+                            </div>
                           )}
                         </div>
-                      )}
+                        <Badge variant="outline" className={enrollmentBadgeClasses(enrollment.enrollment_status)}>
+                          {enrollment.enrollment_status}
+                        </Badge>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <div className="p-8">
+                  <EmptyState
+                    icon={GraduationCap}
+                    title="No enrollments"
+                    description="This student is not enrolled in any courses yet."
+                  />
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {learning.attempts.length > 0 && (
+            <Card className="bg-[#111318] border-[#272B33]">
+              <CardHeader className="border-b border-[#272B33] pb-4">
+                <CardTitle className="text-lg font-medium text-[#F4F4F5]">Recent Quiz Attempts</CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <ul className="divide-y divide-[#272B33]">
+                  {learning.attempts.slice(0, 20).map((attempt) => {
+                    const pct = quizPercentage(attempt.score, attempt.max_score);
+                    const passed = attempt.submitted_at !== null && pct !== null && pct >= attempt.pass_threshold;
+                    return (
+                      <li
+                        key={attempt.attempt_id}
+                        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 hover:bg-[#181B21]/50 transition-colors"
+                      >
+                        <div>
+                          <Link
+                            href={`/dashboard/courses/${attempt.course_id}/quizzes/${attempt.quiz_id}/attempts/${attempt.attempt_id}`}
+                            className="font-medium text-[#F4F4F5] hover:text-[#6366F1] transition-colors"
+                          >
+                            {attempt.quiz_title}
+                          </Link>
+                          <p className="text-xs text-[#A1A1AA] mt-1">
+                            {attempt.course_title}
+                            {attempt.submitted_at !== null
+                              ? ` · Submitted ${formatDateTime(attempt.submitted_at)}`
+                              : " · In progress"}
+                          </p>
+                        </div>
+                        {attempt.submitted_at !== null && attempt.score !== null && attempt.max_score !== null ? (
+                          <div className="flex items-center gap-4">
+                            <div className="text-right">
+                              <div className="text-sm font-medium text-[#F4F4F5]">
+                                {attempt.score} / {attempt.max_score}
+                              </div>
+                              {pct !== null && <div className="text-xs text-[#A1A1AA]">{pct}%</div>}
+                            </div>
+                            <Badge variant="outline" className={passed ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" : "bg-red-500/10 text-red-500 border-red-500/20"}>
+                              {passed ? "Passed" : "Not passed"}
+                            </Badge>
+                          </div>
+                        ) : (
+                          <Badge variant="outline" className="bg-[#272B33] text-[#A1A1AA] border-transparent">
+                            In progress
+                          </Badge>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+                {learning.attempts.length > 20 && (
+                  <div className="p-4 border-t border-[#272B33] text-center">
+                    <p className="text-xs text-[#71717A]">Showing the 20 most recent attempts.</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
+          {timeline.length > 0 && (
+            <AnalyticsSection
+              title="Learning timeline"
+              subtitle="Chronological learning activity derived from existing records (newest first)."
+            >
+              <Card className="bg-[#111318] border-[#272B33] overflow-hidden">
+                <CardContent className="p-6">
+                  <div className="relative space-y-6 before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-[#272B33] before:to-transparent">
+                    {timeline.slice(0, 100).map((event, index) => (
+                      <div key={index} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                        <div className="flex items-center justify-center w-10 h-10 rounded-full border-4 border-[#111318] bg-[#272B33] text-[#A1A1AA] shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                          {event.label.includes('Quiz') ? <Award className="w-4 h-4" /> : <Activity className="w-4 h-4" />}
+                        </div>
+                        <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-[#181B21] p-4 rounded-xl border border-[#272B33] shadow">
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="font-semibold text-[#F4F4F5]">{event.label}</span>
+                            <time className="text-xs font-medium text-[#6366F1]">{formatDateTime(event.occurredAt)}</time>
+                          </div>
+                          {event.detail && <p className="text-sm text-[#A1A1AA]">{event.detail}</p>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {timeline.length > 100 && (
+                    <div className="mt-8 text-center">
+                      <p className="text-xs text-[#71717A]">Showing the 100 most recent events.</p>
                     </div>
-                    <span
-                      className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${enrollmentBadgeClasses(enrollment.enrollment_status)}`}
-                    >
-                      {enrollment.enrollment_status}
-                    </span>
-                  </li>
-                );
-              })}
-            </ul>
-          ) : (
-            <div className="mt-2">
-              <EmptyState message="This student is not enrolled in any courses yet." />
-            </div>
+                  )}
+                </CardContent>
+              </Card>
+            </AnalyticsSection>
           )}
         </div>
-
-        {learning.attempts.length > 0 && (
-          <div className="mt-4 rounded-md border border-zinc-200 px-4 py-3">
-            <h2 className="text-sm font-semibold text-zinc-900">
-              Quiz attempts
-            </h2>
-            <ul className="mt-2 divide-y divide-zinc-100">
-              {learning.attempts.slice(0, 20).map((attempt) => {
-                const pct = quizPercentage(attempt.score, attempt.max_score);
-                const passed =
-                  attempt.submitted_at !== null &&
-                  pct !== null &&
-                  pct >= attempt.pass_threshold;
-                return (
-                  <li
-                    key={attempt.attempt_id}
-                    className="flex flex-wrap items-center justify-between gap-3 py-2"
-                  >
-                    <div className="text-sm">
-                      <Link
-                        href={`/dashboard/courses/${attempt.course_id}/quizzes/${attempt.quiz_id}/attempts/${attempt.attempt_id}`}
-                        className="font-medium text-zinc-900 underline-offset-4 hover:underline"
-                      >
-                        {attempt.quiz_title}
-                      </Link>
-                      <p className="text-xs text-zinc-400">
-                        {attempt.course_title}
-                        {attempt.submitted_at !== null
-                          ? ` · Submitted ${formatDateTime(attempt.submitted_at)}`
-                          : " · In progress"}
-                      </p>
-                    </div>
-                    {attempt.submitted_at !== null &&
-                    attempt.score !== null &&
-                    attempt.max_score !== null ? (
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm font-medium text-zinc-900">
-                          {attempt.score} / {attempt.max_score}
-                          {pct !== null && ` (${pct}%)`}
-                        </span>
-                        <span
-                          className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
-                            passed
-                              ? "bg-green-100 text-green-700"
-                              : "bg-red-100 text-red-700"
-                          }`}
-                        >
-                          {passed ? "passed" : "not passed"}
-                        </span>
-                      </div>
-                    ) : (
-                      <span className="text-xs text-zinc-400">—</span>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-            {learning.attempts.length > 20 && (
-              <p className="mt-2 text-xs text-zinc-400">
-                Showing the 20 most recent attempts.
-              </p>
-            )}
-          </div>
-        )}
-
-        {timeline.length > 0 && (
-          <AnalyticsSection
-            title="Learning timeline"
-            subtitle="Chronological learning activity derived from existing records (newest first)."
-          >
-            <ol className="relative space-y-3 border-l border-zinc-200 pl-4">
-              {timeline.slice(0, 100).map((event, index) => (
-                <li key={index} className="text-sm">
-                  <span className="absolute -left-[5px] mt-1.5 h-2.5 w-2.5 rounded-full border border-zinc-300 bg-white" />
-                  <p className="font-medium text-zinc-900">{event.label}</p>
-                  <p className="text-xs text-zinc-400">
-                    {formatDateTime(event.occurredAt)}
-                    {event.detail ? ` · ${event.detail}` : ""}
-                  </p>
-                </li>
-              ))}
-            </ol>
-            {timeline.length > 100 && (
-              <p className="mt-3 text-xs text-zinc-400">
-                Showing the 100 most recent events.
-              </p>
-            )}
-          </AnalyticsSection>
-        )}
       </div>
     </div>
   );

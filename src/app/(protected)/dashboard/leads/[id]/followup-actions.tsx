@@ -49,7 +49,7 @@ export default function FollowupActions({
         <button
           type="submit"
           disabled={pending}
-          className="rounded-md border border-zinc-300 px-3 py-1.5 text-xs font-medium text-zinc-600 transition-colors hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-md border border-[#272B33] bg-[#181B21] px-3 py-1.5 text-xs font-medium text-[#A1A1AA] transition-colors hover:bg-emerald-600/20 hover:text-emerald-500 hover:border-emerald-500/50 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {cancelPending ? "Saving…" : "Cancel"}
         </button>

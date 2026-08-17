@@ -2,6 +2,8 @@ import Link from "next/link";
 import { requireStaffContext } from "@/lib/crm";
 import AccessDenied from "../../access-denied";
 import LeadForm from "./lead-form";
+import { ChevronLeft } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
 export default async function NewLeadPage() {
   const ctx = await requireStaffContext();
@@ -10,24 +12,28 @@ export default async function NewLeadPage() {
   }
 
   return (
-    <div className="flex flex-1 justify-center px-4 py-8">
-      <div className="w-full max-w-lg">
+    <div className="flex flex-1 flex-col pb-12 w-full animate-in fade-in duration-500 max-w-2xl mx-auto">
+      <div className="mb-6">
         <Link
           href="/dashboard/leads"
-          className="text-sm text-zinc-500 underline-offset-4 hover:text-zinc-900 hover:underline"
+          className="text-sm font-medium text-[#A1A1AA] hover:text-[#F4F4F5] transition-colors inline-flex items-center"
         >
-          ← Back to leads
+          <ChevronLeft className="w-4 h-4 mr-1" />
+          Back to leads
         </Link>
-        <h1 className="mt-4 text-2xl font-semibold tracking-tight text-zinc-900">
-          New lead
-        </h1>
-        <p className="mt-1 text-sm text-zinc-500">
-          Add a prospect to your pipeline. Required fields are marked.
-        </p>
-        <div className="mt-6 rounded-md border border-zinc-200 p-6">
-          <LeadForm />
-        </div>
       </div>
+
+      <Card className="bg-[#111318] border-[#272B33]">
+        <CardHeader className="pb-4 border-b border-[#272B33]">
+          <CardTitle className="text-xl text-[#F4F4F5]">New Lead</CardTitle>
+          <CardDescription className="text-[#A1A1AA]">
+            Add a prospect to your pipeline. Required fields are marked.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="p-6">
+          <LeadForm />
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -1,4 +1,8 @@
 import type { ReactNode } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { EmptyState as BaseEmptyState } from "@/components/ui/empty-state";
+import { Info } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function AnalyticsSection({
   title,
@@ -10,10 +14,10 @@ export function AnalyticsSection({
   children: ReactNode;
 }) {
   return (
-    <div className="mt-4 rounded-md border border-zinc-200 px-4 py-3">
-      <h2 className="text-sm font-semibold text-zinc-900">{title}</h2>
-      {subtitle && <p className="mt-0.5 text-xs text-zinc-500">{subtitle}</p>}
-      <div className="mt-3">{children}</div>
+    <div className="mt-6 rounded-xl border border-[#272B33] bg-[#111318] p-6 shadow-sm">
+      <h2 className="text-lg font-semibold text-[#F4F4F5] tracking-tight">{title}</h2>
+      {subtitle && <p className="mt-1 text-sm text-[#A1A1AA]">{subtitle}</p>}
+      <div className="mt-6">{children}</div>
     </div>
   );
 }
@@ -28,19 +32,21 @@ export function MetricCard({
   sub?: ReactNode;
 }) {
   return (
-    <div className="rounded-md border border-zinc-200 bg-white px-3 py-2.5">
-      <p className="text-[11px] font-medium uppercase tracking-wide text-zinc-500">
-        {label}
-      </p>
-      <p className="mt-1 text-xl font-semibold text-zinc-900">{value}</p>
-      {sub && <p className="mt-0.5 text-xs text-zinc-500">{sub}</p>}
-    </div>
+    <Card className="bg-[#181B21] border-transparent">
+      <CardContent className="p-5">
+        <p className="text-xs font-medium uppercase tracking-wider text-[#A1A1AA]">
+          {label}
+        </p>
+        <p className="mt-2 text-3xl font-semibold tracking-tight text-[#F4F4F5]">{value}</p>
+        {sub && <p className="mt-1 text-xs font-medium text-[#71717A]">{sub}</p>}
+      </CardContent>
+    </Card>
   );
 }
 
 export function MetricGrid({ children }: { children: ReactNode }) {
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">{children}</div>
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">{children}</div>
   );
 }
 
@@ -49,18 +55,20 @@ export function ProgressBar({
   tone = "green",
 }: {
   percent: number;
-  tone?: "green" | "amber" | "zinc";
+  tone?: "green" | "amber" | "zinc" | "indigo";
 }) {
   const barColor =
     tone === "green"
-      ? "bg-green-500"
+      ? "bg-emerald-500"
       : tone === "amber"
         ? "bg-amber-500"
-        : "bg-zinc-400";
+        : tone === "indigo"
+        ? "bg-[#6366F1]"
+        : "bg-[#71717A]";
   return (
-    <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-100">
+    <div className="h-2 w-full overflow-hidden rounded-full bg-[#272B33]">
       <div
-        className={`h-full rounded-full ${barColor}`}
+        className={cn("h-full rounded-full transition-all duration-500", barColor)}
         style={{ width: `${Math.min(100, Math.max(0, percent))}%` }}
       />
     </div>
@@ -68,5 +76,12 @@ export function ProgressBar({
 }
 
 export function EmptyState({ message }: { message: string }) {
-  return <p className="text-sm text-zinc-500">{message}</p>;
+  return (
+    <BaseEmptyState
+      icon={Info}
+      title="No data available"
+      description={message}
+      className="min-h-[200px]"
+    />
+  );
 }

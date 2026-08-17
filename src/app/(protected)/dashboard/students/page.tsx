@@ -1,6 +1,13 @@
 import Link from "next/link";
 import { requireStudentViewContext } from "@/lib/crm";
 import AccessDenied from "../access-denied";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Users, Search, X, GraduationCap, ArrowRight, UserCheck } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 const PAGE_SIZE = 20;
 
@@ -68,172 +75,179 @@ export default async function StudentsPage({
   };
 
   return (
-    <div className="flex flex-1 justify-center px-4 py-8">
-      <div className="w-full max-w-5xl">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
-              Students
-            </h1>
-            <p className="mt-1 text-sm text-zinc-500">
-              Converted leads and student records in your organization.
-            </p>
+    <div className="flex flex-1 flex-col pb-12 w-full animate-in fade-in duration-500 max-w-6xl mx-auto">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <div>
+          <h1 className="text-3xl font-semibold tracking-tight text-[#F4F4F5]">
+            Students
+          </h1>
+          <p className="mt-2 text-sm text-[#A1A1AA]">
+            Converted leads and enrolled students in your organization.
+          </p>
+        </div>
+      </div>
+
+      <Card className="bg-[#111318] border-[#272B33]">
+        <div className="p-4 border-b border-[#272B33] flex flex-col sm:flex-row gap-4 items-center justify-between bg-[#181B21]/50 rounded-t-xl">
+          <form method="get" className="flex items-center gap-2 w-full sm:max-w-md">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A1A1AA]" />
+              <Input
+                id="q"
+                name="q"
+                type="search"
+                defaultValue={q}
+                placeholder="Search name, email, phone..."
+                className="pl-9 bg-[#111318] border-[#272B33] text-[#F4F4F5] placeholder:text-[#71717A] focus-visible:ring-[#6366F1]"
+              />
+            </div>
+            <Button type="submit" variant="secondary" className="bg-[#272B33] text-[#F4F4F5] hover:bg-[#323642]">
+              Search
+            </Button>
+            {q && (
+              <Button asChild variant="ghost" size="icon" className="text-[#A1A1AA] hover:text-[#F4F4F5]">
+                <Link href="/dashboard/students">
+                  <X className="w-4 h-4" />
+                  <span className="sr-only">Clear</span>
+                </Link>
+              </Button>
+            )}
+          </form>
+          
+          <div className="text-sm text-[#A1A1AA] whitespace-nowrap">
+            {totalCount} {totalCount === 1 ? "student" : "students"} {q && "(filtered)"}
           </div>
         </div>
 
-        <form method="get" className="mt-6 flex flex-wrap items-end gap-3">
-          <div className="flex-1 basis-56">
-            <label htmlFor="q" className="sr-only">
-              Search
-            </label>
-            <input
-              id="q"
-              name="q"
-              type="search"
-              defaultValue={q}
-              placeholder="Search name, email, phone…"
-              className="block w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500"
-            />
-          </div>
-          <button
-            type="submit"
-            className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100"
-          >
-            Search
-          </button>
-          {q && (
-            <Link
-              href="/dashboard/students"
-              className="rounded-md px-3 py-2 text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900"
-            >
-              Clear
-            </Link>
-          )}
-        </form>
-
         {error ? (
-          <div className="mt-6 rounded-md border border-red-200 bg-red-50 px-4 py-3">
-            <p className="text-sm text-red-700">
-              Unable to load students. Please try again.
-            </p>
+          <div className="p-8">
+            <EmptyState
+              icon={Users}
+              title="Failed to load students"
+              description="There was an error loading the student directory. Please try again."
+              action={
+                <Button asChild onClick={() => window.location.reload()}>
+                  <span>Try again</span>
+                </Button>
+              }
+            />
           </div>
         ) : students && students.length > 0 ? (
           <>
-            <div className="mt-6 overflow-x-auto rounded-md border border-zinc-200">
-              <table className="w-full text-left text-sm">
-                <thead className="border-b border-zinc-200 bg-zinc-50">
-                  <tr>
-                    <th className="px-4 py-3 font-medium text-zinc-500">Name</th>
-                    <th className="px-4 py-3 font-medium text-zinc-500">Contact</th>
-                    <th className="px-4 py-3 font-medium text-zinc-500">Source lead</th>
-                    <th className="px-4 py-3 font-medium text-zinc-500">Created</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-200">
-                  {students.map((student) => {
-                    const leadId = linkedLeads.get(student.student_id);
-                    return (
-                      <tr key={student.student_id} className="hover:bg-zinc-50">
-                        <td className="px-4 py-3">
+            <Table>
+              <TableHeader className="bg-[#111318]">
+                <TableRow className="border-[#272B33] hover:bg-transparent">
+                  <TableHead className="text-[#A1A1AA] font-medium h-12">Name</TableHead>
+                  <TableHead className="text-[#A1A1AA] font-medium h-12">Contact Info</TableHead>
+                  <TableHead className="text-[#A1A1AA] font-medium h-12">Account Status</TableHead>
+                  <TableHead className="text-[#A1A1AA] font-medium h-12">Origin</TableHead>
+                  <TableHead className="text-[#A1A1AA] font-medium h-12">Added On</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {students.map((student) => {
+                  const leadId = linkedLeads.get(student.student_id);
+                  return (
+                    <TableRow key={student.student_id} className="border-[#272B33] hover:bg-[#181B21]/50 group">
+                      <TableCell className="py-4">
+                        <Link
+                          href={`/dashboard/students/${student.student_id}`}
+                          className="font-medium text-[#F4F4F5] hover:text-[#6366F1] transition-colors flex items-center"
+                        >
+                          <div className="w-8 h-8 rounded-full bg-[#272B33] text-[#A1A1AA] flex items-center justify-center mr-3 text-xs font-medium">
+                            {student.first_name.charAt(0)}{student.last_name.charAt(0)}
+                          </div>
+                          {student.first_name} {student.last_name}
+                        </Link>
+                      </TableCell>
+                      <TableCell className="py-4">
+                        <div className="text-sm text-[#A1A1AA] flex flex-col gap-1">
+                          {student.email && <span>{student.email}</span>}
+                          {student.phone && <span className="text-xs text-[#71717A]">{student.phone}</span>}
+                          {!student.email && !student.phone && <span>—</span>}
+                        </div>
+                      </TableCell>
+                      <TableCell className="py-4">
+                        {student.profile_id ? (
+                          <Badge variant="success" className="bg-emerald-500/10 text-emerald-500 border-emerald-500/20 gap-1.5">
+                            <UserCheck className="w-3 h-3" /> Linked
+                          </Badge>
+                        ) : (
+                          <Badge variant="outline" className="bg-[#272B33] text-[#A1A1AA] border-transparent">
+                            Unlinked
+                          </Badge>
+                        )}
+                      </TableCell>
+                      <TableCell className="py-4">
+                        {leadId ? (
                           <Link
-                            href={`/dashboard/students/${student.student_id}`}
-                            className="font-medium text-zinc-900 underline-offset-4 hover:underline"
+                            href={`/dashboard/leads/${leadId}`}
+                            className="inline-flex items-center text-xs font-medium text-[#6366F1] hover:text-[#818CF8] bg-[#6366F1]/10 px-2 py-1 rounded-md transition-colors"
                           >
-                            {student.first_name} {student.last_name}
+                            View Lead <ArrowRight className="w-3 h-3 ml-1" />
                           </Link>
-                          {student.profile_id && (
-                            <p className="text-xs text-zinc-400">
-                              Linked to an account
-                            </p>
-                          )}
-                        </td>
-                        <td className="px-4 py-3 text-zinc-600">
-                          {student.email && <p>{student.email}</p>}
-                          {student.phone && (
-                            <p className="text-xs text-zinc-400">{student.phone}</p>
-                          )}
-                          {!student.email && !student.phone && (
-                            <span className="text-zinc-400">—</span>
-                          )}
-                        </td>
-                        <td className="px-4 py-3 text-zinc-600">
-                          {leadId ? (
-                            <Link
-                              href={`/dashboard/leads/${leadId}`}
-                              className="underline-offset-4 hover:text-zinc-900 hover:underline"
-                            >
-                              Lead
-                            </Link>
-                          ) : (
-                            <span className="text-zinc-400">—</span>
-                          )}
-                        </td>
-                        <td className="px-4 py-3 text-xs text-zinc-500">
-                          {new Date(student.created_at).toLocaleDateString("en-GB")}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+                        ) : (
+                          <span className="text-[#71717A] text-sm">—</span>
+                        )}
+                      </TableCell>
+                      <TableCell className="py-4 text-sm text-[#71717A]">
+                        {new Date(student.created_at).toLocaleDateString("en-GB", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric"
+                        })}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
 
-            <div className="mt-4 flex items-center justify-between text-sm text-zinc-500">
-              <p>
-                {totalCount} {totalCount === 1 ? "student" : "students"}
-                {q ? " (filtered)" : ""}
+            <div className="p-4 border-t border-[#272B33] flex items-center justify-between bg-[#111318] rounded-b-xl">
+              <p className="text-sm text-[#71717A]">
+                Showing page {page} of {totalPages}
               </p>
               {totalPages > 1 && (
-                <nav className="flex items-center gap-2">
-                  <Link
-                    href={pageHref(Math.max(1, page - 1))}
-                    aria-disabled={page <= 1}
-                    className={`rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium transition-colors ${
-                      page <= 1
-                        ? "pointer-events-none opacity-40"
-                        : "text-zinc-700 hover:bg-zinc-100"
-                    }`}
+                <div className="flex gap-2">
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                    className={`border-[#272B33] bg-transparent text-[#F4F4F5] hover:bg-[#272B33] ${page <= 1 ? "pointer-events-none opacity-50" : ""}`}
                   >
-                    Previous
-                  </Link>
-                  <span>
-                    Page {page} of {totalPages}
-                  </span>
-                  <Link
-                    href={pageHref(Math.min(totalPages, page + 1))}
-                    aria-disabled={page >= totalPages}
-                    className={`rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium transition-colors ${
-                      page >= totalPages
-                        ? "pointer-events-none opacity-40"
-                        : "text-zinc-700 hover:bg-zinc-100"
-                    }`}
+                    <Link href={pageHref(Math.max(1, page - 1))} aria-disabled={page <= 1}>
+                      Previous
+                    </Link>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                    className={`border-[#272B33] bg-transparent text-[#F4F4F5] hover:bg-[#272B33] ${page >= totalPages ? "pointer-events-none opacity-50" : ""}`}
                   >
-                    Next
-                  </Link>
-                </nav>
+                    <Link href={pageHref(Math.min(totalPages, page + 1))} aria-disabled={page >= totalPages}>
+                      Next
+                    </Link>
+                  </Button>
+                </div>
               )}
             </div>
           </>
         ) : (
-          <div className="mt-6 rounded-md border border-zinc-200 bg-zinc-50 px-4 py-8 text-center">
-            <p className="text-sm font-medium text-zinc-700">
-              {q ? "No students match your search." : "No students yet."}
-            </p>
-            <p className="mt-1 text-sm text-zinc-500">
-              {q ? (
-                <Link
-                  href="/dashboard/students"
-                  className="font-medium text-zinc-700 underline-offset-4 hover:underline"
-                >
-                  Clear search
-                </Link>
-              ) : (
-                <>Students are created when a lead is converted.</>
-              )}
-            </p>
+          <div className="p-12">
+            <EmptyState
+              icon={GraduationCap}
+              title={q ? "No students found" : "No students yet"}
+              description={q ? "We couldn't find any students matching your search criteria." : "Students are created automatically when a lead is converted."}
+              action={q ? (
+                <Button asChild variant="outline" className="border-[#272B33] text-[#F4F4F5]">
+                  <Link href="/dashboard/students">Clear search</Link>
+                </Button>
+              ) : undefined}
+            />
           </div>
         )}
-      </div>
+      </Card>
     </div>
   );
 }

@@ -30,10 +30,10 @@ export default function AssignForm({
     <form action={formAction} className="flex flex-wrap items-center gap-2">
       <input type="hidden" name="leadId" value={leadId} />
       <select
-        name="assignedTo"
+        name="assigned_to"
         defaultValue={currentAssignee ?? ""}
         disabled={isPending}
-        className="rounded-md border border-zinc-300 px-2 py-1.5 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 disabled:opacity-50"
+        className="rounded-md border border-[#272B33] bg-[#181B21] px-2 py-1.5 text-sm text-[#F4F4F5] shadow-sm outline-none focus:border-[#6366F1] disabled:opacity-50"
       >
         <option value="">Unassigned</option>
         {members.map((member) => (
@@ -45,7 +45,7 @@ export default function AssignForm({
       <button
         type="submit"
         disabled={isPending}
-        className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50"
+        className="rounded-md border border-[#272B33] bg-[#181B21] px-3 py-1.5 text-sm font-medium text-[#F4F4F5] transition-colors hover:bg-[#272B33] disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isPending ? "Saving…" : "Assign"}
       </button>

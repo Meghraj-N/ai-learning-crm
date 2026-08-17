@@ -115,8 +115,8 @@ function InfoRow({
 }) {
   return (
     <div className="flex items-center justify-between gap-4 px-4 py-3">
-      <dt className="text-sm text-zinc-500">{label}</dt>
-      <dd className="text-sm font-medium text-zinc-900">{value}</dd>
+      <dt className="text-sm text-[#A1A1AA]">{label}</dt>
+      <dd className="text-sm font-medium text-[#F4F4F5]">{value}</dd>
     </div>
   );
 }
@@ -158,15 +158,15 @@ export default async function CourseDetailPage({
     return (
       <div className="flex flex-1 items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
+          <h1 className="text-2xl font-semibold tracking-tight text-[#F4F4F5]">
             Course not found
           </h1>
-          <p className="mt-2 text-sm text-zinc-500">
+          <p className="mt-2 text-sm text-[#A1A1AA]">
             The course you are looking for does not exist or is not available.
           </p>
           <Link
             href="/dashboard/courses"
-            className="mt-6 inline-block rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700"
+            className="mt-6 inline-block rounded-md bg-[#6366F1] px-4 py-2 text-sm font-medium text-[#F4F4F5] transition-colors hover:bg-[#4F46E5]"
           >
             Back to courses
           </Link>
@@ -537,19 +537,19 @@ export default async function CourseDetailPage({
   );
 
   return (
-    <div className="flex flex-1 justify-center px-4 py-8">
-      <div className="w-full max-w-3xl">
+    <div className="flex flex-1 flex-col pb-12 w-full animate-in fade-in duration-500 max-w-5xl mx-auto px-4 mt-8">
+      <div className="flex flex-col gap-8">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
+            <h1 className="text-2xl font-semibold tracking-tight text-[#F4F4F5]">
               {course.title}
             </h1>
             {course.description ? (
-              <p className="mt-2 whitespace-pre-wrap text-sm text-zinc-600">
+              <p className="mt-2 whitespace-pre-wrap text-sm text-[#A1A1AA]">
                 {course.description}
               </p>
             ) : (
-              <p className="mt-2 text-sm text-zinc-400">No description.</p>
+              <p className="mt-2 text-sm text-[#71717A]">No description.</p>
             )}
           </div>
           <div className="flex shrink-0 items-center gap-2">
@@ -557,7 +557,7 @@ export default async function CourseDetailPage({
             {canWriteCourse && (
               <Link
                 href={`/dashboard/courses/${course.course_id}/edit`}
-                className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100"
+                className="rounded-md border border-[#272B33] px-3 py-1.5 text-sm font-medium text-[#F4F4F5] transition-colors hover:bg-[#272B33]"
               >
                 Edit
               </Link>
@@ -565,7 +565,7 @@ export default async function CourseDetailPage({
           </div>
         </div>
 
-        <dl className="mt-6 divide-y divide-zinc-100 rounded-md border border-zinc-200">
+        <dl className="mt-6 divide-y divide-[#272B33] rounded-md border border-[#272B33]">
           <InfoRow
             label="Created"
             value={formatDateTime(course.created_at)}
@@ -651,7 +651,7 @@ export default async function CourseDetailPage({
               </div>
             ) : (
               <div className="mt-3">
-                <p className="text-xs font-medium text-zinc-500">
+                <p className="text-xs font-medium text-[#A1A1AA]">
                   Completion distribution across {courseAnalytics.totalEnrollments}{" "}
                   {courseAnalytics.totalEnrollments === 1 ? "enrollment" : "enrollments"}
                 </p>
@@ -666,18 +666,18 @@ export default async function CourseDetailPage({
                       key={bucket.label}
                       className="flex items-center gap-3 text-sm"
                     >
-                      <span className="w-14 shrink-0 text-zinc-500">
+                      <span className="w-14 shrink-0 text-[#A1A1AA]">
                         {bucket.label}
                       </span>
-                      <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-zinc-100">
+                      <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[#272B33]">
                         <div
-                          className="h-full rounded-full bg-green-500"
+                          className="h-full rounded-full bg-emerald-500"
                           style={{
                             width: `${courseAnalytics.totalEnrollments > 0 ? (bucket.value / courseAnalytics.totalEnrollments) * 100 : 0}%`,
                           }}
                         />
                       </div>
-                      <span className="w-8 shrink-0 text-right font-medium text-zinc-900">
+                      <span className="w-8 shrink-0 text-right font-medium text-[#F4F4F5]">
                         {bucket.value}
                       </span>
                     </div>
@@ -694,27 +694,27 @@ export default async function CourseDetailPage({
             subtitle="Deterministic facts derived from progress and quiz records."
           >
             <ul className="space-y-1.5 text-sm">
-              <li className="text-zinc-600">
+              <li className="text-[#A1A1AA]">
                 {insights.studentsAtZero}{" "}
                 {insights.studentsAtZero === 1 ? "student is" : "students are"} at 0% progress.
               </li>
-              <li className="text-zinc-600">
+              <li className="text-[#A1A1AA]">
                 {insights.studentsBelowHalf}{" "}
                 {insights.studentsBelowHalf === 1 ? "student is" : "students are"} between 1% and 49% completion.
               </li>
-              <li className="text-zinc-600">
+              <li className="text-[#A1A1AA]">
                 {insights.incompleteActiveEnrollments}{" "}
                 {insights.incompleteActiveEnrollments === 1 ? "active enrollment is" : "active enrollments are"} incomplete.
               </li>
-              <li className="text-zinc-600">
+              <li className="text-[#A1A1AA]">
                 {insights.lessonsInProgressEnrollments}{" "}
                 {insights.lessonsInProgressEnrollments === 1 ? "enrollment has" : "enrollments have"} lessons started but not completed.
               </li>
-              <li className="text-zinc-600">
+              <li className="text-[#A1A1AA]">
                 {insights.repeatedlyFailingStudents}{" "}
                 {insights.repeatedlyFailingStudents === 1 ? "student has" : "students have"} submitted quizzes at least twice without a passing score.
               </li>
-              <li className="text-zinc-600">
+              <li className="text-[#A1A1AA]">
                 {insights.lowQuizPerformanceStudents}{" "}
                 {insights.lowQuizPerformanceStudents === 1 ? "student has" : "students have"} an average quiz score below 50%.
               </li>
@@ -728,23 +728,23 @@ export default async function CourseDetailPage({
             subtitle="Deterministic readiness facts per enrolled student."
           >
             <ul className="space-y-1.5 text-sm">
-              <li className="text-zinc-600">
+              <li className="text-[#A1A1AA]">
                 {readinessSummary.assessmentsAvailable}{" "}
                 {readinessSummary.assessmentsAvailable === 1 ? "student is" : "students are"} ready for an available assessment.
               </li>
-              <li className="text-zinc-600">
+              <li className="text-[#A1A1AA]">
                 {readinessSummary.needsReview}{" "}
                 {readinessSummary.needsReview === 1 ? "student has" : "students have"} a failed assessment to review.
               </li>
-              <li className="text-zinc-600">
+              <li className="text-[#A1A1AA]">
                 {readinessSummary.passed}{" "}
                 {readinessSummary.passed === 1 ? "student has" : "students have"} passed all available assessments.
               </li>
-              <li className="text-zinc-600">
+              <li className="text-[#A1A1AA]">
                 {readinessSummary.completed}{" "}
                 {readinessSummary.completed === 1 ? "student has" : "students have"} completed the course.
               </li>
-              <li className="text-zinc-600">
+              <li className="text-[#A1A1AA]">
                 {readinessSummary.notStarted}{" "}
                 {readinessSummary.notStarted === 1 ? "student has" : "students have"} no learning activity yet.
               </li>
@@ -768,13 +768,13 @@ export default async function CourseDetailPage({
                   type="search"
                   defaultValue={performanceSearch}
                   placeholder="Search student…"
-                  className="block w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500"
+                  className="block w-full rounded-md border border-[#272B33] px-3 py-2 text-sm text-[#F4F4F5] shadow-sm outline-none focus:border-[#6366F1] focus:ring-1 focus:ring-[#6366F1]"
                 />
               </div>
               <select
                 name="estatus"
                 defaultValue={performanceStatus ?? ""}
-                className="rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500"
+                className="rounded-md border border-[#272B33] px-3 py-2 text-sm text-[#F4F4F5] shadow-sm outline-none focus:border-[#6366F1]"
               >
                 <option value="">All statuses</option>
                 <option value="active">Active</option>
@@ -785,7 +785,7 @@ export default async function CourseDetailPage({
               <select
                 name="completion"
                 defaultValue={performanceCompletion ?? ""}
-                className="rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500"
+                className="rounded-md border border-[#272B33] px-3 py-2 text-sm text-[#F4F4F5] shadow-sm outline-none focus:border-[#6366F1]"
               >
                 <option value="">All completion</option>
                 <option value="not_started">Not started</option>
@@ -795,14 +795,14 @@ export default async function CourseDetailPage({
               </select>
               <button
                 type="submit"
-                className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100"
+                className="rounded-md border border-[#272B33] px-4 py-2 text-sm font-medium text-[#F4F4F5] transition-colors hover:bg-[#272B33]"
               >
                 Filter
               </button>
               {hasPerformanceFilters && (
                 <Link
                   href={`/dashboard/courses/${course.course_id}`}
-                  className="rounded-md px-3 py-2 text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900"
+                  className="rounded-md px-3 py-2 text-sm font-medium text-[#A1A1AA] transition-colors hover:text-[#F4F4F5]"
                 >
                   Clear
                 </Link>
@@ -822,40 +822,40 @@ export default async function CourseDetailPage({
                 <EmptyState message="No students match the current filters." />
               </div>
             ) : (
-              <div className="mt-3 overflow-x-auto rounded-md border border-zinc-200">
+              <div className="mt-3 overflow-x-auto rounded-md border border-[#272B33]">
                 <table className="w-full text-left text-sm">
-                  <thead className="border-b border-zinc-200 bg-zinc-50">
+                  <thead className="border-b border-[#272B33] bg-[#181B21]/50">
                     <tr>
-                      <th className="px-4 py-3 font-medium text-zinc-500">
+                      <th className="px-4 py-3 font-medium text-[#A1A1AA]">
                         Student
                       </th>
-                      <th className="px-4 py-3 font-medium text-zinc-500">
+                      <th className="px-4 py-3 font-medium text-[#A1A1AA]">
                         Status
                       </th>
-                      <th className="px-4 py-3 font-medium text-zinc-500">
+                      <th className="px-4 py-3 font-medium text-[#A1A1AA]">
                         Completion
                       </th>
-                      <th className="px-4 py-3 font-medium text-zinc-500">
+                      <th className="px-4 py-3 font-medium text-[#A1A1AA]">
                         Lessons
                       </th>
-                      <th className="px-4 py-3 font-medium text-zinc-500">
+                      <th className="px-4 py-3 font-medium text-[#A1A1AA]">
                         Quiz attempts
                       </th>
-                      <th className="px-4 py-3 font-medium text-zinc-500">
+                      <th className="px-4 py-3 font-medium text-[#A1A1AA]">
                         Pass rate
                       </th>
-                      <th className="px-4 py-3 font-medium text-zinc-500">
+                      <th className="px-4 py-3 font-medium text-[#A1A1AA]">
                         Avg score
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-200">
+                  <tbody className="divide-y divide-[#272B33]">
                     {filteredPerformanceRows.map((row) => (
-                      <tr key={row.enrollment_id} className="hover:bg-zinc-50">
+                      <tr key={row.enrollment_id} className="hover:bg-[#181B21]/50">
                         <td className="px-4 py-3">
                           <Link
                             href={`/dashboard/students/${row.student_id}`}
-                            className="font-medium text-zinc-900 underline-offset-4 hover:underline"
+                            className="font-medium text-[#F4F4F5] underline-offset-4 hover:underline"
                           >
                             {row.student_name}
                           </Link>
@@ -872,29 +872,29 @@ export default async function CourseDetailPage({
                             <div className="w-24">
                               <ProgressBar percent={row.completionPercent} />
                             </div>
-                            <span className="text-xs font-medium text-zinc-900">
+                            <span className="text-xs font-medium text-[#F4F4F5]">
                               {row.completionPercent}%
                             </span>
                           </div>
                         </td>
-                        <td className="px-4 py-3 text-zinc-600">
+                        <td className="px-4 py-3 text-[#A1A1AA]">
                           {row.completedLessons}/{row.totalPublishedLessons}
                         </td>
-                        <td className="px-4 py-3 text-zinc-600">
+                        <td className="px-4 py-3 text-[#A1A1AA]">
                           {row.quizAttempts}
                           {row.quizSubmitted > 0 && (
-                            <span className="text-zinc-400">
+                            <span className="text-[#71717A]">
                               {" "}
                               ({row.quizSubmitted} submitted)
                             </span>
                           )}
                         </td>
-                        <td className="px-4 py-3 text-zinc-600">
+                        <td className="px-4 py-3 text-[#A1A1AA]">
                           {row.quizPassRate === null
                             ? "—"
                             : `${row.quizPassRate}%`}
                         </td>
-                        <td className="px-4 py-3 text-zinc-600">
+                        <td className="px-4 py-3 text-[#A1A1AA]">
                           {row.averageQuizScorePercent === null
                             ? "—"
                             : `${row.averageQuizScorePercent}%`}
@@ -924,25 +924,25 @@ export default async function CourseDetailPage({
               <MetricCard label="Passed" value={readinessSummary.passed} />
               <MetricCard label="Completed" value={readinessSummary.completed} />
             </MetricGrid>
-            <div className="mt-3 overflow-x-auto rounded-md border border-zinc-200">
+            <div className="mt-3 overflow-x-auto rounded-md border border-[#272B33]">
               <table className="w-full text-left text-sm">
-                <thead className="border-b border-zinc-200 bg-zinc-50">
+                <thead className="border-b border-[#272B33] bg-[#181B21]/50">
                   <tr>
-                    <th className="px-4 py-3 font-medium text-zinc-500">
+                    <th className="px-4 py-3 font-medium text-[#A1A1AA]">
                       Student
                     </th>
-                    <th className="px-4 py-3 font-medium text-zinc-500">
+                    <th className="px-4 py-3 font-medium text-[#A1A1AA]">
                       Readiness
                     </th>
-                    <th className="px-4 py-3 font-medium text-zinc-500">
+                    <th className="px-4 py-3 font-medium text-[#A1A1AA]">
                       Lessons
                     </th>
-                    <th className="px-4 py-3 font-medium text-zinc-500">
+                    <th className="px-4 py-3 font-medium text-[#A1A1AA]">
                       Recommended next action
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-zinc-200">
+                <tbody className="divide-y divide-[#272B33]">
                   {analyticsRows.map((row) => {
                     const readiness = readinessByEnrollment.get(
                       row.enrollment_id
@@ -951,11 +951,11 @@ export default async function CourseDetailPage({
                       return null;
                     }
                     return (
-                      <tr key={row.enrollment_id} className="hover:bg-zinc-50">
+                      <tr key={row.enrollment_id} className="hover:bg-[#181B21]/50">
                         <td className="px-4 py-3">
                           <Link
                             href={`/dashboard/students/${row.student_id}`}
-                            className="font-medium text-zinc-900 underline-offset-4 hover:underline"
+                            className="font-medium text-[#F4F4F5] underline-offset-4 hover:underline"
                           >
                             {row.student_name}
                           </Link>
@@ -967,11 +967,11 @@ export default async function CourseDetailPage({
                             {readiness.label}
                           </span>
                         </td>
-                        <td className="px-4 py-3 text-zinc-600">
+                        <td className="px-4 py-3 text-[#A1A1AA]">
                           {readiness.lessonsCompleted}/
                           {readiness.totalPublishedLessons}
                         </td>
-                        <td className="px-4 py-3 text-zinc-600">
+                        <td className="px-4 py-3 text-[#A1A1AA]">
                           {readiness.recommendedAction &&
                           readiness.recommendedAction.kind !== "completed" ? (
                             (() => {
@@ -985,14 +985,14 @@ export default async function CourseDetailPage({
                               return href && label ? (
                                 <Link
                                   href={href}
-                                  className="underline-offset-4 hover:text-zinc-900 hover:underline"
+                                  className="underline-offset-4 hover:text-[#F4F4F5] hover:underline"
                                 >
                                   {label}
                                 </Link>
                               ) : null;
                             })()
                           ) : (
-                            <span className="text-green-700">
+                            <span className="text-emerald-500">
                               ✓ All complete
                             </span>
                           )}
@@ -1007,33 +1007,33 @@ export default async function CourseDetailPage({
         )}
 
         {isStudent && studentProgress && (
-          <div className="mt-4 rounded-md border border-zinc-200 px-4 py-3">
+          <div className="mt-4 rounded-md border border-[#272B33] px-4 py-3">
             <div className="flex items-center justify-between gap-4">
-              <h2 className="text-sm font-semibold text-zinc-900">
+              <h2 className="text-sm font-semibold text-[#F4F4F5]">
                 Course progress
               </h2>
-              <span className="text-sm font-medium text-zinc-900">
+              <span className="text-sm font-medium text-[#F4F4F5]">
                 {studentProgress.derived.percent}%
               </span>
             </div>
             {studentProgress.derived.total > 0 ? (
               <>
-                <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-zinc-100">
+                <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-[#272B33]">
                   <div
-                    className="h-full rounded-full bg-green-500"
+                    className="h-full rounded-full bg-emerald-500"
                     style={{
                       width: `${studentProgress.derived.percent}%`,
                     }}
                   />
                 </div>
-                <p className="mt-2 text-sm text-zinc-600">
+                <p className="mt-2 text-sm text-[#A1A1AA]">
                   {studentProgress.derived.completed} of{" "}
                   {studentProgress.derived.total} lessons completed
                 </p>
                 {studentProgress.nextAction?.kind === "lesson" && (
                   <Link
                     href={`/dashboard/courses/${course.course_id}/lessons/${studentProgress.nextAction.lessonId}`}
-                    className="mt-3 inline-block rounded-md bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-zinc-700"
+                    className="mt-3 inline-block rounded-md bg-[#6366F1] px-3 py-1.5 text-xs font-medium text-[#F4F4F5] transition-colors hover:bg-[#4F46E5]"
                   >
                     {studentProgress.nextAction.status === "in_progress"
                       ? "Continue lesson →"
@@ -1043,19 +1043,19 @@ export default async function CourseDetailPage({
                 {studentProgress.nextAction?.kind === "quiz" && (
                   <Link
                     href={`/dashboard/courses/${course.course_id}/quizzes/${studentProgress.nextAction.quizId}`}
-                    className="mt-3 inline-block rounded-md bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-zinc-700"
+                    className="mt-3 inline-block rounded-md bg-[#6366F1] px-3 py-1.5 text-xs font-medium text-[#F4F4F5] transition-colors hover:bg-[#4F46E5]"
                   >
                     Take quiz → {studentProgress.nextAction.quizTitle}
                   </Link>
                 )}
                 {studentProgress.nextAction?.kind === "completed" && (
-                  <p className="mt-1 text-sm font-medium text-green-700">
+                  <p className="mt-1 text-sm font-medium text-emerald-500">
                     ✓ Course completed
                   </p>
                 )}
               </>
             ) : (
-              <p className="mt-1 text-sm text-zinc-500">
+              <p className="mt-1 text-sm text-[#A1A1AA]">
                 No lessons available yet.
               </p>
             )}
@@ -1063,9 +1063,9 @@ export default async function CourseDetailPage({
         )}
 
         {isStudent && studentReadiness && (
-          <div className="mt-4 rounded-md border border-zinc-200 px-4 py-3">
+          <div className="mt-4 rounded-md border border-[#272B33] px-4 py-3">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <h2 className="text-sm font-semibold text-zinc-900">
+              <h2 className="text-sm font-semibold text-[#F4F4F5]">
                 Learning readiness
               </h2>
               <span
@@ -1074,10 +1074,10 @@ export default async function CourseDetailPage({
                 {studentReadiness.label}
               </span>
             </div>
-            <p className="mt-1 text-sm text-zinc-600">
+            <p className="mt-1 text-sm text-[#A1A1AA]">
               {studentReadiness.message}
             </p>
-            <div className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-1 text-xs text-zinc-500">
+            <div className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-1 text-xs text-[#A1A1AA]">
               <span>
                 {studentReadiness.lessonsCompleted} of{" "}
                 {studentReadiness.totalPublishedLessons} lessons completed ·{" "}
@@ -1098,7 +1098,7 @@ export default async function CourseDetailPage({
                     key={quiz.quiz_id}
                     className="flex flex-wrap items-center justify-between gap-2 text-xs"
                   >
-                    <span className="text-zinc-600">
+                    <span className="text-[#A1A1AA]">
                       {quiz.title}
                       {quiz.bestPercent !== null
                         ? ` · best ${quiz.bestPercent}%`
@@ -1126,7 +1126,7 @@ export default async function CourseDetailPage({
                 return href && label ? (
                   <Link
                     href={href}
-                    className="mt-3 inline-block rounded-md bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-zinc-700"
+                    className="mt-3 inline-block rounded-md bg-[#6366F1] px-3 py-1.5 text-xs font-medium text-[#F4F4F5] transition-colors hover:bg-[#4F46E5]"
                   >
                     {label} →
                   </Link>
@@ -1135,9 +1135,9 @@ export default async function CourseDetailPage({
           </div>
         )}
 
-        <div className="mt-4 rounded-md border border-zinc-200 px-4 py-3">
+        <div className="mt-4 rounded-md border border-[#272B33] px-4 py-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-zinc-900">
+            <h2 className="text-sm font-semibold text-[#F4F4F5]">
               Course content
             </h2>
             {canWriteCourse && (
@@ -1145,21 +1145,21 @@ export default async function CourseDetailPage({
             )}
           </div>
           {content.length === 0 ? (
-            <p className="mt-1 text-sm text-zinc-500">
+            <p className="mt-1 text-sm text-[#A1A1AA]">
               {isStudent
                 ? "No published content yet."
                 : "No modules yet. Add a module to start building the course."}
             </p>
           ) : (
-            <ul className="mt-2 divide-y divide-zinc-100">
+            <ul className="mt-2 divide-y divide-[#272B33]">
               {content.map((module) => (
                 <li key={module.module_id} className="py-3">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-sm font-medium text-zinc-900">
+                      <span className="text-sm font-medium text-[#F4F4F5]">
                         {module.position}. {module.title}
                       </span>
-                      <span className="text-xs text-zinc-400">
+                      <span className="text-xs text-[#71717A]">
                         {module.lessons.length}{" "}
                         {module.lessons.length === 1 ? "lesson" : "lessons"}
                       </span>
@@ -1185,7 +1185,7 @@ export default async function CourseDetailPage({
                       {module.lessons.map((lesson) => (
                         <li
                           key={lesson.lesson_id}
-                          className="flex flex-wrap items-center justify-between gap-2 rounded-md px-2 py-1.5 hover:bg-zinc-50"
+                          className="flex flex-wrap items-center justify-between gap-2 rounded-md px-2 py-1.5 hover:bg-[#181B21]/50"
                         >
                           <div className="flex min-w-0 items-center gap-2">
                             {isStudent && studentProgress && (
@@ -1193,12 +1193,12 @@ export default async function CourseDetailPage({
                                 className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-medium ${
                                   studentProgress.map.get(lesson.lesson_id) ===
                                   "completed"
-                                    ? "bg-green-100 text-green-700"
+                                    ? "bg-emerald-500/10 text-emerald-500"
                                     : studentProgress.map.get(
                                           lesson.lesson_id
                                         ) === "in_progress"
-                                      ? "bg-zinc-200 text-zinc-700"
-                                      : "border border-zinc-300 text-zinc-400"
+                                      ? "bg-[#272B33] text-[#F4F4F5]"
+                                      : "border border-[#272B33] text-[#71717A]"
                                 }`}
                                 title={
                                   studentProgress.map.get(lesson.lesson_id) ===
@@ -1223,15 +1223,15 @@ export default async function CourseDetailPage({
                             )}
                             <Link
                               href={`/dashboard/courses/${course.course_id}/lessons/${lesson.lesson_id}`}
-                              className="truncate text-sm text-zinc-700 underline-offset-4 hover:text-zinc-900 hover:underline"
+                              className="truncate text-sm text-[#F4F4F5] underline-offset-4 hover:text-[#F4F4F5] hover:underline"
                             >
                               {lesson.position}. {lesson.title}
                             </Link>
                             <span
                               className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
                                 lesson.is_published
-                                  ? "bg-green-100 text-green-700"
-                                  : "bg-zinc-100 text-zinc-500"
+                                  ? "bg-emerald-500/10 text-emerald-500"
+                                  : "bg-[#272B33] text-[#A1A1AA]"
                               }`}
                             >
                               {lesson.is_published ? "published" : "draft"}
@@ -1277,19 +1277,19 @@ export default async function CourseDetailPage({
           )}
         </div>
 
-        <div className="mt-4 rounded-md border border-zinc-200 px-4 py-3">
+        <div className="mt-4 rounded-md border border-[#272B33] px-4 py-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-zinc-900">Quizzes</h2>
+            <h2 className="text-sm font-semibold text-[#F4F4F5]">Quizzes</h2>
             {canWriteCourse && <QuizForm courseId={course.course_id} />}
           </div>
           {quizzes.length === 0 ? (
-            <p className="mt-1 text-sm text-zinc-500">
+            <p className="mt-1 text-sm text-[#A1A1AA]">
               {isStudent
                 ? "No quizzes available yet."
                 : "No quizzes yet. Add a quiz to test your learners."}
             </p>
           ) : (
-            <ul className="mt-2 divide-y divide-zinc-100">
+            <ul className="mt-2 divide-y divide-[#272B33]">
               {quizzes.map((quiz) => {
                 const questionCount = quiz.quiz_questions?.[0]?.count ?? 0;
                 const attemptCount = quiz.quiz_attempts?.[0]?.count ?? 0;
@@ -1347,21 +1347,21 @@ export default async function CourseDetailPage({
                     <div className="flex min-w-0 items-center gap-2">
                       <Link
                         href={`/dashboard/courses/${course.course_id}/quizzes/${quiz.quiz_id}`}
-                        className="truncate text-sm text-zinc-700 underline-offset-4 hover:text-zinc-900 hover:underline"
+                        className="truncate text-sm text-[#F4F4F5] underline-offset-4 hover:text-[#F4F4F5] hover:underline"
                       >
                         {quiz.title}
                       </Link>
                       <span
                         className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
                           quiz.is_published
-                            ? "bg-green-100 text-green-700"
-                            : "bg-zinc-100 text-zinc-500"
+                            ? "bg-emerald-500/10 text-emerald-500"
+                            : "bg-[#272B33] text-[#A1A1AA]"
                         }`}
                       >
                         {quiz.is_published ? "published" : "draft"}
                       </span>
                     </div>
-                    <div className="flex shrink-0 items-center gap-3 text-xs text-zinc-400">
+                    <div className="flex shrink-0 items-center gap-3 text-xs text-[#71717A]">
                       <span>
                         {questionCount}{" "}
                         {questionCount === 1 ? "question" : "questions"}
@@ -1376,12 +1376,12 @@ export default async function CourseDetailPage({
                         <span
                           className={`inline-flex items-center gap-2 rounded-full px-2 py-0.5 text-xs font-medium ${
                             studentAttemptState.inProgress
-                              ? "bg-zinc-100 text-zinc-700"
+                              ? "bg-[#272B33] text-[#F4F4F5]"
                               : studentAttemptState.latest
                                 ? studentAttemptState.latest.passed
-                                  ? "bg-green-100 text-green-700"
-                                  : "bg-red-100 text-red-700"
-                                : "bg-zinc-50 text-zinc-400"
+                                  ? "bg-emerald-500/10 text-emerald-500"
+                                  : "bg-red-500/10 text-red-500"
+                                : "bg-[#181B21]/50 text-[#71717A]"
                           }`}
                         >
                           {studentAttemptState.inProgress
@@ -1405,12 +1405,12 @@ export default async function CourseDetailPage({
         </div>
 
         {isStudent ? (
-          <div className="mt-4 rounded-md border border-zinc-200 px-4 py-3">
-            <h2 className="text-sm font-semibold text-zinc-900">
+          <div className="mt-4 rounded-md border border-[#272B33] px-4 py-3">
+            <h2 className="text-sm font-semibold text-[#F4F4F5]">
               Your enrollment
             </h2>
             {ownEnrollment ? (
-              <div className="mt-2 flex items-center gap-2 text-sm text-zinc-600">
+              <div className="mt-2 flex items-center gap-2 text-sm text-[#A1A1AA]">
                 <span
                   className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${enrollmentBadgeClasses(ownEnrollment.status)}`}
                 >
@@ -1421,7 +1421,7 @@ export default async function CourseDetailPage({
                 </span>
               </div>
             ) : (
-              <p className="mt-1 text-sm text-zinc-500">
+              <p className="mt-1 text-sm text-[#A1A1AA]">
                 You are not enrolled in this course. Contact your organization
                 to request enrollment.
               </p>
@@ -1429,12 +1429,12 @@ export default async function CourseDetailPage({
           </div>
         ) : (
           <>
-            <div className="mt-4 rounded-md border border-zinc-200 px-4 py-3">
-              <h2 className="text-sm font-semibold text-zinc-900">
+            <div className="mt-4 rounded-md border border-[#272B33] px-4 py-3">
+              <h2 className="text-sm font-semibold text-[#F4F4F5]">
                 Enrollments
               </h2>
               {enrollments.length > 0 ? (
-                <ul className="mt-2 divide-y divide-zinc-100">
+                <ul className="mt-2 divide-y divide-[#272B33]">
                   {enrollments.slice(0, 100).map((enrollment) => (
                     <li
                       key={enrollment.enrollment_id}
@@ -1443,12 +1443,12 @@ export default async function CourseDetailPage({
                       <div className="text-sm">
                         <Link
                           href={`/dashboard/students/${enrollment.student_id}`}
-                          className="font-medium text-zinc-900 underline-offset-4 hover:underline"
+                          className="font-medium text-[#F4F4F5] underline-offset-4 hover:underline"
                         >
                           {enrollment.students?.first_name}{" "}
                           {enrollment.students?.last_name}
                         </Link>
-                        <p className="text-xs text-zinc-400">
+                        <p className="text-xs text-[#71717A]">
                           {enrollment.students?.email ?? ""}
                           {enrollment.students?.email ? " · " : ""}
                           Enrolled {formatDateTime(enrollment.created_at)}
@@ -1468,14 +1468,14 @@ export default async function CourseDetailPage({
                             return null;
                           }
                           return (
-                            <span className="text-xs text-zinc-400">
+                            <span className="text-xs text-[#71717A]">
                               {row.completedLessons}/{row.totalPublishedLessons}{" "}
                               lessons · {row.completionPercent}%
                             </span>
                           );
                         })()}
                         {enrollment.ended_at && (
-                          <span className="text-xs text-zinc-400">
+                          <span className="text-xs text-[#71717A]">
                             ended {formatDateTime(enrollment.ended_at)}
                           </span>
                         )}
@@ -1490,19 +1490,19 @@ export default async function CourseDetailPage({
                   ))}
                 </ul>
               ) : (
-                <p className="mt-1 text-sm text-zinc-500">
+                <p className="mt-1 text-sm text-[#A1A1AA]">
                   No students enrolled yet.
                 </p>
               )}
             </div>
 
             {canWriteEnrollment && (
-              <div className="mt-4 rounded-md border border-zinc-200 px-4 py-3">
-                <h2 className="text-sm font-semibold text-zinc-900">
+              <div className="mt-4 rounded-md border border-[#272B33] px-4 py-3">
+                <h2 className="text-sm font-semibold text-[#F4F4F5]">
                   Enroll a student
                 </h2>
                 {course.status === "archived" ? (
-                  <p className="mt-1 text-sm text-zinc-500">
+                  <p className="mt-1 text-sm text-[#A1A1AA]">
                     This course is archived and cannot be enrolled.
                   </p>
                 ) : (
@@ -1520,7 +1520,7 @@ export default async function CourseDetailPage({
 
         <Link
           href="/dashboard/courses"
-          className="mt-6 inline-block rounded-md px-3 py-2 text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900"
+          className="mt-6 inline-block rounded-md px-3 py-2 text-sm font-medium text-[#A1A1AA] transition-colors hover:text-[#F4F4F5]"
         >
           Back to courses
         </Link>

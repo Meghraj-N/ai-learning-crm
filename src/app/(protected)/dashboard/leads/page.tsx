@@ -3,6 +3,11 @@ import { requireStaffContext } from "@/lib/crm";
 import { LEAD_STATUSES, type LeadStatus } from "@/types/crm";
 import AccessDenied from "../access-denied";
 import { statusBadgeClasses } from "./status-badge";
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Search, Plus, Filter, Users, X } from "lucide-react";
 
 const PAGE_SIZE = 20;
 
@@ -120,43 +125,41 @@ export default async function LeadsPage({
   const hasFilters = Boolean(q || status || assigned);
 
   return (
-    <div className="flex flex-1 justify-center px-4 py-8">
-      <div className="w-full max-w-5xl">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
-              Leads
-            </h1>
-            <p className="mt-1 text-sm text-zinc-500">
-              Track prospects and follow-ups in your organization.
-            </p>
-          </div>
-          <Link
-            href="/dashboard/leads/new"
-            className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700"
-          >
+    <div className="flex flex-1 flex-col pb-12 w-full animate-in fade-in duration-500 max-w-7xl mx-auto">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+          <h1 className="text-3xl font-semibold tracking-tight text-[#F4F4F5]">
+            Leads
+          </h1>
+          <p className="mt-2 text-sm text-[#A1A1AA]">
+            Track prospects and follow-ups in your organization.
+          </p>
+        </div>
+        <Button asChild className="shrink-0 bg-[#F4F4F5] text-[#09090B] hover:bg-[#E4E4E7]">
+          <Link href="/dashboard/leads/new">
+            <Plus className="w-4 h-4 mr-2" />
             New lead
           </Link>
-        </div>
+        </Button>
+      </div>
 
-        <form method="get" className="mt-6 flex flex-wrap items-end gap-3">
-          <div className="flex-1 basis-56">
-            <label htmlFor="q" className="sr-only">
-              Search
-            </label>
+      <div className="bg-[#111318] border border-[#272B33] rounded-xl p-4 mb-8 flex flex-wrap items-center gap-4">
+        <form method="get" className="flex flex-wrap items-center gap-3 w-full">
+          <div className="relative flex-1 min-w-[240px]">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#71717A]" />
             <input
               id="q"
               name="q"
               type="search"
               defaultValue={q}
               placeholder="Search name, email, phone…"
-              className="block w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500"
+              className="block w-full rounded-md border border-[#272B33] bg-[#09090B] pl-10 pr-3 py-2 text-sm text-[#F4F4F5] placeholder:text-[#71717A] focus:border-[#6366F1] focus:ring-1 focus:ring-[#6366F1] outline-none transition-all"
             />
           </div>
           <select
             name="status"
             defaultValue={status ?? ""}
-            className="rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500"
+            className="rounded-md border border-[#272B33] bg-[#09090B] px-3 py-2 text-sm text-[#F4F4F5] focus:border-[#6366F1] focus:ring-1 focus:ring-[#6366F1] outline-none transition-all"
           >
             <option value="">All statuses</option>
             {LEAD_STATUSES.map((value) => (
@@ -168,7 +171,7 @@ export default async function LeadsPage({
           <select
             name="assigned"
             defaultValue={assigned}
-            className="rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500"
+            className="rounded-md border border-[#272B33] bg-[#09090B] px-3 py-2 text-sm text-[#F4F4F5] focus:border-[#6366F1] focus:ring-1 focus:ring-[#6366F1] outline-none transition-all"
           >
             <option value="">All assignments</option>
             <option value="unassigned">Unassigned</option>
@@ -178,155 +181,146 @@ export default async function LeadsPage({
               </option>
             ))}
           </select>
-          <button
-            type="submit"
-            className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100"
-          >
+          <Button type="submit" variant="secondary" size="sm">
+            <Filter className="w-4 h-4 mr-2" />
             Filter
-          </button>
+          </Button>
           {hasFilters && (
-            <Link
-              href="/dashboard/leads"
-              className="rounded-md px-3 py-2 text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900"
-            >
-              Clear
-            </Link>
+            <Button asChild variant="ghost" size="sm" className="text-[#A1A1AA] hover:text-[#F4F4F5]">
+              <Link href="/dashboard/leads">
+                <X className="w-4 h-4 mr-2" />
+                Clear
+              </Link>
+            </Button>
           )}
         </form>
+      </div>
 
-        {error ? (
-          <div className="mt-6 rounded-md border border-red-200 bg-red-50 px-4 py-3">
-            <p className="text-sm text-red-700">
-              Unable to load leads. Please try again.
-            </p>
+      {error ? (
+        <EmptyState
+          icon={Users}
+          title="Unable to load leads"
+          description="There was a problem loading the leads. Please try again."
+        />
+      ) : leads && leads.length > 0 ? (
+        <div className="flex flex-col gap-4">
+          <div className="rounded-xl border border-[#272B33] bg-[#111318] overflow-hidden">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Contact</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Assigned</TableHead>
+                  <TableHead>Last activity</TableHead>
+                  <TableHead>Created</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {leads.map((lead) => {
+                  const last = lastActivities.get(lead.lead_id);
+                  return (
+                    <TableRow key={lead.lead_id}>
+                      <TableCell>
+                        <Link
+                          href={`/dashboard/leads/${lead.lead_id}`}
+                          className="font-medium text-[#F4F4F5] hover:text-[#6366F1] transition-colors"
+                        >
+                          {lead.first_name} {lead.last_name}
+                        </Link>
+                        {lead.source && (
+                          <p className="text-xs text-[#A1A1AA] mt-0.5">{lead.source}</p>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-[#A1A1AA]">
+                        {lead.email && <p>{lead.email}</p>}
+                        {lead.phone && <p className="text-xs text-[#71717A] mt-0.5">{lead.phone}</p>}
+                        {!lead.email && !lead.phone && <span className="text-[#71717A]">—</span>}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline" className={statusBadgeClasses(lead.status)}>
+                          {lead.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-[#A1A1AA]">
+                        {lead.assigned_to
+                          ? memberMap.get(lead.assigned_to) ?? "—"
+                          : "—"}
+                      </TableCell>
+                      <TableCell className="text-xs text-[#A1A1AA]">
+                        {last ? (
+                          <>
+                            <span className="capitalize text-[#E4E4E7] font-medium">{last.activity_type}</span>
+                            <span className="ml-1 text-[#71717A]">
+                              · {new Date(last.occurred_at).toLocaleDateString("en-GB")}
+                            </span>
+                          </>
+                        ) : (
+                          <span className="text-[#71717A]">—</span>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-xs text-[#A1A1AA]">
+                        {new Date(lead.created_at).toLocaleDateString("en-GB")}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
           </div>
-        ) : leads && leads.length > 0 ? (
-          <>
-            <div className="mt-6 overflow-x-auto rounded-md border border-zinc-200">
-              <table className="w-full text-left text-sm">
-                <thead className="border-b border-zinc-200 bg-zinc-50">
-                  <tr>
-                    <th className="px-4 py-3 font-medium text-zinc-500">Name</th>
-                    <th className="px-4 py-3 font-medium text-zinc-500">Contact</th>
-                    <th className="px-4 py-3 font-medium text-zinc-500">Status</th>
-                    <th className="px-4 py-3 font-medium text-zinc-500">Assigned</th>
-                    <th className="px-4 py-3 font-medium text-zinc-500">Last activity</th>
-                    <th className="px-4 py-3 font-medium text-zinc-500">Created</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-200">
-                  {leads.map((lead) => {
-                    const last = lastActivities.get(lead.lead_id);
-                    return (
-                      <tr key={lead.lead_id} className="hover:bg-zinc-50">
-                        <td className="px-4 py-3">
-                          <Link
-                            href={`/dashboard/leads/${lead.lead_id}`}
-                            className="font-medium text-zinc-900 underline-offset-4 hover:underline"
-                          >
-                            {lead.first_name} {lead.last_name}
-                          </Link>
-                          {lead.source && (
-                            <p className="text-xs text-zinc-400">{lead.source}</p>
-                          )}
-                        </td>
-                        <td className="px-4 py-3 text-zinc-600">
-                          {lead.email && <p>{lead.email}</p>}
-                          {lead.phone && <p className="text-xs text-zinc-400">{lead.phone}</p>}
-                          {!lead.email && !lead.phone && <span className="text-zinc-400">—</span>}
-                        </td>
-                        <td className="px-4 py-3">
-                          <span
-                            className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${statusBadgeClasses(lead.status)}`}
-                          >
-                            {lead.status}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 text-zinc-600">
-                          {lead.assigned_to
-                            ? memberMap.get(lead.assigned_to) ?? "—"
-                            : "—"}
-                        </td>
-                        <td className="px-4 py-3 text-xs text-zinc-500">
-                          {last ? (
-                            <>
-                              <span className="capitalize">{last.activity_type}</span>
-                              <span className="ml-1 text-zinc-400">
-                                · {new Date(last.occurred_at).toLocaleDateString("en-GB")}
-                              </span>
-                            </>
-                          ) : (
-                            <span className="text-zinc-400">—</span>
-                          )}
-                        </td>
-                        <td className="px-4 py-3 text-xs text-zinc-500">
-                          {new Date(lead.created_at).toLocaleDateString("en-GB")}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
 
-            <div className="mt-4 flex items-center justify-between text-sm text-zinc-500">
-              <p>
-                {totalCount} {totalCount === 1 ? "lead" : "leads"}
-                {hasFilters ? " (filtered)" : ""}
-              </p>
-              {totalPages > 1 && (
-                <nav className="flex items-center gap-2">
-                  <Link
-                    href={filterHref({ page: String(Math.max(1, page - 1)) })}
-                    aria-disabled={page <= 1}
-                    className={`rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium transition-colors ${
-                      page <= 1
-                        ? "pointer-events-none opacity-40"
-                        : "text-zinc-700 hover:bg-zinc-100"
-                    }`}
-                  >
+          <div className="flex items-center justify-between text-sm text-[#A1A1AA] px-1">
+            <p>
+              Showing {totalCount} {totalCount === 1 ? "lead" : "leads"}
+              {hasFilters ? " (filtered)" : ""}
+            </p>
+            {totalPages > 1 && (
+              <nav className="flex items-center gap-2">
+                <Button 
+                  asChild 
+                  variant="outline" 
+                  size="sm"
+                  className={page <= 1 ? "pointer-events-none opacity-50" : ""}
+                >
+                  <Link href={filterHref({ page: String(Math.max(1, page - 1)) })}>
                     Previous
                   </Link>
-                  <span>
-                    Page {page} of {totalPages}
-                  </span>
-                  <Link
-                    href={filterHref({ page: String(Math.min(totalPages, page + 1)) })}
-                    aria-disabled={page >= totalPages}
-                    className={`rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium transition-colors ${
-                      page >= totalPages
-                        ? "pointer-events-none opacity-40"
-                        : "text-zinc-700 hover:bg-zinc-100"
-                    }`}
-                  >
+                </Button>
+                <span className="px-2 font-medium text-[#F4F4F5]">
+                  Page {page} of {totalPages}
+                </span>
+                <Button 
+                  asChild 
+                  variant="outline" 
+                  size="sm"
+                  className={page >= totalPages ? "pointer-events-none opacity-50" : ""}
+                >
+                  <Link href={filterHref({ page: String(Math.min(totalPages, page + 1)) })}>
                     Next
                   </Link>
-                </nav>
-              )}
-            </div>
-          </>
-        ) : (
-          <div className="mt-6 rounded-md border border-zinc-200 bg-zinc-50 px-4 py-8 text-center">
-            <p className="text-sm font-medium text-zinc-700">
-              {hasFilters ? "No leads match your filters." : "No leads yet."}
-            </p>
-            <p className="mt-1 text-sm text-zinc-500">
-              {hasFilters ? (
-                <Link
-                  href="/dashboard/leads"
-                  className="font-medium text-zinc-700 underline-offset-4 hover:underline"
-                >
-                  Clear filters
-                </Link>
-              ) : (
-                <>
-                  Create your first lead to start tracking prospects.
-                </>
-              )}
-            </p>
+                </Button>
+              </nav>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        <EmptyState
+          icon={Users}
+          title={hasFilters ? "No leads match your filters" : "No leads yet"}
+          description={hasFilters ? "Try adjusting your search or filters to find what you're looking for." : "Create your first lead to start tracking prospects."}
+          action={
+            hasFilters ? (
+              <Button asChild variant="outline">
+                <Link href="/dashboard/leads">Clear filters</Link>
+              </Button>
+            ) : (
+              <Button asChild>
+                <Link href="/dashboard/leads/new">Create first lead</Link>
+              </Button>
+            )
+          }
+        />
+      )}
     </div>
   );
 }

@@ -4,6 +4,9 @@ import ProvisionForm from "./provision-form";
 import RoleForm from "./role-form";
 import ActiveToggle from "./active-toggle";
 import type { UserRole } from "@/lib/roles";
+import { Card } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 
 export type UserRow = {
   user_id: string;
@@ -25,67 +28,79 @@ export default function UsersTable({
   ownUserId: string;
 }) {
   return (
-    <div className="flex flex-1 justify-center px-4 py-12">
-      <div className="w-full max-w-5xl">
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
-          Users
-        </h1>
-        <p className="mt-1 text-sm text-zinc-500">
-          Manage users in your organization.
-        </p>
-        <p className="mt-1 text-sm text-zinc-400">Organization: {orgName}</p>
+    <div className="flex flex-1 flex-col pb-12 w-full animate-in fade-in duration-500 max-w-6xl mx-auto px-4 mt-8">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <div>
+          <h1 className="text-3xl font-semibold tracking-tight text-[#F4F4F5]">
+            Users
+          </h1>
+          <p className="mt-2 text-sm text-[#A1A1AA]">
+            Manage users in your organization.
+          </p>
+          <p className="mt-1 text-sm font-medium text-[#71717A]">
+            Organization: <span className="text-[#F4F4F5]">{orgName}</span>
+          </p>
+        </div>
+      </div>
 
-        <div className="mt-8 overflow-x-auto rounded-md border border-zinc-200">
-          <table className="w-full text-left text-sm">
-            <thead className="border-b border-zinc-200 bg-zinc-50">
-              <tr>
-                <th className="px-4 py-3 font-medium text-zinc-500">Name</th>
-                <th className="px-4 py-3 font-medium text-zinc-500">Email</th>
-                <th className="px-4 py-3 font-medium text-zinc-500">Role</th>
-                <th className="px-4 py-3 font-medium text-zinc-500">Status</th>
-                <th className="px-4 py-3 font-medium text-zinc-500">Created</th>
-                <th className="px-4 py-3 font-medium text-zinc-500">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-200">
+      <Card className="bg-[#111318] border-[#272B33]">
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader className="bg-[#181B21]/50 border-b border-[#272B33]">
+              <TableRow className="hover:bg-transparent border-transparent">
+                <TableHead className="text-[#A1A1AA] font-medium h-12">Name</TableHead>
+                <TableHead className="text-[#A1A1AA] font-medium h-12">Email</TableHead>
+                <TableHead className="text-[#A1A1AA] font-medium h-12">Role</TableHead>
+                <TableHead className="text-[#A1A1AA] font-medium h-12">Status</TableHead>
+                <TableHead className="text-[#A1A1AA] font-medium h-12">Created</TableHead>
+                <TableHead className="text-[#A1A1AA] font-medium h-12">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {users.map((user) => {
                 const isSelf = user.user_id === ownUserId;
                 return (
-                  <tr key={user.user_id}>
-                    <td className="px-4 py-3 font-medium text-zinc-900">
+                  <TableRow key={user.user_id} className="border-[#272B33] hover:bg-[#181B21]/50 group transition-colors">
+                    <TableCell className="py-4 font-medium text-[#F4F4F5]">
                       {user.full_name}
-                    </td>
-                    <td className="px-4 py-3 text-zinc-600">{user.email}</td>
-                    <td className="px-4 py-3 capitalize text-zinc-900">
-                      {user.role ?? "Unprovisioned"}
-                    </td>
-                    <td className="px-4 py-3">
-                      <span
-                        className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
-                          user.is_active
-                            ? "bg-green-100 text-green-700"
-                            : "bg-zinc-100 text-zinc-500"
-                        }`}
-                      >
-                        {user.is_active ? "Active" : "Inactive"}
+                    </TableCell>
+                    <TableCell className="py-4 text-[#A1A1AA]">{user.email}</TableCell>
+                    <TableCell className="py-4">
+                      <span className="capitalize text-[#F4F4F5] font-medium">
+                        {user.role ?? "Unprovisioned"}
                       </span>
-                    </td>
-                    <td className="px-4 py-3 text-zinc-600">
-                      {user.created_at.slice(0, 10)}
-                    </td>
-                    <td className="px-4 py-3">
+                    </TableCell>
+                    <TableCell className="py-4">
+                      {user.is_active ? (
+                        <Badge variant="outline" className="bg-emerald-500/10 text-emerald-500 border-emerald-500/20">
+                          Active
+                        </Badge>
+                      ) : (
+                        <Badge variant="outline" className="bg-zinc-500/10 text-zinc-500 border-zinc-500/20">
+                          Inactive
+                        </Badge>
+                      )}
+                    </TableCell>
+                    <TableCell className="py-4 text-sm text-[#71717A]">
+                      {new Date(user.created_at).toLocaleDateString("en-GB", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric"
+                      })}
+                    </TableCell>
+                    <TableCell className="py-4">
                       {isSelf ? (
-                        <span className="text-xs text-zinc-400">
+                        <span className="text-xs font-medium text-[#71717A] bg-[#272B33]/50 px-2.5 py-1 rounded-md">
                           Your account
                         </span>
                       ) : user.role === "admin" ? (
-                        <span className="text-xs text-zinc-400">
+                        <span className="text-xs font-medium text-[#71717A] bg-[#272B33]/50 px-2.5 py-1 rounded-md">
                           Protected
                         </span>
                       ) : user.role === null ? (
                         <ProvisionForm userId={user.user_id} />
                       ) : (
-                        <div className="flex flex-col items-start gap-1.5">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
                           <RoleForm
                             userId={user.user_id}
                             currentRole={user.role}
@@ -96,14 +111,14 @@ export default function UsersTable({
                           />
                         </div>
                       )}
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 );
               })}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }

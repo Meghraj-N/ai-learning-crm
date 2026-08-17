@@ -13,6 +13,13 @@ import {
 } from "@/types/crm";
 import AccessDenied from "../access-denied";
 import { StatusBadge } from "./status-badge";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Search, X, Plus, Filter, AlertCircle, Library } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 const PAGE_SIZE = 20;
 
@@ -153,99 +160,112 @@ export default async function CoursesPage({
   const hasFilters = Boolean(q || status);
 
   return (
-    <div className="flex flex-1 justify-center px-4 py-8">
-      <div className="w-full max-w-5xl">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
-              Courses
-            </h1>
-            <p className="mt-1 text-sm text-zinc-500">
-              {isStudent
-                ? "Courses available to you in your organization."
-                : "Manage courses and enrollments for your organization."}
-            </p>
-          </div>
-          {canWrite && (
-            <Link
-              href="/dashboard/courses/new"
-              className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700"
-            >
+    <div className="flex flex-1 flex-col pb-12 w-full animate-in fade-in duration-500 max-w-6xl mx-auto px-4 mt-8">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <div>
+          <h1 className="text-3xl font-semibold tracking-tight text-[#F4F4F5]">
+            Courses
+          </h1>
+          <p className="mt-2 text-sm text-[#A1A1AA]">
+            {isStudent
+              ? "Courses available to you in your organization."
+              : "Manage courses and enrollments for your organization."}
+          </p>
+        </div>
+        {canWrite && (
+          <Button asChild className="bg-[#6366F1] text-white hover:bg-[#4F46E5] shadow-md shadow-[#6366F1]/20">
+            <Link href="/dashboard/courses/new">
+              <Plus className="w-4 h-4 mr-2" />
               New course
             </Link>
-          )}
+          </Button>
+        )}
+      </div>
+
+      <Card className="bg-[#111318] border-[#272B33]">
+        <div className="p-4 border-b border-[#272B33] flex flex-col md:flex-row gap-4 items-start md:items-center justify-between bg-[#181B21]/50 rounded-t-xl">
+          <form method="get" className="flex flex-col sm:flex-row items-center gap-3 w-full md:max-w-xl">
+            <div className="relative flex-1 w-full">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A1A1AA]" />
+              <Input
+                id="q"
+                name="q"
+                type="search"
+                defaultValue={q}
+                placeholder="Search courses..."
+                className="pl-9 bg-[#111318] border-[#272B33] text-[#F4F4F5] placeholder:text-[#71717A] focus-visible:ring-[#6366F1] h-10 w-full"
+              />
+            </div>
+            
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              {!isStudent && (
+                <div className="relative w-full sm:w-[160px]">
+                  <select
+                    name="status"
+                    defaultValue={status ?? ""}
+                    className="w-full h-10 appearance-none rounded-md border border-[#272B33] bg-[#111318] px-3 py-2 text-sm text-[#F4F4F5] outline-none focus:border-[#6366F1] focus:ring-1 focus:ring-[#6366F1]"
+                  >
+                    <option value="">All statuses</option>
+                    {COURSE_STATUSES.map((value) => (
+                      <option key={value} value={value}>
+                        {value}
+                      </option>
+                    ))}
+                  </select>
+                  <Filter className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A1A1AA] pointer-events-none" />
+                </div>
+              )}
+              <Button type="submit" variant="secondary" className="bg-[#272B33] text-[#F4F4F5] hover:bg-[#323642] h-10 shrink-0">
+                Filter
+              </Button>
+              {hasFilters && (
+                <Button asChild variant="ghost" size="icon" className="text-[#A1A1AA] hover:text-[#F4F4F5] shrink-0 h-10 w-10">
+                  <Link href="/dashboard/courses">
+                    <X className="w-4 h-4" />
+                    <span className="sr-only">Clear</span>
+                  </Link>
+                </Button>
+              )}
+            </div>
+          </form>
+          
+          <div className="text-sm text-[#A1A1AA] whitespace-nowrap">
+            {totalCount} {totalCount === 1 ? "course" : "courses"} {hasFilters && "(filtered)"}
+          </div>
         </div>
 
-        <form method="get" className="mt-6 flex flex-wrap items-end gap-3">
-          <div className="flex-1 basis-56">
-            <label htmlFor="q" className="sr-only">
-              Search
-            </label>
-            <input
-              id="q"
-              name="q"
-              type="search"
-              defaultValue={q}
-              placeholder="Search courses…"
-              className="block w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500"
-            />
-          </div>
-          {!isStudent && (
-            <select
-              name="status"
-              defaultValue={status ?? ""}
-              className="rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500"
-            >
-              <option value="">All statuses</option>
-              {COURSE_STATUSES.map((value) => (
-                <option key={value} value={value}>
-                  {value}
-                </option>
-              ))}
-            </select>
-          )}
-          <button
-            type="submit"
-            className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100"
-          >
-            Filter
-          </button>
-          {hasFilters && (
-            <Link
-              href="/dashboard/courses"
-              className="rounded-md px-3 py-2 text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900"
-            >
-              Clear
-            </Link>
-          )}
-        </form>
-
         {error ? (
-          <div className="mt-6 rounded-md border border-red-200 bg-red-50 px-4 py-3">
-            <p className="text-sm text-red-700">
-              Unable to load courses. Please try again.
-            </p>
+          <div className="p-8">
+            <EmptyState
+              icon={AlertCircle}
+              title="Failed to load courses"
+              description="There was an error loading the course directory. Please try again."
+              action={
+                <Button asChild onClick={() => window.location.reload()}>
+                  <span>Try again</span>
+                </Button>
+              }
+            />
           </div>
         ) : rows && rows.length > 0 ? (
           <>
-            <div className="mt-6 overflow-x-auto rounded-md border border-zinc-200">
-              <table className="w-full text-left text-sm">
-                <thead className="border-b border-zinc-200 bg-zinc-50">
-                  <tr>
-                    <th className="px-4 py-3 font-medium text-zinc-500">Course</th>
-                    <th className="px-4 py-3 font-medium text-zinc-500">Status</th>
-                    <th className="px-4 py-3 font-medium text-zinc-500">Modules</th>
-                    <th className="px-4 py-3 font-medium text-zinc-500">Lessons</th>
-                    <th className="px-4 py-3 font-medium text-zinc-500">
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader className="bg-[#111318]">
+                  <TableRow className="border-[#272B33] hover:bg-transparent">
+                    <TableHead className="text-[#A1A1AA] font-medium h-12">Course</TableHead>
+                    <TableHead className="text-[#A1A1AA] font-medium h-12">Status</TableHead>
+                    <TableHead className="text-[#A1A1AA] font-medium h-12">Structure</TableHead>
+                    <TableHead className="text-[#A1A1AA] font-medium h-12">
                       {isStudent ? "Your enrollment" : "Enrollments"}
-                    </th>
+                    </TableHead>
                     {!isStudent && (
-                      <th className="px-4 py-3 font-medium text-zinc-500">Creator</th>
+                      <TableHead className="text-[#A1A1AA] font-medium h-12">Creator</TableHead>
                     )}
-                    <th className="px-4 py-3 font-medium text-zinc-500">Created</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-200">
+                    <TableHead className="text-[#A1A1AA] font-medium h-12">Created</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {rows.map((row) => {
                     const moduleCount = row.course_modules?.[0]?.count ?? 0;
                     const lessonCount = lessonCounts.get(row.course_id) ?? 0;
@@ -256,128 +276,137 @@ export default async function CoursesPage({
                       ? (row as StudentCourseRow).enrollments?.[0] ?? null
                       : null;
                     return (
-                      <tr key={row.course_id} className="hover:bg-zinc-50">
-                        <td className="px-4 py-3">
+                      <TableRow key={row.course_id} className="border-[#272B33] hover:bg-[#181B21]/50 group">
+                        <TableCell className="py-4">
                           <Link
                             href={`/dashboard/courses/${row.course_id}`}
-                            className="font-medium text-zinc-900 underline-offset-4 hover:underline"
+                            className="font-medium text-[#F4F4F5] hover:text-[#6366F1] transition-colors"
                           >
                             {row.title}
                           </Link>
                           {row.description && (
-                            <p className="max-w-md truncate text-xs text-zinc-400">
+                            <p className="max-w-md truncate text-xs text-[#A1A1AA] mt-1">
                               {row.description}
                             </p>
                           )}
-                        </td>
-                        <td className="px-4 py-3">
+                        </TableCell>
+                        <TableCell className="py-4">
                           <StatusBadge status={row.status} />
-                        </td>
-                        <td className="px-4 py-3 text-zinc-600">{moduleCount}</td>
-                        <td className="px-4 py-3 text-zinc-600">{lessonCount}</td>
-                        <td className="px-4 py-3">
+                        </TableCell>
+                        <TableCell className="py-4">
+                          <div className="text-sm text-[#F4F4F5]">{moduleCount} <span className="text-[#A1A1AA]">modules</span></div>
+                          <div className="text-xs text-[#71717A] mt-0.5">{lessonCount} lessons</div>
+                        </TableCell>
+                        <TableCell className="py-4">
                           {own ? (
-                            <span
-                              className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${enrollmentBadgeClass(own.status)}`}
-                            >
+                            <Badge variant="outline" className={enrollmentBadgeClass(own.status)}>
                               {own.status}
-                            </span>
+                            </Badge>
                           ) : (
-                            <span className="text-zinc-400">
+                            <span className="text-[#71717A] text-sm font-medium">
                               {isStudent
                                 ? "Not enrolled"
                                 : String(enrollmentCount ?? 0)}
                             </span>
                           )}
-                        </td>
+                        </TableCell>
                         {!isStudent && (
-                          <td className="px-4 py-3 text-zinc-600">
+                          <TableCell className="py-4 text-[#A1A1AA] text-sm">
                             {row.created_by
                               ? creatorMap.get(row.created_by) ?? "—"
                               : "—"}
-                          </td>
+                          </TableCell>
                         )}
-                        <td className="px-4 py-3 text-xs text-zinc-500">
-                          {new Date(row.created_at).toLocaleDateString("en-GB")}
-                        </td>
-                      </tr>
+                        <TableCell className="py-4 text-sm text-[#71717A]">
+                          {new Date(row.created_at).toLocaleDateString("en-GB", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric"
+                          })}
+                        </TableCell>
+                      </TableRow>
                     );
                   })}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
 
-            <div className="mt-4 flex items-center justify-between text-sm text-zinc-500">
-              <p>
-                {totalCount} {totalCount === 1 ? "course" : "courses"}
-                {hasFilters ? " (filtered)" : ""}
+            <div className="p-4 border-t border-[#272B33] flex items-center justify-between bg-[#111318] rounded-b-xl">
+              <p className="text-sm text-[#71717A]">
+                Showing page {page} of {totalPages}
               </p>
               {totalPages > 1 && (
-                <nav className="flex items-center gap-2">
-                  <Link
-                    href={filterHref({ page: String(Math.max(1, page - 1)) })}
-                    aria-disabled={page <= 1}
-                    className={`rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium transition-colors ${
-                      page <= 1
-                        ? "pointer-events-none opacity-40"
-                        : "text-zinc-700 hover:bg-zinc-100"
-                    }`}
+                <div className="flex gap-2">
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                    className={`border-[#272B33] bg-transparent text-[#F4F4F5] hover:bg-[#272B33] ${page <= 1 ? "pointer-events-none opacity-50" : ""}`}
                   >
-                    Previous
-                  </Link>
-                  <span>
-                    Page {page} of {totalPages}
-                  </span>
-                  <Link
-                    href={filterHref({ page: String(Math.min(totalPages, page + 1)) })}
-                    aria-disabled={page >= totalPages}
-                    className={`rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium transition-colors ${
-                      page >= totalPages
-                        ? "pointer-events-none opacity-40"
-                        : "text-zinc-700 hover:bg-zinc-100"
-                    }`}
+                    <Link href={filterHref({ page: String(Math.max(1, page - 1)) })} aria-disabled={page <= 1}>
+                      Previous
+                    </Link>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                    className={`border-[#272B33] bg-transparent text-[#F4F4F5] hover:bg-[#272B33] ${page >= totalPages ? "pointer-events-none opacity-50" : ""}`}
                   >
-                    Next
-                  </Link>
-                </nav>
+                    <Link href={filterHref({ page: String(Math.min(totalPages, page + 1)) })} aria-disabled={page >= totalPages}>
+                      Next
+                    </Link>
+                  </Button>
+                </div>
               )}
             </div>
+            
             {showCrmLink && (
-              <p className="mt-4 text-sm text-zinc-500">
-                <Link
-                  href="/dashboard/leads"
-                  className="font-medium text-zinc-700 underline-offset-4 hover:underline"
-                >
-                  Lead management
-                </Link>{" "}
-                stays in the Leads section.
-              </p>
+              <div className="mt-4 px-4 pb-4">
+                <p className="text-sm text-[#71717A]">
+                  <Link
+                    href="/dashboard/leads"
+                    className="font-medium text-[#A1A1AA] hover:text-[#F4F4F5] hover:underline"
+                  >
+                    Lead management
+                  </Link>{" "}
+                  stays in the Leads section.
+                </p>
+              </div>
             )}
           </>
         ) : (
-          <div className="mt-6 rounded-md border border-zinc-200 bg-zinc-50 px-4 py-8 text-center">
-            <p className="text-sm font-medium text-zinc-700">
-              {hasFilters ? "No courses match your filters." : "No courses yet."}
-            </p>
-            <p className="mt-1 text-sm text-zinc-500">
-              {isStudent
-                ? "Courses will appear here once they are published."
-                : hasFilters
-                  ? (
-                    <Link
-                      href="/dashboard/courses"
-                      className="font-medium text-zinc-700 underline-offset-4 hover:underline"
-                    >
-                      Clear filters
+          <div className="p-12">
+            <EmptyState
+              icon={Library}
+              title={hasFilters ? "No courses match your filters" : "No courses yet"}
+              description={
+                isStudent
+                  ? "Courses will appear here once they are published."
+                  : hasFilters
+                    ? "We couldn't find any courses matching your current filters."
+                    : canWrite
+                      ? "Create your first course to get started with the LMS."
+                      : "Courses will appear here once they are created."
+              }
+              action={
+                hasFilters ? (
+                  <Button asChild variant="outline" className="border-[#272B33] text-[#F4F4F5]">
+                    <Link href="/dashboard/courses">Clear filters</Link>
+                  </Button>
+                ) : canWrite ? (
+                  <Button asChild className="bg-[#6366F1] text-white hover:bg-[#4F46E5]">
+                    <Link href="/dashboard/courses/new">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Create first course
                     </Link>
-                  )
-                  : canWrite
-                    ? "Create your first course to get started."
-                    : "Courses will appear here once they are created."}
-            </p>
+                  </Button>
+                ) : undefined
+              }
+            />
           </div>
         )}
-      </div>
+      </Card>
     </div>
   );
 }
@@ -385,12 +414,12 @@ export default async function CoursesPage({
 function enrollmentBadgeClass(status: EnrollmentStatus): string {
   switch (status) {
     case "active":
-      return "bg-green-100 text-green-700";
+      return "bg-emerald-500/10 text-emerald-500 border-emerald-500/20";
     case "paused":
-      return "bg-amber-100 text-amber-700";
+      return "bg-amber-500/10 text-amber-500 border-amber-500/20";
     case "completed":
-      return "bg-blue-100 text-blue-700";
+      return "bg-blue-500/10 text-blue-500 border-blue-500/20";
     case "cancelled":
-      return "bg-zinc-100 text-zinc-500";
+      return "bg-zinc-500/10 text-zinc-500 border-zinc-500/20";
   }
 }

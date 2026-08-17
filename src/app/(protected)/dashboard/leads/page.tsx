@@ -276,9 +276,9 @@ export default async function LeadsPage({
             </p>
             {totalPages > 1 && (
               <nav className="flex items-center gap-2">
-                <Button 
-                  asChild 
-                  variant="outline" 
+                <Button
+                  asChild
+                  variant="outline"
                   size="sm"
                   className={page <= 1 ? "pointer-events-none opacity-50" : ""}
                 >
@@ -289,9 +289,9 @@ export default async function LeadsPage({
                 <span className="px-2 font-medium text-[#F4F4F5]">
                   Page {page} of {totalPages}
                 </span>
-                <Button 
-                  asChild 
-                  variant="outline" 
+                <Button
+                  asChild
+                  variant="outline"
                   size="sm"
                   className={page >= totalPages ? "pointer-events-none opacity-50" : ""}
                 >

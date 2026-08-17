@@ -196,7 +196,7 @@ export default async function CoursesPage({
                 className="pl-9 bg-[#111318] border-[#272B33] text-[#F4F4F5] placeholder:text-[#71717A] focus-visible:ring-[#6366F1] h-10 w-full"
               />
             </div>
-            
+
             <div className="flex items-center gap-2 w-full sm:w-auto">
               {!isStudent && (
                 <div className="relative w-full sm:w-[160px]">
@@ -228,7 +228,7 @@ export default async function CoursesPage({
               )}
             </div>
           </form>
-          
+
           <div className="text-sm text-[#A1A1AA] whitespace-nowrap">
             {totalCount} {totalCount === 1 ? "course" : "courses"} {hasFilters && "(filtered)"}
           </div>
@@ -360,7 +360,7 @@ export default async function CoursesPage({
                 </div>
               )}
             </div>
-            
+
             {showCrmLink && (
               <div className="mt-4 px-4 pb-4">
                 <p className="text-sm text-[#71717A]">

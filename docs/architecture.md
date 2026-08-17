@@ -14,7 +14,7 @@ Supabase provides:
 - **Authentication**: GoTrue for identity management.
 
 ## Authentication
-Authentication is managed via Supabase Auth. 
+Authentication is managed via Supabase Auth.
 - Login requests are sent to Supabase.
 - Session tokens are stored in secure cookies.
 - **Middleware / Layout Protection**: `src/middleware.ts` and protected layout components (`src/app/(protected)/layout.tsx`) intercept requests to ensure only authenticated users can access the dashboard and CRM/LMS features. Unauthenticated users are redirected to `/login`.

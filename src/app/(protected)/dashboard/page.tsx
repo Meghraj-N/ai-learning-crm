@@ -285,7 +285,7 @@ export default async function DashboardPage() {
 
       {isStudent && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
+
           {/* Main Content Area (2/3 width on desktop) */}
           <div className="lg:col-span-2 space-y-8">
             <section>
@@ -309,7 +309,7 @@ export default async function DashboardPage() {
                         : course.nextAction?.kind === "quiz"
                           ? `Take quiz: ${course.nextAction.quizTitle}`
                           : null;
-                    
+
                     return (
                       <Card key={course.enrollment_id} className="overflow-hidden hover:border-[#6366F1]/50 transition-colors">
                         <CardContent className="p-0">
@@ -338,7 +338,7 @@ export default async function DashboardPage() {
                             {course.total > 0 ? (
                               <div className="space-y-6">
                                 <ProgressBar percent={course.percent} tone="indigo" />
-                                
+
                                 <div className="flex items-center justify-between">
                                   {course.nextAction?.kind === "completed" ? (
                                     <Badge variant="success">Course completed</Badge>
@@ -359,7 +359,7 @@ export default async function DashboardPage() {
                               </p>
                             )}
                           </div>
-                          
+
                           {/* Readiness breakdown attached to course */}
                           <div className="bg-[#09090B] px-6 py-4 border-t border-[#272B33] flex items-center justify-between">
                             <div className="flex items-center gap-3">
@@ -419,7 +419,7 @@ export default async function DashboardPage() {
                     />
                   </MetricGrid>
                 ) : (
-                  <EmptyState 
+                  <EmptyState
                     icon={LineChart}
                     title="No analytics yet"
                     description="Learning analytics will appear once you start making progress in a course."

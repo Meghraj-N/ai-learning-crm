@@ -159,7 +159,7 @@ export default async function LeadDetailPage({
             Added on {formatDateTime(lead.created_at)}
           </p>
         </div>
-        
+
         {lead.student_id ? (
           <Button asChild className="shrink-0 bg-emerald-600 hover:bg-emerald-700 text-white border-transparent">
             <Link href={`/dashboard/students/${lead.student_id}`}>
@@ -238,7 +238,7 @@ export default async function LeadDetailPage({
                   </div>
                 )}
               </div>
-              
+
               <div className="pt-4 border-t border-[#272B33]">
                 <h3 className="text-sm font-medium text-[#F4F4F5] mb-1">Assignment</h3>
                 <p className="text-xs text-[#A1A1AA] mb-3">Assign to an active team member.</p>
@@ -252,7 +252,7 @@ export default async function LeadDetailPage({
               </div>
             </CardContent>
           </Card>
-          
+
           {lead.notes && (
             <Card className="bg-[#111318] border-[#272B33]">
               <CardHeader className="pb-3 border-b border-[#272B33]">
@@ -324,7 +324,7 @@ export default async function LeadDetailPage({
                               </Badge>
                             )}
                           </div>
-                          
+
                           <p className="text-xs text-[#71717A] mb-2 flex flex-wrap gap-2">
                             <span>Due {formatDateTime(followup.due_at)}</span>
                             {followup.assigned_to && (
@@ -340,14 +340,14 @@ export default async function LeadDetailPage({
                               </>
                             )}
                           </p>
-                          
+
                           {followup.notes && (
                             <div className="mt-2 text-sm text-[#A1A1AA] bg-[#181B21] rounded-md p-3 border border-[#272B33]/50">
                               {followup.notes}
                             </div>
                           )}
                         </div>
-                        
+
                         {followup.status === "pending" && (
                           <div className="shrink-0 mt-2 sm:mt-0">
                             <FollowupActions followupId={followup.followup_id} />
@@ -382,7 +382,7 @@ export default async function LeadDetailPage({
                     {activities.map((activity) => (
                       <div key={activity.activity_id} className="relative pl-6">
                         <span className="absolute -left-1.5 top-1.5 h-3 w-3 rounded-full bg-[#6366F1] ring-4 ring-[#111318]" />
-                        
+
                         <div className="flex flex-col gap-1">
                           <div className="flex flex-wrap items-baseline gap-2">
                             <p className="text-sm font-medium text-[#F4F4F5]">
@@ -392,13 +392,13 @@ export default async function LeadDetailPage({
                               {formatDateTime(activity.occurred_at)}
                             </span>
                           </div>
-                          
+
                           <p className="text-xs text-[#A1A1AA]">
                             by {activity.performed_by
                               ? memberNames.get(activity.performed_by) ?? "Unknown"
                               : "System"}
                           </p>
-                          
+
                           {activity.activity_type === "status_change" &&
                           activity.metadata &&
                           typeof activity.metadata.from === "string" &&

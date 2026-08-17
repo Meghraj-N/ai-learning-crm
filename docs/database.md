@@ -27,5 +27,5 @@ Phase 15 (Learner Readiness & Assessment Intelligence) aggregates data from `stu
 
 > [!WARNING]
 > **IMPORTANT: DEFERRED FUNCTIONALITY**
-> The current schema does NOT contain the `lesson <-> quiz` relationship required for true quiz gating. 
+> The current schema does NOT contain the `lesson <-> quiz` relationship required for true quiz gating.
 > Therefore, **PATH B** (enforcing specific quiz passing before unlocking the next sequential lesson) remains intentionally deferred until a database schema migration adds this relationship.

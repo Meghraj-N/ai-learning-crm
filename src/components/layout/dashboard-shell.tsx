@@ -12,7 +12,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
         <div className="lg:hidden flex h-16 w-full items-center justify-end px-4 border-b border-[#272B33] bg-[#09090B] pt-16">
            <LogoutButton />
         </div>
-        
+
         <main className="flex-1 p-6 lg:p-8 max-w-7xl mx-auto w-full pt-20 lg:pt-8">
           {children}
         </main>

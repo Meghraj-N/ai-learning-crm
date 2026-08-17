@@ -113,7 +113,7 @@ export default async function StudentsPage({
               </Button>
             )}
           </form>
-          
+
           <div className="text-sm text-[#A1A1AA] whitespace-nowrap">
             {totalCount} {totalCount === 1 ? "student" : "students"} {q && "(filtered)"}
           </div>

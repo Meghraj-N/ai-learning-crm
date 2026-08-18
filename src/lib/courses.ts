@@ -19,7 +19,7 @@ export type CourseLesson = {
   position: number;
   video_url: string | null;
   image_url: string | null;
-  resources: unknown[] | null;
+  resources: import("@/types/crm").LessonResource[] | null;
   is_published: boolean;
 };
 

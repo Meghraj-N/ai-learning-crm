@@ -21,6 +21,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { EmptyState } from "@/components/ui/empty-state";
 import { Search, X, Plus, Filter, AlertCircle, Library } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { RetryButton } from "@/components/ui/retry-button";
 
 const PAGE_SIZE = 20;
 
@@ -251,11 +252,7 @@ export default async function CoursesPage({
               icon={AlertCircle}
               title="Failed to load courses"
               description="There was an error loading the course directory. Please try again."
-              action={
-                <Button asChild onClick={() => window.location.reload()}>
-                  <span>Try again</span>
-                </Button>
-              }
+              action={<RetryButton />}
             />
           </div>
         ) : rows && rows.length > 0 ? (

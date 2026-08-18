@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Learning & CRM Hub
 
-## Getting Started
+## Overview
+This is an integrated AI-powered Learning Management System (LMS) and Customer Relationship Management (CRM) platform. It provides a seamless experience for managing students, courses, leads, and analytics, powered by an AI assistant and a robust robust architecture.
 
-First, run the development server:
+## Core Modules
+- Dashboard
+- CRM
+- Leads
+- Students
+- Courses
+- Lessons
+- Users
+- Analytics
+- AI Assistant
+- Settings
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Authentication
+Authentication is powered securely through Supabase Auth, supporting:
+- Email/password
+- Google OAuth
+- Protected routes using Next.js Middleware
+- Server-side session handling and validation
+- Secure OAuth callbacks
+
+## Course Management
+Comprehensive course authoring tools including:
+- Course management
+- Course thumbnails
+- Modules
+- Lessons
+- Lesson video
+- Lesson images
+- Lesson resources
+
+## Lesson Resource Authoring
+Phase 16 introduced advanced Lesson Resource Authoring capabilities:
+- **File Uploads**: Direct to secure Supabase storage.
+- **External URLs**: Support for external web resources.
+- **Resource Ordering**: Drag-and-drop or explicit ordering.
+- **URL Validation**: Rejects malformed or unsafe URL schemas (e.g. `javascript:`).
+- **Secure Storage Uploads**: Client-side secure upload directly to `course-media` bucket.
+- **Signed URLs**: Server-side resolution of temporary signed URLs for file resources.
+- **Student Resource Access**: Secure contextual access for enrolled students.
+
+## Security
+The application is strictly secured across all boundaries:
+- **Supabase RLS**: Row Level Security policies enforce contextual access.
+- **Server-Side Authorization**: Deep server-side context checking for student/instructor roles.
+- **Signed URLs**: Media objects are never exposed publicly; access requires an active, expiring token.
+- **Private Media Access**: Enforced via storage policies.
+- **Secure OAuth Flow**: Handled completely server-side.
+- **Server/Client Component Boundaries**: Strict separation to prevent accidental data leakage or serialization errors.
+- **Secret Handling**: Environment secrets are strictly verified and isolated.
+
+## Technology Stack
+- Next.js 15
+- React 19
+- TypeScript
+- Supabase
+- @supabase/ssr
+- Tailwind CSS
+- Vercel
+
+## Development
+To run this project locally:
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+3. Code quality and type checks:
+   ```bash
+   npm run lint
+   npm run build
+   ```
+
+## Environment Variables
+Required environment variables (`.env.local`):
+```
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment
+This project is configured for seamless deployment on the Vercel platform. Pushing to the `main` branch automatically triggers a production build. Environment variables must be configured within the Vercel project settings prior to deployment.

@@ -14,6 +14,7 @@ import { isLessonProgressStatus } from "@/types/crm";
 import AccessDenied from "../../../../access-denied";
 import { LessonProgressControls } from "../lesson-progress-controls";
 import { getCourseMediaUrl } from "@/lib/course-media";
+import { FileText, Link as LinkIcon, Download } from "lucide-react";
 
 function formatDateTime(iso: string): string {
   return new Intl.DateTimeFormat("en-GB", {
@@ -85,6 +86,15 @@ export default async function LessonViewPage({
     getCourseMediaUrl(supabase, lesson.video_url),
     getCourseMediaUrl(supabase, lesson.image_url),
   ]);
+
+  const resolvedResources = lesson.resources && Array.isArray(lesson.resources)
+    ? await Promise.all(
+        lesson.resources.map(async (res) => {
+          const resolvedUrl = await getCourseMediaUrl(supabase, res.url);
+          return { ...res, resolvedUrl };
+        })
+      )
+    : [];
 
   const orderedLessons = modules.flatMap((mod) =>
     mod.lessons.map((l) => ({
@@ -263,6 +273,38 @@ export default async function LessonViewPage({
                 className="w-full rounded-md border border-[var(--color-border)] object-cover"
               />
             )}
+          </div>
+        )}
+
+        {resolvedResources.length > 0 && (
+          <div className="mt-6 space-y-3">
+            <h2 className="text-sm font-semibold text-[var(--color-text-primary)]">Resources</h2>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {resolvedResources.map((res) => (
+                <a
+                  key={res.id}
+                  href={res.resolvedUrl || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] p-3 transition-colors hover:bg-[var(--color-surface-elevated)]"
+                >
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
+                    {res.type === "file" ? <FileText size={20} /> : <LinkIcon size={20} />}
+                  </div>
+                  <div className="flex flex-1 flex-col overflow-hidden">
+                    <span className="truncate text-sm font-medium text-[var(--color-text-primary)]">
+                      {res.name}
+                    </span>
+                    <span className="truncate text-xs text-[var(--color-text-muted)]">
+                      {res.type === "file" && res.size
+                        ? `${(res.size / (1024 * 1024)).toFixed(1)} MB • Download`
+                        : "External Link"}
+                    </span>
+                  </div>
+                  <Download size={16} className="text-[var(--color-text-muted)]" />
+                </a>
+              ))}
+            </div>
           </div>
         )}
 

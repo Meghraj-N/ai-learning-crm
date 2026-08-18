@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { RetryButton } from "@/components/ui/retry-button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Users, Search, X, GraduationCap, ArrowRight, UserCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -125,11 +126,7 @@ export default async function StudentsPage({
               icon={Users}
               title="Failed to load students"
               description="There was an error loading the student directory. Please try again."
-              action={
-                <Button asChild onClick={() => window.location.reload()}>
-                  <span>Try again</span>
-                </Button>
-              }
+              action={<RetryButton />}
             />
           </div>
         ) : students && students.length > 0 ? (

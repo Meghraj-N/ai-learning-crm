@@ -134,6 +134,15 @@ export type CourseModule = {
   updated_at: string;
 };
 
+export type LessonResource = {
+  id: string;
+  name: string;
+  type: "file" | "url";
+  url: string;
+  size?: number;
+  mime_type?: string;
+};
+
 export type Lesson = {
   lesson_id: string;
   organization_id: string;
@@ -142,7 +151,7 @@ export type Lesson = {
   content: string;
   video_url: string | null;
   image_url: string | null;
-  resources: unknown[] | null;
+  resources: LessonResource[] | null;
   position: number;
   is_published: boolean;
   created_at: string;

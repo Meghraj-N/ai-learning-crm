@@ -4,6 +4,8 @@ import { useActionState, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createLesson, updateLesson, type ActionState } from "./actions";
 import { MediaUploader } from "@/components/ui/media-uploader";
+import { ResourceManager } from "@/components/ui/resource-manager";
+import type { LessonResource } from "@/types/crm";
 
 const TITLE_MAX = 200;
 const CONTENT_MAX = 50000;
@@ -17,6 +19,7 @@ export function LessonForm({
   initialVideoUrl,
   initialImageUrl,
   initialPublished,
+  initialResources,
   organizationId,
 }: {
   courseId: string;
@@ -27,6 +30,7 @@ export function LessonForm({
   initialVideoUrl?: string | null;
   initialImageUrl?: string | null;
   initialPublished?: boolean;
+  initialResources?: LessonResource[] | null;
   organizationId: string;
 }) {
   const router = useRouter();
@@ -130,6 +134,15 @@ export function LessonForm({
             }}
           />
         </div>
+      </div>
+
+      <div className="space-y-1 mt-4">
+        <label className="text-xs font-medium text-[var(--color-text-primary)]">Lesson Resources (Downloads & Links)</label>
+        <ResourceManager 
+          bucket="course-media"
+          folderPath={`org/${organizationId}/courses/${courseId}/lessons/${moduleId}/resources`}
+          initialResources={initialResources}
+        />
       </div>
 
       {isEdit && (

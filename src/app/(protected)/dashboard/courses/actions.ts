@@ -603,6 +603,20 @@ export async function createLesson(
   const content = String(formData.get("content") ?? "");
   const video_url = cleanField(formData.get("video_url"));
   const image_url = cleanField(formData.get("image_url"));
+  const resourcesRaw = formData.get("resources");
+  let resourcesJson = null;
+
+  try {
+    if (resourcesRaw && typeof resourcesRaw === "string") {
+      const parsed = JSON.parse(resourcesRaw);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        resourcesJson = parsed;
+      }
+    }
+  } catch (err) {
+    console.error("Failed to parse resources JSON", err);
+    return { ok: false, error: "Invalid resources formatting." };
+  }
 
   if (!courseId || !moduleId) {
     return { ok: false, error: "Missing module." };
@@ -647,6 +661,7 @@ export async function createLesson(
     content,
     video_url: video_url || null,
     image_url: image_url || null,
+    resources: resourcesJson,
     position,
     is_published: false,
   });
@@ -673,6 +688,20 @@ export async function updateLesson(
   const content = String(formData.get("content") ?? "");
   const video_url = cleanField(formData.get("video_url"));
   const image_url = cleanField(formData.get("image_url"));
+  const resourcesRaw = formData.get("resources");
+  let resourcesJson = null;
+
+  try {
+    if (resourcesRaw && typeof resourcesRaw === "string") {
+      const parsed = JSON.parse(resourcesRaw);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        resourcesJson = parsed;
+      }
+    }
+  } catch (err) {
+    console.error("Failed to parse resources JSON", err);
+    return { ok: false, error: "Invalid resources formatting." };
+  }
   const publishedValue = formData.get("is_published");
   const isPublished = publishedValue === "on";
 
@@ -720,6 +749,7 @@ export async function updateLesson(
       content, 
       video_url: video_url || null, 
       image_url: image_url || null, 
+      resources: resourcesJson,
       is_published: isPublished 
     })
     .eq("lesson_id", lessonId);

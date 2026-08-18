@@ -1280,6 +1280,7 @@ export default async function CourseDetailPage({
                                 initialVideoUrl={lesson.video_url}
                                 initialImageUrl={lesson.image_url}
                                 initialPublished={lesson.is_published}
+                                initialResources={lesson.resources}
                               />
                             </div>
                           )}

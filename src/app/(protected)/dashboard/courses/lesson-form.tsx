@@ -17,6 +17,7 @@ export function LessonForm({
   initialVideoUrl,
   initialImageUrl,
   initialPublished,
+  organizationId,
 }: {
   courseId: string;
   moduleId: string;
@@ -26,12 +27,15 @@ export function LessonForm({
   initialVideoUrl?: string | null;
   initialImageUrl?: string | null;
   initialPublished?: boolean;
+  organizationId: string;
 }) {
   const router = useRouter();
   const isEdit = Boolean(lessonId);
   const [open, setOpen] = useState(false);
   const [videoUrl, setVideoUrl] = useState<string | null>(initialVideoUrl ?? null);
   const [imageUrl, setImageUrl] = useState<string | null>(initialImageUrl ?? null);
+  const [videoPreviewUrl, setVideoPreviewUrl] = useState<string | null>(initialVideoUrl ?? null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(initialImageUrl ?? null);
   const [state, formAction, pending] = useActionState<ActionState, FormData>(
     isEdit ? updateLesson : createLesson,
     { ok: false, error: null }
@@ -92,26 +96,38 @@ export function LessonForm({
           <label className="text-xs font-medium text-[var(--color-text-primary)]">Lesson Video</label>
           <MediaUploader
             bucket="course-media"
-            folderPath={`courses/${courseId}/lessons/${moduleId}`}
+            folderPath={`org/${organizationId}/courses/${courseId}/lessons/${moduleId}/video`}
             accept="video/mp4, video/webm, video/quicktime"
             type="video"
             maxSizeMB={500}
-            existingUrl={videoUrl}
-            onUploadSuccess={(url) => setVideoUrl(url)}
-            onRemove={() => setVideoUrl(null)}
+            existingUrl={videoPreviewUrl}
+            onUploadSuccess={(path, previewUrl) => {
+              setVideoUrl(path);
+              setVideoPreviewUrl(previewUrl);
+            }}
+            onRemove={() => {
+              setVideoUrl(null);
+              setVideoPreviewUrl(null);
+            }}
           />
         </div>
         <div className="space-y-1">
           <label className="text-xs font-medium text-[var(--color-text-primary)]">Lesson Image / Banner</label>
           <MediaUploader
             bucket="course-media"
-            folderPath={`courses/${courseId}/lessons/${moduleId}`}
+            folderPath={`org/${organizationId}/courses/${courseId}/lessons/${moduleId}/image`}
             accept="image/jpeg, image/png, image/webp"
             type="image"
             maxSizeMB={10}
-            existingUrl={imageUrl}
-            onUploadSuccess={(url) => setImageUrl(url)}
-            onRemove={() => setImageUrl(null)}
+            existingUrl={imagePreviewUrl}
+            onUploadSuccess={(path, previewUrl) => {
+              setImageUrl(path);
+              setImagePreviewUrl(previewUrl);
+            }}
+            onRemove={() => {
+              setImageUrl(null);
+              setImagePreviewUrl(null);
+            }}
           />
         </div>
       </div>

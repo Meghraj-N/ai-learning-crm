@@ -13,6 +13,7 @@ import type { Lesson, LessonProgressStatus } from "@/types/crm";
 import { isLessonProgressStatus } from "@/types/crm";
 import AccessDenied from "../../../../access-denied";
 import { LessonProgressControls } from "../lesson-progress-controls";
+import { getCourseMediaUrl } from "@/lib/course-media";
 
 function formatDateTime(iso: string): string {
   return new Intl.DateTimeFormat("en-GB", {
@@ -44,7 +45,7 @@ export default async function LessonViewPage({
 
   const { data: lesson, error } = await supabase
     .from("lessons")
-    .select("lesson_id, organization_id, module_id, title, content, position, is_published, created_at, updated_at")
+    .select("lesson_id, organization_id, module_id, title, content, video_url, image_url, resources, position, is_published, created_at, updated_at")
     .eq("lesson_id", lessonId)
     .maybeSingle<Lesson>();
 
@@ -80,6 +81,10 @@ export default async function LessonViewPage({
   if (!course || !courseModule || courseModule.course_id !== course.course_id) {
     return <LessonNotFound courseId={courseId} />;
   }
+  const [videoUrl, imageUrl] = await Promise.all([
+    getCourseMediaUrl(supabase, lesson.video_url),
+    getCourseMediaUrl(supabase, lesson.image_url),
+  ]);
 
   const orderedLessons = modules.flatMap((mod) =>
     mod.lessons.map((l) => ({
@@ -238,6 +243,28 @@ export default async function LessonViewPage({
             <p className="text-sm text-[var(--color-text-muted)]">No content.</p>
           )}
         </div>
+
+        {(videoUrl || imageUrl) && (
+          <div className="mt-6 space-y-4">
+            {videoUrl && (
+              <video
+                controls
+                className="w-full rounded-md border border-[var(--color-border)] bg-black"
+                src={videoUrl}
+              >
+                Your browser does not support video playback.
+              </video>
+            )}
+            {imageUrl && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={imageUrl}
+                alt={`${lesson.title} supporting image`}
+                className="w-full rounded-md border border-[var(--color-border)] object-cover"
+              />
+            )}
+          </div>
+        )}
 
         {isStudent && enrollmentId && (
           <div className="mt-6 space-y-3">

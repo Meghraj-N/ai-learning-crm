@@ -6,6 +6,7 @@ import {
   isCrmRole,
 } from "@/lib/crm";
 import { getLessonCountsByCourse } from "@/lib/courses";
+import { getCourseMediaUrl } from "@/lib/course-media";
 import {
   COURSE_STATUSES,
   type CourseStatus,
@@ -140,6 +141,14 @@ export default async function CoursesPage({
   const creatorMap = new Map(
     (creatorRes.data ?? []).map((creator) => [creator.user_id, creator.full_name])
   );
+  const thumbnailUrls = new Map(
+    await Promise.all(
+      (rows ?? []).map(async (row) => [
+        row.course_id,
+        await getCourseMediaUrl(supabase, row.thumbnail_url),
+      ] as const)
+    )
+  );
 
   const totalCount = count ?? 0;
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
@@ -269,6 +278,7 @@ export default async function CoursesPage({
                 </TableHeader>
                 <TableBody>
                   {rows.map((row) => {
+                    const thumbnailUrl = thumbnailUrls.get(row.course_id);
                     const moduleCount = row.course_modules?.[0]?.count ?? 0;
                     const lessonCount = lessonCounts.get(row.course_id) ?? 0;
                     const enrollmentCount = isStudent
@@ -281,9 +291,10 @@ export default async function CoursesPage({
                       <TableRow key={row.course_id} className="border-[var(--color-border)] hover:bg-[var(--color-surface-elevated)]/50 group">
                         <TableCell className="py-4 min-w-[250px]">
                           <div className="flex items-center gap-4">
-                            {row.thumbnail_url ? (
+                            {thumbnailUrl ? (
                               <div className="w-16 h-12 rounded-md overflow-hidden bg-black/10 shrink-0 border border-[var(--color-border)]">
-                                <img src={row.thumbnail_url} alt={row.title} className="w-full h-full object-cover" />
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img src={thumbnailUrl} alt={row.title} className="w-full h-full object-cover" />
                               </div>
                             ) : (
                               <div className="w-16 h-12 rounded-md bg-[var(--color-surface-highest)] flex items-center justify-center shrink-0 border border-[var(--color-border)]">

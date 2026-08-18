@@ -3,6 +3,7 @@ import { requireCourseWriteContext } from "@/lib/crm";
 import type { Course } from "@/types/crm";
 import AccessDenied from "../../../access-denied";
 import { CourseForm } from "../../course-form";
+import { getCourseMediaUrl } from "@/lib/course-media";
 
 export default async function EditCoursePage({
   params,
@@ -45,6 +46,7 @@ export default async function EditCoursePage({
       </div>
     );
   }
+  const thumbnailPreviewUrl = await getCourseMediaUrl(ctx.supabase, course.thumbnail_url);
 
   return (
     <div className="flex flex-1 justify-center px-4 py-8">
@@ -65,9 +67,11 @@ export default async function EditCoursePage({
         </div>
         <CourseForm
           courseId={course.course_id}
+          organizationId={ctx.organizationId}
           initialTitle={course.title}
           initialDescription={course.description ?? ""}
           initialThumbnailUrl={course.thumbnail_url}
+          initialThumbnailPreviewUrl={thumbnailPreviewUrl}
           initialStatus={course.status}
         />
       </div>

@@ -3,14 +3,13 @@
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
-import { Loader2, UploadCloud, X, File as FileIcon, Image as ImageIcon, Video as VideoIcon } from "lucide-react";
-import Image from "next/image";
+import { Loader2, X, File as FileIcon, Image as ImageIcon, Video as VideoIcon } from "lucide-react";
 
 export interface MediaUploaderProps {
   bucket: string;
   folderPath: string; // e.g. 'courses/123/thumbnail'
   accept?: string;    // e.g. 'image/jpeg, image/png, image/webp'
-  onUploadSuccess: (url: string, fileDetails: { name: string; size: number; type: string }) => void;
+  onUploadSuccess: (path: string, previewUrl: string, fileDetails: { name: string; size: number; type: string }) => void;
   onUploadError?: (error: string) => void;
   existingUrl?: string | null;
   onRemove?: () => void;
@@ -65,12 +64,15 @@ export function MediaUploader({
         throw uploadError;
       }
 
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
+      const { data: signedUrl, error: signedUrlError } = await supabase.storage
         .from(bucket)
-        .getPublicUrl(filePath);
+        .createSignedUrl(data.path, 60 * 60);
 
-      onUploadSuccess(publicUrl, {
+      if (signedUrlError || !signedUrl?.signedUrl) {
+        throw signedUrlError ?? new Error("Unable to create a media preview");
+      }
+
+      onUploadSuccess(data.path, signedUrl.signedUrl, {
         name: file.name,
         size: file.size,
         type: file.type
@@ -99,6 +101,7 @@ export function MediaUploader({
         <div className="relative overflow-hidden rounded-md border border-[var(--color-border)] bg-[var(--color-surface-elevated)]">
           {type === "image" && (
             <div className="relative aspect-video w-full bg-black/5 flex items-center justify-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={existingUrl}
                 alt="Preview"

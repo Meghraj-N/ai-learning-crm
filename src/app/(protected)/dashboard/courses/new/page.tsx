@@ -28,7 +28,7 @@ export default async function NewCoursePage() {
             Back to courses
           </Link>
         </div>
-        <CourseForm />
+        <CourseForm organizationId={ctx.organizationId} />
       </div>
     </div>
   );

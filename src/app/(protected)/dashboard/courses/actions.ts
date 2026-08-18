@@ -4,6 +4,7 @@ import {
   requireCourseWriteContext,
   requireEnrollmentWriteContext,
 } from "@/lib/crm";
+import { isCourseMediaPath } from "@/lib/course-media";
 import {
   canTransitionEnrollment,
   isCourseStatus,
@@ -77,10 +78,12 @@ export async function createCourse(
       error: `Description must be at most ${DESCRIPTION_MAX} characters.`,
     };
   }
+  if (thumbnail_url) {
+    return { ok: false, error: "Upload a thumbnail after the course is created." };
+  }
   if (!isCourseStatus(status)) {
     return { ok: false, error: "Invalid status." };
   }
-
   const { data, error } = await ctx.supabase
     .from("courses")
     .insert({
@@ -139,6 +142,13 @@ export async function updateCourse(
   const course = await requireCourseForEdit(ctx, courseId);
   if ("error" in course) {
     return { ok: false, error: course.error };
+  }
+  if (
+    thumbnail_url &&
+    (!isCourseMediaPath(thumbnail_url) ||
+      !thumbnail_url.startsWith(`org/${ctx.organizationId}/courses/${courseId}/`))
+  ) {
+    return { ok: false, error: "Invalid course media reference." };
   }
 
   const { error } = await ctx.supabase
@@ -612,6 +622,16 @@ export async function createLesson(
       error: `Content must be at most ${LESSON_CONTENT_MAX} characters.`,
     };
   }
+  if (
+    [video_url, image_url].some(
+      (value) =>
+        Boolean(value) &&
+        (!isCourseMediaPath(value) ||
+          !value.startsWith(`org/${ctx.organizationId}/courses/${courseId}/lessons/${moduleId}/`))
+    )
+  ) {
+    return { ok: false, error: "Invalid lesson media reference." };
+  }
 
   const mod = await requireModuleInCourse(ctx, moduleId, courseId);
   if ("error" in mod) {
@@ -675,6 +695,22 @@ export async function updateLesson(
   const lesson = await requireLesson(ctx, lessonId);
   if ("error" in lesson) {
     return { ok: false, error: lesson.error };
+  }
+  const { data: module } = await ctx.supabase
+    .from("course_modules")
+    .select("course_id")
+    .eq("module_id", lesson.module_id)
+    .maybeSingle<{ course_id: string }>();
+  if (
+    !module ||
+    [video_url, image_url].some(
+      (value) =>
+        Boolean(value) &&
+        (!isCourseMediaPath(value) ||
+          !value.startsWith(`org/${ctx.organizationId}/courses/${module.course_id}/lessons/${lesson.module_id}/`))
+    )
+  ) {
+    return { ok: false, error: "Invalid lesson media reference." };
   }
 
   const { error } = await ctx.supabase

@@ -1,31 +1,9 @@
-# Database Architecture
+# Database
 
-## Overview
-The application relies on **Supabase** (PostgreSQL) for its data layer.
+Repository migrations define 17 application tables: `organizations`, `profiles`, `students`, `leads`, `lead_activities`, `followups`, `courses`, `course_modules`, `lessons`, `quizzes`, `quiz_questions`, `enrollments`, `lesson_progress`, `quiz_attempts`, `quiz_attempt_answers`, `ai_conversations`, and `ai_messages`.
 
-## Important Tables
-- **profiles**: Extended user information mapping to `auth.users`.
-- **leads**: CRM data tracking prospective students and their conversion status.
-- **courses**: LMS course metadata.
-- **lessons**: Individual modules associated with courses.
-- **quizzes**: Assessment entities.
-- **student_progress**: Tracks a student's completion of courses and lessons.
-- **quiz_attempts**: Records scores and completion status for assessments.
+The principal chains are `auth.users -> profiles`, `organizations ->` all organization-scoped records, `courses -> course_modules -> lessons`, `students <-> enrollments <-> courses`, and `quizzes -> quiz_questions / quiz_attempts -> quiz_attempt_answers`. `lesson_progress` is keyed by `(enrollment_id, lesson_id)`. Constraints, partial unique indexes, timestamps, and foreign keys are in `supabase/migrations/20260817024257_initial_schema.sql`.
 
-## Relationships
-- **users (auth)** 1:1 **profiles**
-- **courses** 1:M **lessons**
-- **courses** 1:M **quizzes**
-- **users** 1:M **student_progress** (via `profiles`)
-- **users** 1:M **quiz_attempts**
+RLS is enabled for every application table. `current_org_id`, `current_user_role`, and `has_role` derive authorization from the authenticated profile, not browser input. The provisioning migration permits null role/org for an unprovisioned identity and protects role, organization, and active-state changes against self-escalation.
 
-## Authentication Relationship
-User identity is handled by `auth.users` in Supabase GoTrue. The application uses triggers to automatically provision a matching row in the `profiles` table whenever a new user signs up.
-
-## Phase 15 Data Dependencies
-Phase 15 (Learner Readiness & Assessment Intelligence) aggregates data from `student_progress` and `quiz_attempts` to generate predictive KPIs.
-
-> [!WARNING]
-> **IMPORTANT: DEFERRED FUNCTIONALITY**
-> The current schema does NOT contain the `lesson <-> quiz` relationship required for true quiz gating.
-> Therefore, **PATH B** (enforcing specific quiz passing before unlocking the next sequential lesson) remains intentionally deferred until a database schema migration adds this relationship.
+The tracked schema does not prove the live production schema. Compare `supabase migration list` and the Supabase dashboard before applying any migration. There is no lesson-to-quiz relationship, so sequential quiz gating remains deferred.

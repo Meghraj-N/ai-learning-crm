@@ -142,7 +142,7 @@ export type Lesson = {
   content: string;
   video_url: string | null;
   image_url: string | null;
-  resources: any[] | null;
+  resources: unknown[] | null;
   position: number;
   is_published: boolean;
   created_at: string;

@@ -1,25 +1,7 @@
-# Deployment Architecture
+# Deployment
 
-## Platforms
-- **Frontend / Full-stack Hosting**: Vercel (Next.js Application)
-- **Backend / Database Hosting**: Supabase (PostgreSQL, GoTrue Auth)
-- **Source Control**: GitHub
+Deployment is intended to use GitHub, Vercel, and Supabase. This workspace does not expose their project metadata or production URL, so their live connection, branch, deployment status, and environment values are **not verified**.
 
-## Required Environment Variables
-The application requires the following environment variables to be configured in Vercel for production deployments:
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+Vercel needs `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. Add `SUPABASE_SERVICE_ROLE_KEY` only when server-side admin operations are intentionally enabled; never prefix it with `NEXT_PUBLIC_`. `.env.example` contains names only.
 
-> [!CAUTION]
-> **Security Rule**: NEVER commit actual secret values, `.env`, or `.env.local` to source control.
-
-## Deployment Flow
-1. Code is merged into the `main` branch on GitHub.
-2. Vercel automatically detects the push and triggers a build.
-3. Vercel executes `npm run lint` and `npm run build`.
-4. If successful, the build artifacts (Serverless functions and Edge assets) are deployed to the global CDN.
-5. The application seamlessly interfaces with the live Supabase instance.
-
-## Commands
-- **Production Build Command**: `npm run build`
-- **Lint Command**: `npm run lint`
+Before release, compare the checked-out commit with the production branch and Vercel deployment SHA, run `npm run lint`, `npm run build`, and `git diff --check`, then verify Supabase Auth redirect allow-lists for local and production origins. Test the production login, Google OAuth, password reset, logout, protected routes, CRM, LMS, and course media separately; a successful GitHub push alone is not deployment verification.

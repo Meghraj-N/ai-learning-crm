@@ -14,17 +14,24 @@ export function CourseForm({
   initialTitle,
   initialDescription,
   initialThumbnailUrl,
+  initialThumbnailPreviewUrl,
+  organizationId,
   initialStatus,
 }: {
   courseId?: string;
   initialTitle?: string;
   initialDescription?: string;
   initialThumbnailUrl?: string | null;
+  initialThumbnailPreviewUrl?: string | null;
+  organizationId: string;
   initialStatus?: CourseStatus;
 }) {
   const router = useRouter();
   const isEdit = Boolean(courseId);
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(initialThumbnailUrl ?? null);
+  const [thumbnailPreviewUrl, setThumbnailPreviewUrl] = useState<string | null>(
+    initialThumbnailPreviewUrl ?? initialThumbnailUrl ?? null
+  );
 
   const [state, formAction, pending] = useActionState(
     isEdit ? updateCourse : createCourse,
@@ -80,14 +87,26 @@ export function CourseForm({
         </label>
         <MediaUploader
           bucket="course-media"
-          folderPath={courseId ? `courses/${courseId}/thumbnails` : 'courses/temp/thumbnails'}
+          folderPath={`org/${organizationId}/courses/${courseId ?? "draft"}/thumbnails`}
           accept="image/jpeg, image/png, image/webp"
           type="image"
-          existingUrl={thumbnailUrl}
-          onUploadSuccess={(url) => setThumbnailUrl(url)}
-          onRemove={() => setThumbnailUrl(null)}
+          existingUrl={thumbnailPreviewUrl}
+          onUploadSuccess={(path, previewUrl) => {
+            setThumbnailUrl(path);
+            setThumbnailPreviewUrl(previewUrl);
+          }}
+          onRemove={() => {
+            setThumbnailUrl(null);
+            setThumbnailPreviewUrl(null);
+          }}
+          disabled={!courseId}
           maxSizeMB={5}
         />
+        {!courseId && (
+          <p className="mt-1 text-xs text-[var(--color-text-muted)]">
+            Save the course before uploading its thumbnail.
+          </p>
+        )}
         <input type="hidden" name="thumbnail_url" value={thumbnailUrl ?? ""} />
       </div>
 

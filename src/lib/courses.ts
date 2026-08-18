@@ -19,7 +19,7 @@ export type CourseLesson = {
   position: number;
   video_url: string | null;
   image_url: string | null;
-  resources: any[] | null;
+  resources: unknown[] | null;
   is_published: boolean;
 };
 

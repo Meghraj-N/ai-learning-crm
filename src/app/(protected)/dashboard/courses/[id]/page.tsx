@@ -62,6 +62,7 @@ import { LessonForm } from "../lesson-form";
 import { OrderControls } from "../order-controls";
 import { PublishToggle } from "../publish-toggle";
 import { QuizForm } from "./quizzes/quiz-form";
+import { getCourseMediaUrl } from "@/lib/course-media";
 
 type StaffEnrollmentRow = {
   enrollment_id: string;
@@ -138,6 +139,7 @@ export default async function CourseDetailPage({
     return <AccessDenied />;
   }
 
+  const organizationId = profile.organization_id;
   const isStudent = role === "student";
   const canWriteCourse = canManageCourses(role);
   const canWriteEnrollment = canManageEnrollments(role);
@@ -174,6 +176,7 @@ export default async function CourseDetailPage({
       </div>
     );
   }
+  const thumbnailUrl = await getCourseMediaUrl(supabase, course.thumbnail_url);
 
   const courseIds = [course.course_id];
   const [lessonCounts, publishedLessonCounts, creatorRes, studentsRes, content, quizzesRes] =
@@ -541,11 +544,11 @@ export default async function CourseDetailPage({
       <div className="flex flex-col gap-8">
         <div className="flex items-start justify-between gap-4">
           <div className="flex gap-4">
-            {course.thumbnail_url && (
+            {thumbnailUrl && (
               <div className="shrink-0">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={course.thumbnail_url}
+                  src={thumbnailUrl}
                   alt={course.title}
                   className="h-24 w-40 object-cover rounded-md border border-[var(--color-border)] shadow-sm"
                 />
@@ -1269,6 +1272,7 @@ export default async function CourseDetailPage({
                               />
                               <LessonForm
                                 courseId={course.course_id}
+                                organizationId={organizationId}
                                 moduleId={module.module_id}
                                 lessonId={lesson.lesson_id}
                                 initialTitle={lesson.title}
@@ -1287,6 +1291,7 @@ export default async function CourseDetailPage({
                     <div className="mt-2 pl-4">
                       <LessonForm
                         courseId={course.course_id}
+                        organizationId={organizationId}
                         moduleId={module.module_id}
                       />
                     </div>

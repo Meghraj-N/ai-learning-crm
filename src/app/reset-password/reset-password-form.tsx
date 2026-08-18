@@ -29,7 +29,7 @@ export default function ResetPasswordForm() {
           </CardDescription>
           <Link
             href="/login"
-            className="inline-flex h-10 items-center justify-center rounded-md bg-[var(--color-primary)] px-8 text-sm font-medium text-white shadow transition-colors hover:bg-[var(--color-primary)]/90"
+            className="inline-flex h-10 items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-primary)] px-8 text-sm font-medium text-[var(--color-primary-foreground)] shadow-sm transition-colors hover:bg-[var(--color-primary-hover)]"
           >
             Go to login
           </Link>
@@ -69,7 +69,7 @@ export default function ResetPasswordForm() {
                   placeholder="Enter new password"
                   required
                   disabled={isPending}
-                  className="bg-transparent border-[var(--color-border)] text-[var(--color-text-primary)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] pr-10 shadow-none"
+                  className="pr-10"
                 />
                 <button
                   type="button"
@@ -99,7 +99,6 @@ export default function ResetPasswordForm() {
                 placeholder="Confirm new password"
                 required
                 disabled={isPending}
-                className="bg-transparent border-[var(--color-border)] text-[var(--color-text-primary)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] shadow-none"
               />
             </div>
 
@@ -115,7 +114,7 @@ export default function ResetPasswordForm() {
             <Button
               type="submit"
               disabled={isPending}
-              className="w-full bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white font-medium"
+              className="w-full"
             >
               {isPending ? "Updating password..." : "Update password"}
             </Button>

@@ -3,15 +3,15 @@ import type { LeadStatus } from "@/types/crm";
 export function statusBadgeClasses(status: LeadStatus): string {
   switch (status) {
     case "new":
-      return "bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-[var(--color-primary)]/20";
+      return "bg-[var(--color-primary)]/10 text-[var(--color-text-primary)] border-[var(--color-primary)]/20 border";
     case "contacted":
-      return "bg-[var(--color-warning)]/10 text-[var(--color-warning)] border-[var(--color-warning)]/20";
+      return "bg-[var(--color-warning-bg)] text-[var(--color-warning)] border-[var(--color-warning-border)] border";
     case "qualified":
-      return "bg-[var(--color-accent-violet)]/10 text-[var(--color-accent-violet)] border-[var(--color-accent-violet)]/20";
+      return "bg-[var(--color-info-bg)] text-[var(--color-info)] border-[var(--color-info-border)] border";
     case "converted":
-      return "bg-[var(--color-success)]/10 text-[var(--color-success)] border-[var(--color-success)]/20";
+      return "bg-[var(--color-success-bg)] text-[var(--color-success)] border-[var(--color-success-border)] border";
     case "lost":
-      return "bg-[var(--color-surface-elevated)] text-[var(--color-text-muted)] border-[var(--color-border)]";
+      return "bg-[var(--color-surface-elevated)] text-[var(--color-text-muted)] border-[var(--color-border)] border";
   }
 }
 

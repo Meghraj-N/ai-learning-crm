@@ -74,11 +74,11 @@ export default function UsersTable({
                     </TableCell>
                     <TableCell className="py-4">
                       {user.is_active ? (
-                        <Badge variant="outline" className="bg-[var(--color-success)]/10 text-[var(--color-success)] border-[var(--color-success)]/20">
+                        <Badge variant="outline" className="bg-[var(--color-success-bg)] text-[var(--color-success)] border-[var(--color-success-border)]">
                           Active
                         </Badge>
                       ) : (
-                        <Badge variant="outline" className="bg-[var(--color-surface-elevated)]/10 text-[var(--color-text-secondary)] border-[var(--color-border)]">
+                        <Badge variant="outline" className="bg-[var(--color-surface-elevated)] text-[var(--color-text-secondary)] border-[var(--color-border)]">
                           Inactive
                         </Badge>
                       )}

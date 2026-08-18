@@ -135,7 +135,7 @@ export default async function LeadsPage({
             Track prospects and follow-ups in your organization.
           </p>
         </div>
-        <Button asChild className="shrink-0 bg-[var(--color-text-primary)] text-[var(--color-background)] hover:bg-[var(--color-text-secondary)]">
+        <Button asChild className="shrink-0 bg-[var(--color-primary)] text-[var(--color-primary-foreground)] hover:bg-[var(--color-primary-hover)]">
           <Link href="/dashboard/leads/new">
             <Plus className="w-4 h-4 mr-2" />
             New lead
@@ -153,34 +153,44 @@ export default async function LeadsPage({
               type="search"
               defaultValue={q}
               placeholder="Search name, email, phone…"
-              className="block w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-background)] pl-10 pr-3 py-2 text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] outline-none transition-all"
+              className="block w-full h-10 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] pl-10 pr-3 py-2 text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-border-active)] focus:ring-1 focus:ring-[var(--color-border-active)] outline-none transition-colors"
             />
           </div>
-          <select
-            name="status"
-            defaultValue={status ?? ""}
-            className="rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-background)] px-3 py-2 text-sm text-[var(--color-text-primary)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] outline-none transition-all"
-          >
-            <option value="">All statuses</option>
-            {LEAD_STATUSES.map((value) => (
-              <option key={value} value={value}>
-                {value}
-              </option>
-            ))}
-          </select>
-          <select
-            name="assigned"
-            defaultValue={assigned}
-            className="rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-background)] px-3 py-2 text-sm text-[var(--color-text-primary)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] outline-none transition-all"
-          >
-            <option value="">All assignments</option>
-            <option value="unassigned">Unassigned</option>
-            {activeMembers.map((member) => (
-              <option key={member.user_id} value={member.user_id}>
-                {member.full_name}
-              </option>
-            ))}
-          </select>
+          <div className="relative w-full sm:w-auto">
+            <select
+              name="status"
+              defaultValue={status ?? ""}
+              className="appearance-none block w-full h-10 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] pl-3 pr-8 py-2 text-sm text-[var(--color-text-primary)] focus:border-[var(--color-border-active)] focus:ring-1 focus:ring-[var(--color-border-active)] outline-none transition-colors"
+            >
+              <option value="">All statuses</option>
+              {LEAD_STATUSES.map((value) => (
+                <option key={value} value={value}>
+                  {value}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-[var(--color-text-muted)]">
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+          </div>
+          <div className="relative w-full sm:w-auto">
+            <select
+              name="assigned"
+              defaultValue={assigned}
+              className="appearance-none block w-full h-10 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] pl-3 pr-8 py-2 text-sm text-[var(--color-text-primary)] focus:border-[var(--color-border-active)] focus:ring-1 focus:ring-[var(--color-border-active)] outline-none transition-colors"
+            >
+              <option value="">All assignments</option>
+              <option value="unassigned">Unassigned</option>
+              {activeMembers.map((member) => (
+                <option key={member.user_id} value={member.user_id}>
+                  {member.full_name}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-[var(--color-text-muted)]">
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+          </div>
           <Button type="submit" variant="secondary" size="sm">
             <Filter className="w-4 h-4 mr-2" />
             Filter

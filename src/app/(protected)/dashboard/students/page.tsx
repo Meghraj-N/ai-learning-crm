@@ -3,7 +3,7 @@ import { requireStudentViewContext } from "@/lib/crm";
 import AccessDenied from "../access-denied";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { RetryButton } from "@/components/ui/retry-button";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -92,14 +92,14 @@ export default async function StudentsPage({
         <div className="p-4 border-b border-[var(--color-border)] flex flex-col sm:flex-row gap-4 items-center justify-between bg-[var(--color-surface-elevated)]/50 rounded-t-[var(--radius-xl)]">
           <form method="get" className="flex items-center gap-2 w-full sm:max-w-md">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-secondary)]" />
-              <Input
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)]" />
+              <input
                 id="q"
                 name="q"
                 type="search"
                 defaultValue={q}
                 placeholder="Search name, email, phone..."
-                className="pl-9 bg-[var(--color-background)] border-[var(--color-border)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus-visible:ring-[var(--color-primary)]"
+                className="block w-full h-10 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] pl-10 pr-3 py-2 text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-border-active)] focus:ring-1 focus:ring-[var(--color-border-active)] outline-none transition-colors"
               />
             </div>
             <Button type="submit" variant="secondary" className="bg-[var(--color-surface-highest)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-highest)]/80">

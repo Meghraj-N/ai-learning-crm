@@ -1,10 +1,12 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useState } from "react";
+import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
 import { createModule, updateModule, type ActionState } from "./actions";
 
 const TITLE_MAX = 200;
+const DESCRIPTION_MAX = 500;
 
 export function ModuleForm({
   courseId,
@@ -21,15 +23,19 @@ export function ModuleForm({
   const isEdit = Boolean(moduleId);
   const [open, setOpen] = useState(false);
   const [state, formAction, pending] = useActionState<ActionState, FormData>(
-    isEdit ? updateModule : createModule,
+    async (prevState: ActionState, formData: FormData) => {
+      const result = isEdit
+        ? await updateModule(prevState, formData)
+        : await createModule(prevState, formData);
+
+      if (result.ok) {
+        router.refresh();
+        if (!isEdit) setOpen(false);
+      }
+      return result;
+    },
     { ok: false, error: null }
   );
-
-  useEffect(() => {
-    if (state.ok) {
-      router.refresh();
-    }
-  }, [state, router]);
 
   if (!open) {
     return (
@@ -46,7 +52,7 @@ export function ModuleForm({
   return (
     <form
       action={formAction}
-      className="flex flex-wrap items-center gap-2 rounded-md border border-[var(--color-border)] bg-[var(--color-surface-elevated)]/50 px-3 py-2"
+      className="flex flex-col gap-2 rounded-md border border-[var(--color-border)] bg-[var(--color-surface-elevated)]/50 p-3"
     >
       <input type="hidden" name={isEdit ? "moduleId" : "courseId"} value={isEdit ? moduleId ?? "" : courseId} />
       <div className="flex flex-col gap-2 w-full">
@@ -58,14 +64,14 @@ export function ModuleForm({
           defaultValue={initialTitle ?? ""}
           placeholder="Module title"
           autoFocus
-          className="min-w-52 w-full rounded-md border border-[var(--color-border)] px-3 py-1.5 text-sm text-[var(--color-text-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
+          className="min-w-52 w-full rounded-[var(--radius-md)] border border-[var(--color-border)] px-3 py-1.5 text-sm text-[var(--color-text-primary)] outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] bg-[var(--color-surface)]"
         />
-        <textarea
+        <Textarea
           name="description"
           defaultValue={initialDescription ?? ""}
           placeholder="Module description (optional)"
+          maxLength={DESCRIPTION_MAX}
           rows={3}
-          className="min-w-52 w-full rounded-md border border-[var(--color-border)] px-3 py-1.5 text-sm text-[var(--color-text-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
         />
       </div>
       <button

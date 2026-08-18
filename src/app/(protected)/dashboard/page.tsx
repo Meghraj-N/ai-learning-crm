@@ -54,13 +54,13 @@ function StatCard({
 }) {
   return (
     <Link href={href} className="block group">
-      <Card className="transition-all hover:bg-[var(--color-surface-elevated)] hover:border-[var(--color-primary)]/50 border-transparent bg-[var(--color-surface)]">
-        <CardContent className="p-5 flex items-center justify-between">
-          <div>
+      <Card className="transition-all duration-300 hover:border-[var(--color-border-active)] hover:bg-[var(--color-surface-elevated)] bg-[var(--color-surface)]">
+        <CardContent className="p-6 flex items-center justify-between">
+          <div className="flex flex-col gap-1">
             <p className="text-xs font-medium uppercase tracking-wider text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)] transition-colors">{label}</p>
-            <p className="mt-2 text-3xl font-semibold tracking-tight text-[var(--color-text-primary)]">{value}</p>
+            <p className="text-3xl font-semibold tracking-tight text-[var(--color-text-primary)]">{value}</p>
           </div>
-          <div className="h-12 w-12 rounded-full bg-[var(--color-surface-elevated)] flex items-center justify-center text-[var(--color-primary)] group-hover:scale-110 transition-transform">
+          <div className="h-12 w-12 rounded-full bg-[var(--color-surface-elevated)] flex items-center justify-center text-[var(--color-text-muted)] group-hover:text-[var(--color-primary)] group-hover:bg-[var(--color-primary)]/10 transition-colors">
             <Icon className="h-6 w-6" />
           </div>
         </CardContent>
@@ -311,7 +311,7 @@ export default async function DashboardPage() {
                           : null;
 
                     return (
-                      <Card key={course.enrollment_id} className="overflow-hidden hover:border-[var(--color-primary)]/50 transition-colors">
+                      <Card key={course.enrollment_id} className="overflow-hidden hover:border-[var(--color-border-active)] transition-colors">
                         <CardContent className="p-0">
                           <div className="p-6">
                             <div className="flex items-start justify-between gap-4 mb-6">

@@ -86,15 +86,15 @@ export function Sidebar({ navigation }: { navigation: NavigationGroup[] }) {
                         href={item.href}
                         onClick={() => setIsMobileMenuOpen(false)}
                         className={cn(
-                          "group flex items-center gap-3 rounded-[var(--radius-md)] px-3 py-2 text-[13px] font-medium transition-colors",
+                          "group flex items-center gap-3 rounded-[var(--radius-md)] px-3 py-2 text-[14px] font-medium transition-all duration-200",
                           isActive
-                            ? "bg-[var(--color-surface-elevated)] text-[var(--color-text-primary)]"
-                            : "text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-elevated)] hover:text-[var(--color-text-primary)]"
+                            ? "bg-[var(--color-surface-elevated)] text-[var(--color-primary)] shadow-sm"
+                            : "text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-highest)] hover:text-[var(--color-text-primary)]"
                         )}
                       >
                         <Icon
                           className={cn(
-                            "h-4 w-4",
+                            "h-4 w-4 transition-colors",
                             isActive ? "text-[var(--color-primary)]" : "text-[var(--color-text-muted)] group-hover:text-[var(--color-text-secondary)]"
                           )}
                         />

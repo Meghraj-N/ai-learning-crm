@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { createLead, type ActionState } from "../actions";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function LeadForm() {
   const router = useRouter();
@@ -109,22 +111,18 @@ export default function LeadForm() {
         >
           Notes
         </label>
-        <textarea
+        <Textarea
           id="notes"
           name="notes"
           rows={4}
           disabled={isPending}
-          className="flex w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-background)] px-3 py-2 text-sm text-[var(--color-text-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none transition-colors placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] disabled:cursor-not-allowed disabled:opacity-50"
         />
       </div>
 
       {state.error && (
-        <p
-          role="alert"
-          className="rounded-[var(--radius-md)] border border-[var(--color-danger)]/20 bg-[var(--color-danger)]/10 px-3 py-2 text-sm text-[var(--color-danger)]"
-        >
-          {state.error}
-        </p>
+        <Alert variant="danger">
+          <AlertDescription>{state.error}</AlertDescription>
+        </Alert>
       )}
 
       <div className="flex items-center gap-3">

@@ -3,26 +3,26 @@ import type { CourseStatus } from "@/types/crm";
 export function courseStatusBadgeClasses(status: CourseStatus): string {
   switch (status) {
     case "draft":
-      return "bg-[var(--color-surface-highest)] text-[var(--color-text-secondary)]";
+      return "bg-[var(--color-surface-highest)] text-[var(--color-text-secondary)] border-[var(--color-border)] border";
     case "published":
-      return "bg-[var(--color-success)]/10 text-[var(--color-success)]";
+      return "bg-[var(--color-success-bg)] text-[var(--color-success)] border-[var(--color-success-border)] border";
     case "archived":
-      return "bg-[var(--color-destructive)]/10 text-[var(--color-destructive)]";
+      return "bg-[var(--color-danger)]/10 text-[var(--color-danger)] border-[var(--color-danger)]/20 border";
   }
 }
 
 export function enrollmentBadgeClasses(status: string): string {
   switch (status) {
     case "active":
-      return "bg-[var(--color-success)]/10 text-[var(--color-success)]";
+      return "bg-[var(--color-success-bg)] text-[var(--color-success)] border-[var(--color-success-border)] border";
     case "paused":
-      return "bg-[var(--color-warning)]/10 text-[var(--color-warning)]";
+      return "bg-[var(--color-warning-bg)] text-[var(--color-warning)] border-[var(--color-warning-border)] border";
     case "completed":
-      return "bg-[var(--color-primary)]/10 text-[var(--color-primary)]";
+      return "bg-[var(--color-primary)]/10 text-[var(--color-text-primary)] border-[var(--color-primary)]/20 border";
     case "cancelled":
-      return "bg-[var(--color-surface-highest)] text-[var(--color-text-secondary)]";
+      return "bg-[var(--color-surface-highest)] text-[var(--color-text-secondary)] border-[var(--color-border)] border";
     default:
-      return "bg-[var(--color-surface-highest)] text-[var(--color-text-secondary)]";
+      return "bg-[var(--color-surface-highest)] text-[var(--color-text-secondary)] border-[var(--color-border)] border";
   }
 }
 

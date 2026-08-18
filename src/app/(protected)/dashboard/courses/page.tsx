@@ -16,10 +16,10 @@ import AccessDenied from "../access-denied";
 import { StatusBadge } from "./status-badge";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { EmptyState } from "@/components/ui/empty-state";
-import { Search, X, Plus, Filter, AlertCircle, Library } from "lucide-react";
+import { Search, X, Plus, AlertCircle, Library } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { RetryButton } from "@/components/ui/retry-button";
 
@@ -198,14 +198,14 @@ export default async function CoursesPage({
         <div className="p-4 border-b border-[var(--color-border)] flex flex-col md:flex-row gap-4 items-start md:items-center justify-between bg-[var(--color-surface-elevated)]/50 rounded-t-[var(--radius-xl)]">
           <form method="get" className="flex flex-col sm:flex-row items-center gap-3 w-full md:max-w-xl">
             <div className="relative flex-1 w-full">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-secondary)]" />
-              <Input
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)]" />
+              <input
                 id="q"
                 name="q"
                 type="search"
                 defaultValue={q}
                 placeholder="Search courses..."
-                className="pl-9 bg-[var(--color-background)] border-[var(--color-border)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus-visible:ring-[var(--color-primary)] h-10 w-full"
+                className="block w-full h-10 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] pl-10 pr-3 py-2 text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-border-active)] focus:ring-1 focus:ring-[var(--color-border-active)] outline-none transition-colors"
               />
             </div>
 
@@ -215,7 +215,7 @@ export default async function CoursesPage({
                   <select
                     name="status"
                     defaultValue={status ?? ""}
-                    className="w-full h-10 appearance-none rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-background)] px-3 py-2 text-sm text-[var(--color-text-primary)] outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
+                    className="appearance-none block w-full h-10 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] pl-3 pr-8 py-2 text-sm text-[var(--color-text-primary)] focus:border-[var(--color-border-active)] focus:ring-1 focus:ring-[var(--color-border-active)] outline-none transition-colors"
                   >
                     <option value="">All statuses</option>
                     {COURSE_STATUSES.map((value) => (
@@ -224,7 +224,9 @@ export default async function CoursesPage({
                       </option>
                     ))}
                   </select>
-                  <Filter className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-secondary)] pointer-events-none" />
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-[var(--color-text-muted)]">
+                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                  </div>
                 </div>
               )}
               <Button type="submit" variant="secondary" className="bg-[var(--color-surface-highest)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-highest)]/80 h-10 shrink-0">

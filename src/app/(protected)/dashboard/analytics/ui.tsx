@@ -32,8 +32,8 @@ export function MetricCard({
   sub?: ReactNode;
 }) {
   return (
-    <Card className="bg-[var(--color-surface-elevated)] border-transparent">
-      <CardContent className="p-5">
+    <Card className="transition-all duration-300 hover:border-[var(--color-border-active)] hover:bg-[var(--color-surface-elevated)] bg-[var(--color-surface)]">
+      <CardContent className="p-6">
         <p className="text-xs font-medium uppercase tracking-wider text-[var(--color-text-secondary)]">
           {label}
         </p>

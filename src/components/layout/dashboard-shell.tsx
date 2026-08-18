@@ -1,21 +1,24 @@
 import { Sidebar, type NavigationGroup } from "@/components/layout/sidebar";
 import { TopBar } from "@/components/layout/topbar";
 import LogoutButton from "@/app/(protected)/dashboard/logout-button";
+import type { CurrentProfile } from "@/lib/current-user";
 
 export function DashboardShell({
   children,
   navigation,
+  user,
 }: {
   children: React.ReactNode;
   navigation: NavigationGroup[];
+  user: CurrentProfile | null;
 }) {
   return (
     <div className="min-h-screen bg-[var(--color-background)]">
       <Sidebar navigation={navigation} />
       <div className="lg:pl-[240px] flex flex-col min-h-screen">
-        <TopBar />
+        <TopBar user={user} />
         {/* Mobile topbar replacement that only holds logout */}
-        <div className="lg:hidden flex h-[56px] w-full items-center justify-end px-4 border-b border-[var(--color-border)] bg-[var(--color-background)] pt-14">
+        <div className="lg:hidden flex h-[56px] w-full items-center justify-end px-4 border-b border-[var(--color-border)] bg-[var(--color-surface)] pt-14">
            <LogoutButton />
         </div>
 

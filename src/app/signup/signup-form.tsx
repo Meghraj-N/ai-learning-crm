@@ -87,7 +87,6 @@ export default function SignupForm() {
                 placeholder="Jane Doe"
                 required
                 disabled={isFormLoading}
-                className="bg-transparent border-[var(--color-border)] text-[var(--color-text-primary)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] shadow-none"
               />
             </div>
 
@@ -106,7 +105,6 @@ export default function SignupForm() {
                 placeholder="name@company.com"
                 required
                 disabled={isFormLoading}
-                className="bg-transparent border-[var(--color-border)] text-[var(--color-text-primary)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] shadow-none"
               />
             </div>
 
@@ -128,7 +126,7 @@ export default function SignupForm() {
                   placeholder="Create a password"
                   required
                   disabled={isFormLoading}
-                  className="bg-transparent border-[var(--color-border)] text-[var(--color-text-primary)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] pr-10 shadow-none"
+                  className="pr-10"
                 />
                 <button
                   type="button"
@@ -174,7 +172,7 @@ export default function SignupForm() {
             <Button
               type="submit"
               disabled={isFormLoading}
-              className="w-full bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white font-medium mt-2"
+              className="w-full"
             >
               {isPending ? "Creating account..." : "Create account"}
             </Button>
@@ -196,7 +194,7 @@ export default function SignupForm() {
             variant="outline"
             onClick={handleGoogleSignIn}
             disabled={isFormLoading}
-            className="w-full border-[var(--color-border)] bg-transparent hover:bg-[var(--color-surface-highest)] text-[var(--color-text-primary)]"
+            className="w-full mt-4"
           >
             {googleLoading ? (
               "Connecting to Google..."

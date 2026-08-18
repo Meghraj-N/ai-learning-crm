@@ -43,5 +43,5 @@ export default async function DashboardLayout({
     navigation.push({ title: "ADMIN", items: adminItems });
   }
 
-  return <DashboardShell navigation={navigation}>{children}</DashboardShell>;
+  return <DashboardShell navigation={navigation} user={profile}>{children}</DashboardShell>;
 }

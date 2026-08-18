@@ -77,7 +77,6 @@ export default function LoginForm() {
                 placeholder="name@company.com"
                 required
                 disabled={isFormLoading}
-                className="bg-transparent border-[var(--color-border)] text-[var(--color-text-primary)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] shadow-none"
               />
             </div>
 
@@ -99,7 +98,7 @@ export default function LoginForm() {
                   placeholder="Enter your password"
                   required
                   disabled={isFormLoading}
-                  className="bg-transparent border-[var(--color-border)] text-[var(--color-text-primary)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] pr-10 shadow-none"
+                  className="pr-10"
                 />
                 <button
                   type="button"
@@ -125,7 +124,7 @@ export default function LoginForm() {
             <Button
               type="submit"
               disabled={isFormLoading}
-              className="w-full bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white font-medium"
+              className="w-full"
             >
               {isPending ? "Signing in..." : "Sign in"}
             </Button>
@@ -147,7 +146,7 @@ export default function LoginForm() {
             variant="outline"
             onClick={handleGoogleSignIn}
             disabled={isFormLoading}
-            className="w-full border-[var(--color-border)] bg-transparent hover:bg-[var(--color-surface-highest)] text-[var(--color-text-primary)]"
+            className="w-full mt-4"
           >
             {googleLoading ? (
               "Connecting to Google..."

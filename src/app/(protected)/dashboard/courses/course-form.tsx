@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { COURSE_STATUSES, type CourseStatus } from "@/types/crm";
 import { createCourse, updateCourse } from "./actions";
 import { MediaUploader } from "@/components/ui/media-uploader";
+import { Textarea } from "@/components/ui/textarea";
 
 const TITLE_MAX = 200;
 const DESCRIPTION_MAX = 2000;
@@ -117,13 +118,13 @@ export function CourseForm({
         >
           Description
         </label>
-        <textarea
+        <Textarea
           id="description"
           name="description"
           rows={4}
           maxLength={DESCRIPTION_MAX}
           defaultValue={initialDescription ?? ""}
-          className="mt-1 block w-full rounded-md border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
+          disabled={pending}
         />
         <p className="mt-1 text-xs text-[var(--color-text-muted)]">
           Shown on the course card and detail page.

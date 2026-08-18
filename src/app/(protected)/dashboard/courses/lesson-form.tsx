@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createLesson, updateLesson, type ActionState } from "./actions";
 import { MediaUploader } from "@/components/ui/media-uploader";
 import { ResourceManager } from "@/components/ui/resource-manager";
+import { Textarea } from "@/components/ui/textarea";
 import type { LessonResource } from "@/types/crm";
 
 const TITLE_MAX = 200;
@@ -84,13 +85,12 @@ export function LessonForm({
         autoFocus
         className="block w-full rounded-md border border-[var(--color-border)] px-3 py-1.5 text-sm text-[var(--color-text-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
       />
-      <textarea
+      <Textarea
         name="content"
         rows={4}
         maxLength={CONTENT_MAX}
         defaultValue={initialContent ?? ""}
         placeholder="Lesson content"
-        className="block w-full rounded-md border border-[var(--color-border)] px-3 py-1.5 text-sm text-[var(--color-text-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
       />
       <input type="hidden" name="video_url" value={videoUrl ?? ""} />
       <input type="hidden" name="image_url" value={imageUrl ?? ""} />

@@ -17,7 +17,7 @@ import { StatusBadge } from "./status-badge";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+
 import { EmptyState } from "@/components/ui/empty-state";
 import { Search, X, Plus, AlertCircle, Library } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -114,6 +114,24 @@ export default async function CoursesPage({
   }
 
   const { data: rows, count, error } = await query;
+
+  if (error) {
+    console.error(
+      "CoursesPage: Failed to load courses.",
+      JSON.stringify({
+        operation: "fetch_courses",
+        route: "/dashboard/courses",
+        userId: profile.user_id,
+        orgId: profile.organization_id,
+        role: profile.role,
+        errorCode: error.code,
+        errorMessage: error.message,
+        details: error.details,
+        hint: error.hint,
+        timestamp: new Date().toISOString()
+      }, null, 2)
+    );
+  }
 
   const courseIds = (rows ?? []).map((row) => row.course_id);
   const [lessonCounts, creatorRes] = await Promise.all([
@@ -259,101 +277,104 @@ export default async function CoursesPage({
           </div>
         ) : rows && rows.length > 0 ? (
           <>
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader className="bg-[var(--color-surface)]">
-                  <TableRow className="border-[var(--color-border)] hover:bg-transparent">
-                    <TableHead className="text-[var(--color-text-secondary)] font-medium h-12">Course</TableHead>
-                    <TableHead className="text-[var(--color-text-secondary)] font-medium h-12">Status</TableHead>
-                    <TableHead className="text-[var(--color-text-secondary)] font-medium h-12">Structure</TableHead>
-                    <TableHead className="text-[var(--color-text-secondary)] font-medium h-12">
-                      {isStudent ? "Your enrollment" : "Enrollments"}
-                    </TableHead>
-                    {!isStudent && (
-                      <TableHead className="text-[var(--color-text-secondary)] font-medium h-12">Creator</TableHead>
-                    )}
-                    <TableHead className="text-[var(--color-text-secondary)] font-medium h-12">Created</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {rows.map((row) => {
-                    const thumbnailUrl = thumbnailUrls.get(row.course_id);
-                    const moduleCount = row.course_modules?.[0]?.count ?? 0;
-                    const lessonCount = lessonCounts.get(row.course_id) ?? 0;
-                    const enrollmentCount = isStudent
-                      ? undefined
-                      : (row as StaffCourseRow).enrollments?.[0]?.count ?? 0;
-                    const own = isStudent
-                      ? (row as StudentCourseRow).enrollments?.[0] ?? null
-                      : null;
-                    return (
-                      <TableRow key={row.course_id} className="border-[var(--color-border)] hover:bg-[var(--color-surface-elevated)]/50 group">
-                        <TableCell className="py-4 min-w-[250px]">
-                          <div className="flex items-center gap-4">
-                            {thumbnailUrl ? (
-                              <div className="w-16 h-12 rounded-md overflow-hidden bg-black/10 shrink-0 border border-[var(--color-border)]">
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img src={thumbnailUrl} alt={row.title} className="w-full h-full object-cover" />
-                              </div>
-                            ) : (
-                              <div className="w-16 h-12 rounded-md bg-[var(--color-surface-highest)] flex items-center justify-center shrink-0 border border-[var(--color-border)]">
-                                <Library className="w-5 h-5 text-[var(--color-text-muted)]" />
-                              </div>
-                            )}
-                            <div>
-                              <Link
-                                href={`/dashboard/courses/${row.course_id}`}
-                                className="font-medium text-[var(--color-text-primary)] hover:text-[var(--color-primary)] transition-colors"
-                              >
-                                {row.title}
-                              </Link>
-                              {row.description && (
-                                <p className="max-w-[200px] sm:max-w-[250px] truncate text-xs text-[var(--color-text-secondary)] mt-1">
-                                  {row.description}
-                                </p>
-                              )}
-                            </div>
+            <div className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {rows.map((row) => {
+                  const thumbnailUrl = thumbnailUrls.get(row.course_id);
+                  const moduleCount = row.course_modules?.[0]?.count ?? 0;
+                  const lessonCount = lessonCounts.get(row.course_id) ?? 0;
+                  const enrollmentCount = isStudent
+                    ? undefined
+                    : (row as StaffCourseRow).enrollments?.[0]?.count ?? 0;
+                  const own = isStudent
+                    ? (row as StudentCourseRow).enrollments?.[0] ?? null
+                    : null;
+                  return (
+                    <Link
+                      key={row.course_id}
+                      href={`/dashboard/courses/${row.course_id}`}
+                      className="group flex flex-col bg-[var(--color-surface)] border border-[var(--color-border)] hover:border-[var(--color-border-active)] hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 rounded-xl overflow-hidden"
+                    >
+                      {/* Thumbnail Area */}
+                      <div className="relative aspect-video w-full bg-[var(--color-surface-elevated)] border-b border-[var(--color-border)] overflow-hidden">
+                        {thumbnailUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={thumbnailUrl}
+                            alt={row.title}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center bg-[var(--color-surface-highest)]">
+                            <Library className="w-8 h-8 text-[var(--color-text-muted)] opacity-50" />
                           </div>
-                        </TableCell>
-                        <TableCell className="py-4">
+                        )}
+                        <div className="absolute top-3 left-3 flex gap-2">
                           <StatusBadge status={row.status} />
-                        </TableCell>
-                        <TableCell className="py-4">
-                          <div className="text-sm text-[var(--color-text-primary)]">{moduleCount} <span className="text-[var(--color-text-secondary)]">modules</span></div>
-                          <div className="text-xs text-[var(--color-text-muted)] mt-0.5">{lessonCount} lessons</div>
-                        </TableCell>
-                        <TableCell className="py-4">
-                          {own ? (
-                            <Badge variant="outline" className={enrollmentBadgeClass(own.status)}>
+                          {own && (
+                            <Badge variant="outline" className={`bg-black/50 backdrop-blur-md border-transparent text-white shadow-sm`}>
                               {own.status}
                             </Badge>
-                          ) : (
-                            <span className="text-[var(--color-text-muted)] text-sm font-medium">
-                              {isStudent
-                                ? "Not enrolled"
-                                : String(enrollmentCount ?? 0)}
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Content Area */}
+                      <div className="flex flex-col flex-1 p-5">
+                        <h3 className="text-lg font-semibold text-[var(--color-text-primary)] group-hover:text-[var(--color-primary)] transition-colors line-clamp-1">
+                          {row.title}
+                        </h3>
+                        {row.description ? (
+                          <p className="mt-2 text-sm text-[var(--color-text-secondary)] line-clamp-2 min-h-[2.5rem]">
+                            {row.description}
+                          </p>
+                        ) : (
+                          <p className="mt-2 text-sm text-[var(--color-text-muted)] italic min-h-[2.5rem]">
+                            No description
+                          </p>
+                        )}
+
+                        <div className="mt-auto pt-5 flex items-center justify-between text-xs text-[var(--color-text-muted)]">
+                          <div className="flex items-center gap-3">
+                            <span className="flex items-center gap-1.5" title="Modules">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] opacity-70"></span>
+                              {moduleCount} {moduleCount === 1 ? 'module' : 'modules'}
+                            </span>
+                            <span className="flex items-center gap-1.5" title="Lessons">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-secondary)] opacity-70"></span>
+                              {lessonCount} {lessonCount === 1 ? 'lesson' : 'lessons'}
+                            </span>
+                          </div>
+                          {!isStudent && (
+                            <span className="font-medium text-[var(--color-text-secondary)]">
+                              {enrollmentCount} {enrollmentCount === 1 ? 'enrolled' : 'enrolled'}
                             </span>
                           )}
-                        </TableCell>
-                        {!isStudent && (
-                          <TableCell className="py-4 text-[var(--color-text-secondary)] text-sm">
-                            {row.created_by
-                              ? creatorMap.get(row.created_by) ?? "—"
-                              : "—"}
-                          </TableCell>
-                        )}
-                        <TableCell className="py-4 text-sm text-[var(--color-text-muted)]">
+                        </div>
+                      </div>
+
+                      {/* Footer Area */}
+                      <div className="px-5 py-3 border-t border-[var(--color-border)] bg-[var(--color-surface-elevated)]/30 flex items-center justify-between text-xs">
+                        <span className="text-[var(--color-text-muted)]">
                           {new Date(row.created_at).toLocaleDateString("en-GB", {
                             day: "numeric",
                             month: "short",
                             year: "numeric"
                           })}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
+                        </span>
+                        {!isStudent && row.created_by && (
+                          <span className="text-[var(--color-text-secondary)] truncate max-w-[120px]">
+                            {creatorMap.get(row.created_by) ?? "—"}
+                          </span>
+                        )}
+                        {isStudent && (
+                           <span className="font-medium text-[var(--color-primary)]">Open course →</span>
+                        )}
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
 
             <div className="p-4 border-t border-[var(--color-border)] flex items-center justify-between bg-[var(--color-surface)] rounded-b-[var(--radius-xl)]">
@@ -434,17 +455,4 @@ export default async function CoursesPage({
       </Card>
     </div>
   );
-}
-
-function enrollmentBadgeClass(status: EnrollmentStatus): string {
-  switch (status) {
-    case "active":
-      return "bg-[var(--color-success)]/10 text-[var(--color-success)] border-[var(--color-success)]/20";
-    case "paused":
-      return "bg-[var(--color-warning)]/10 text-[var(--color-warning)] border-[var(--color-warning)]/20";
-    case "completed":
-      return "bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-[var(--color-primary)]/20";
-    case "cancelled":
-      return "bg-[var(--color-surface-highest)] text-[var(--color-text-secondary)] border-transparent";
-  }
 }

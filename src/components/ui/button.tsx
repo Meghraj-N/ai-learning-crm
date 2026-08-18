@@ -16,16 +16,15 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <Comp
         ref={ref}
         className={cn(
-          "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+          "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
           {
-            "bg-[#6366F1] text-white hover:bg-[#4F46E5]": variant === "default",
-            "bg-[#272B33] text-[#F4F4F5] hover:bg-[#323642]": variant === "secondary",
-            "border border-[#272B33] bg-transparent hover:bg-[#181B21] text-[#F4F4F5]":
-              variant === "outline",
-            "hover:bg-[#181B21] text-[#F4F4F5]": variant === "ghost",
-            "bg-red-500/10 text-red-500 hover:bg-red-500/20": variant === "danger",
+            "bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)] shadow-[inset_0_1px_0_rgba(255,255,255,0.15)] border border-transparent": variant === "default",
+            "bg-[var(--color-surface-elevated)] border border-[var(--color-border)] text-[var(--color-text-primary)] hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-highest)]": variant === "secondary",
+            "border border-[var(--color-border)] bg-transparent hover:bg-[var(--color-surface-elevated)] hover:border-[var(--color-border-hover)] text-[var(--color-text-primary)]": variant === "outline",
+            "hover:bg-[var(--color-surface-elevated)] text-[var(--color-text-primary)]": variant === "ghost",
+            "bg-[var(--color-danger)]/10 text-[var(--color-danger)] hover:bg-[var(--color-danger)]/20 border border-transparent": variant === "danger",
             "h-10 px-4 py-2": size === "default",
-            "h-9 rounded-md px-3": size === "sm",
+            "h-9 rounded-md px-3 text-xs": size === "sm",
             "h-11 rounded-md px-8": size === "lg",
             "h-10 w-10": size === "icon",
           },

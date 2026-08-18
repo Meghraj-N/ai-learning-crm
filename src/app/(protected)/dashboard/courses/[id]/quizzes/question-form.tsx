@@ -53,7 +53,7 @@ export function QuestionForm({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="rounded-md border border-zinc-300 px-2.5 py-1 text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-100"
+        className="rounded-md border border-[var(--color-border)] px-2.5 py-1 text-xs font-medium text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-surface-highest)]"
       >
         {isEdit ? "Edit" : "Add question"}
       </button>
@@ -96,7 +96,7 @@ export function QuestionForm({
   return (
     <form
       action={formAction}
-      className="mt-2 space-y-3 rounded-md border border-zinc-200 bg-zinc-50 p-4"
+      className="mt-2 space-y-3 rounded-md border border-[var(--color-border)] bg-[var(--color-surface-elevated)]/50 p-4"
     >
       <input
         type="hidden"
@@ -118,14 +118,14 @@ export function QuestionForm({
           step={1}
           required
           defaultValue={initialQuestion?.points ?? 1}
-          className="w-24 rounded-md border border-zinc-300 px-3 py-1.5 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500"
+          className="w-24 rounded-md border border-[var(--color-border)] px-3 py-1.5 text-sm text-[var(--color-text-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
           aria-label="Points"
         />
         <select
           name="question_type"
           value={questionType}
           onChange={(event) => switchType(event.target.value as QuizQuestionType)}
-          className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500"
+          className="rounded-md border border-[var(--color-border)] px-3 py-1.5 text-sm text-[var(--color-text-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
         >
           <option value="multiple_choice">Multiple choice</option>
           <option value="true_false">True / false</option>
@@ -138,10 +138,10 @@ export function QuestionForm({
         defaultValue={initialQuestion?.question ?? ""}
         placeholder="Enter the question text"
         rows={2}
-        className="w-full rounded-md border border-zinc-300 px-3 py-1.5 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500"
+        className="w-full rounded-md border border-[var(--color-border)] px-3 py-1.5 text-sm text-[var(--color-text-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
       />
       <fieldset className="space-y-2">
-        <legend className="text-xs font-medium text-zinc-500">
+        <legend className="text-xs font-medium text-[var(--color-text-secondary)]">
           {isTrueFalse ? "Answer" : "Options (mark the correct one)"}
         </legend>
         {submitOptions.map((option, index) => (
@@ -155,11 +155,11 @@ export function QuestionForm({
               required
               checked={correctIndex === index}
               onChange={() => setCorrectIndex(index)}
-              className="h-4 w-4 shrink-0 rounded-full border-zinc-300 text-zinc-900 focus:ring-zinc-500"
+              className="h-4 w-4 shrink-0 rounded-full border-[var(--color-border)] text-[var(--color-text-primary)] focus:ring-[var(--color-primary)]"
               aria-label={`Correct option ${index + 1}`}
             />
             {isTrueFalse ? (
-              <span className="text-sm text-zinc-900">{option}</span>
+              <span className="text-sm text-[var(--color-text-primary)]">{option}</span>
             ) : (
               <>
                 <input
@@ -168,13 +168,13 @@ export function QuestionForm({
                   maxLength={OPTION_MAX}
                   onChange={(event) => updateOption(index, event.target.value)}
                   placeholder={`Option ${index + 1}`}
-                  className="flex-1 rounded-md border border-zinc-300 px-3 py-1.5 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500"
+                  className="flex-1 rounded-md border border-[var(--color-border)] px-3 py-1.5 text-sm text-[var(--color-text-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
                 />
                 <button
                   type="button"
                   onClick={() => removeOption(index)}
                   disabled={submitOptions.length <= 2}
-                  className="rounded-md border border-zinc-300 px-2 py-1 text-xs font-medium text-zinc-500 transition-colors hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-40"
+                  className="rounded-md border border-[var(--color-border)] px-2 py-1 text-xs font-medium text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-surface-highest)] disabled:cursor-not-allowed disabled:opacity-40"
                   aria-label="Remove option"
                 >
                   Remove
@@ -188,7 +188,7 @@ export function QuestionForm({
             type="button"
             onClick={addOption}
             disabled={options.length >= MAX_OPTIONS}
-            className="rounded-md border border-zinc-300 px-2.5 py-1 text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-md border border-[var(--color-border)] px-2.5 py-1 text-xs font-medium text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-surface-highest)] disabled:cursor-not-allowed disabled:opacity-40"
           >
             Add option
           </button>
@@ -198,21 +198,21 @@ export function QuestionForm({
         <button
           type="submit"
           disabled={pending}
-          className="rounded-md bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:opacity-50"
+          className="rounded-md bg-[var(--color-primary)] px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-[var(--color-primary)]/90 disabled:opacity-50"
         >
           {pending ? "Saving…" : isEdit ? "Save changes" : "Create question"}
         </button>
         <button
           type="button"
           onClick={() => setOpen(false)}
-          className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100"
+          className="rounded-md border border-[var(--color-border)] px-3 py-1.5 text-sm font-medium text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-surface-highest)]"
         >
           Cancel
         </button>
       </div>
-      {state.error && <p className="text-xs text-red-600">{state.error}</p>}
+      {state.error && <p className="text-xs text-[var(--color-destructive)]">{state.error}</p>}
       {state.ok && (
-        <p className="text-xs text-green-600">
+        <p className="text-xs text-[var(--color-success)]">
           {isEdit ? "Saved." : "Question created."}
         </p>
       )}

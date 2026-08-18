@@ -54,13 +54,13 @@ function StatCard({
 }) {
   return (
     <Link href={href} className="block group">
-      <Card className="transition-all hover:bg-[#181B21] hover:border-[#6366F1]/50 border-transparent bg-[#111318]">
+      <Card className="transition-all hover:bg-[var(--color-surface-elevated)] hover:border-[var(--color-primary)]/50 border-transparent bg-[var(--color-surface)]">
         <CardContent className="p-5 flex items-center justify-between">
           <div>
-            <p className="text-xs font-medium uppercase tracking-wider text-[#A1A1AA] group-hover:text-[#F4F4F5] transition-colors">{label}</p>
-            <p className="mt-2 text-3xl font-semibold tracking-tight text-[#F4F4F5]">{value}</p>
+            <p className="text-xs font-medium uppercase tracking-wider text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)] transition-colors">{label}</p>
+            <p className="mt-2 text-3xl font-semibold tracking-tight text-[var(--color-text-primary)]">{value}</p>
           </div>
-          <div className="h-12 w-12 rounded-full bg-[#181B21] flex items-center justify-center text-[#6366F1] group-hover:scale-110 transition-transform">
+          <div className="h-12 w-12 rounded-full bg-[var(--color-surface-elevated)] flex items-center justify-center text-[var(--color-primary)] group-hover:scale-110 transition-transform">
             <Icon className="h-6 w-6" />
           </div>
         </CardContent>
@@ -226,10 +226,10 @@ export default async function DashboardPage() {
     <div className="flex flex-col gap-8 pb-12 w-full animate-in fade-in duration-500">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight text-[#F4F4F5]">
+          <h1 className="text-3xl font-semibold tracking-tight text-[var(--color-text-primary)]">
             Welcome back, {profile.full_name.split(' ')[0]}
           </h1>
-          <p className="mt-2 text-sm text-[#A1A1AA]">
+          <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
             Here is what&apos;s happening with your learning and CRM today.
           </p>
         </div>
@@ -247,10 +247,10 @@ export default async function DashboardPage() {
       {showCrm && (
         <section>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-[#F4F4F5] tracking-tight">
+            <h2 className="text-lg font-semibold text-[var(--color-text-primary)] tracking-tight">
               CRM Overview
             </h2>
-            <Link href="/dashboard/leads" className="text-sm font-medium text-[#6366F1] hover:text-[#4F46E5] transition-colors inline-flex items-center">
+            <Link href="/dashboard/leads" className="text-sm font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] transition-colors inline-flex items-center">
               View all leads <ChevronRight className="w-4 h-4 ml-1" />
             </Link>
           </div>
@@ -289,7 +289,7 @@ export default async function DashboardPage() {
           {/* Main Content Area (2/3 width on desktop) */}
           <div className="lg:col-span-2 space-y-8">
             <section>
-              <h2 className="text-lg font-semibold text-[#F4F4F5] tracking-tight mb-4">
+              <h2 className="text-lg font-semibold text-[var(--color-text-primary)] tracking-tight mb-4">
                 My Courses
               </h2>
               {enrolledCourses.length > 0 ? (
@@ -311,24 +311,24 @@ export default async function DashboardPage() {
                           : null;
 
                     return (
-                      <Card key={course.enrollment_id} className="overflow-hidden hover:border-[#6366F1]/50 transition-colors">
+                      <Card key={course.enrollment_id} className="overflow-hidden hover:border-[var(--color-primary)]/50 transition-colors">
                         <CardContent className="p-0">
                           <div className="p-6">
                             <div className="flex items-start justify-between gap-4 mb-6">
                               <div>
                                 <Link
                                   href={`/dashboard/courses/${course.course_id}`}
-                                  className="text-lg font-medium text-[#F4F4F5] hover:text-[#6366F1] transition-colors"
+                                  className="text-lg font-medium text-[var(--color-text-primary)] hover:text-[var(--color-primary)] transition-colors"
                                 >
                                   {course.title}
                                 </Link>
-                                <p className="text-sm text-[#A1A1AA] mt-1">
+                                <p className="text-sm text-[var(--color-text-secondary)] mt-1">
                                   {course.completed} of {course.total} lessons completed
                                 </p>
                               </div>
                               {course.total > 0 && (
                                 <div className="text-right">
-                                  <span className="text-2xl font-bold text-[#F4F4F5]">
+                                  <span className="text-2xl font-bold text-[var(--color-text-primary)]">
                                     {course.percent}%
                                   </span>
                                 </div>
@@ -354,22 +354,22 @@ export default async function DashboardPage() {
                                 </div>
                               </div>
                             ) : (
-                              <p className="mt-1 text-xs text-[#A1A1AA]">
+                              <p className="mt-1 text-xs text-[var(--color-text-secondary)]">
                                 No lessons available yet.
                               </p>
                             )}
                           </div>
 
                           {/* Readiness breakdown attached to course */}
-                          <div className="bg-[#09090B] px-6 py-4 border-t border-[#272B33] flex items-center justify-between">
+                          <div className="bg-[var(--color-background)] px-6 py-4 border-t border-[var(--color-border)] flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                              <span className="text-sm font-medium text-[#A1A1AA]">Readiness:</span>
+                              <span className="text-sm font-medium text-[var(--color-text-secondary)]">Readiness:</span>
                               <Badge variant={course.readiness.state === "passed" || course.readiness.state === "completed" ? "success" : course.readiness.state === "needs_review" ? "warning" : "default"}>
                                 {course.readiness.label}
                               </Badge>
                             </div>
                             {course.readiness.quizzes.length > 0 && (
-                              <div className="text-xs text-[#A1A1AA]">
+                              <div className="text-xs text-[var(--color-text-secondary)]">
                                 {course.readiness.passedQuizzes} / {course.readiness.availableQuizzes} Quizzes Passed
                               </div>
                             )}
@@ -391,7 +391,7 @@ export default async function DashboardPage() {
             {learningAnalytics && (
               <section>
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-[#F4F4F5] tracking-tight">
+                  <h2 className="text-lg font-semibold text-[var(--color-text-primary)] tracking-tight">
                     Learning Analytics
                   </h2>
                 </div>
@@ -433,13 +433,13 @@ export default async function DashboardPage() {
           {/* Sidebar Area (1/3 width on desktop) */}
           <div className="space-y-8">
             <section>
-              <h2 className="text-lg font-semibold text-[#F4F4F5] tracking-tight mb-4">
+              <h2 className="text-lg font-semibold text-[var(--color-text-primary)] tracking-tight mb-4">
                 Primary Action
               </h2>
               {enrolledCourses.length > 0 ? (
                 <>
                   {primaryReadiness ? (
-                    <Card className="bg-[#6366F1]/10 border-[#6366F1]/20">
+                    <Card className="bg-[var(--color-primary)]/10 border-[var(--color-primary)]/20">
                       <CardContent className="p-6">
                         <div className="flex flex-col gap-4">
                           <div className="flex items-start gap-3">
@@ -448,7 +448,7 @@ export default async function DashboardPage() {
                                 {primaryReadiness.label}
                               </Badge>
                             </div>
-                            <p className="text-sm font-medium text-[#F4F4F5] leading-relaxed">
+                            <p className="text-sm font-medium text-[var(--color-text-primary)] leading-relaxed">
                               {primaryReadiness.message}
                             </p>
                           </div>
@@ -477,7 +477,7 @@ export default async function DashboardPage() {
                   ) : (
                     <Card>
                       <CardContent className="p-6 text-center">
-                        <p className="text-sm text-[#A1A1AA]">
+                        <p className="text-sm text-[var(--color-text-secondary)]">
                           All your active courses are complete. Great work.
                         </p>
                       </CardContent>
@@ -487,7 +487,7 @@ export default async function DashboardPage() {
               ) : (
                 <Card>
                   <CardContent className="p-6 text-center">
-                    <p className="text-sm text-[#A1A1AA]">
+                    <p className="text-sm text-[var(--color-text-secondary)]">
                       No actions required at this time.
                     </p>
                   </CardContent>

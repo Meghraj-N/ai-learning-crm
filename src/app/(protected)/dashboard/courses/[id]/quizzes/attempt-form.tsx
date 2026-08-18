@@ -43,19 +43,19 @@ export function AttemptForm({
       <input type="hidden" name="attemptId" value={attemptId} />
       <input type="hidden" name="answers" value={JSON.stringify(answers)} />
       <div className="flex items-center justify-between gap-4">
-        <p className="text-sm text-zinc-500">
+        <p className="text-sm text-[var(--color-text-secondary)]">
           Answered {answeredCount} of {questions.length} questions.
         </p>
         <button
           type="submit"
           disabled={pending || !allAnswered}
-          className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-md bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-primary)]/90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {pending ? "Submitting…" : "Submit attempt"}
         </button>
       </div>
       {!allAnswered && (
-        <p className="text-xs text-zinc-500">
+        <p className="text-xs text-[var(--color-text-secondary)]">
           Answer every question before submitting.
         </p>
       )}
@@ -63,13 +63,13 @@ export function AttemptForm({
         {questions.map((question, index) => (
           <li
             key={question.question_id}
-            className="rounded-md border border-zinc-200 p-4"
+            className="rounded-md border border-[var(--color-border)] p-4"
           >
             <div className="flex items-start justify-between gap-4">
-              <p className="text-sm font-medium text-zinc-900">
+              <p className="text-sm font-medium text-[var(--color-text-primary)]">
                 {index + 1}. {question.question}
               </p>
-              <span className="shrink-0 text-xs text-zinc-400">
+              <span className="shrink-0 text-xs text-[var(--color-text-muted)]">
                 {question.points} {question.points === 1 ? "point" : "points"}
               </span>
             </div>
@@ -81,8 +81,8 @@ export function AttemptForm({
                     key={optionIndex}
                     className={`flex cursor-pointer items-center gap-3 rounded-md border px-3 py-2 text-sm transition-colors ${
                       selections[question.question_id] === optionIndex
-                        ? "border-zinc-900 bg-zinc-50 text-zinc-900"
-                        : "border-zinc-200 text-zinc-700 hover:bg-zinc-50"
+                        ? "border-[var(--color-primary)] bg-[var(--color-surface-elevated)]/50 text-[var(--color-text-primary)]"
+                        : "border-[var(--color-border)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-elevated)]/50"
                     }`}
                   >
                     <input
@@ -96,12 +96,12 @@ export function AttemptForm({
                           [question.question_id]: optionIndex,
                         }))
                       }
-                      className="h-4 w-4 rounded-full border-zinc-300 text-zinc-900 focus:ring-zinc-500"
+                      className="h-4 w-4 rounded-full border-[var(--color-border)] text-[var(--color-text-primary)] focus:ring-[var(--color-primary)]"
                     />
-                    <span className="font-medium text-zinc-500">
+                    <span className="font-medium text-[var(--color-text-secondary)]">
                       {LETTERS[optionIndex] ?? optionIndex + 1}.
                     </span>
-                    <span className="text-zinc-800">{option}</span>
+                    <span className="text-[var(--color-text-primary)]">{option}</span>
                   </label>
                 );
               })}
@@ -110,7 +110,7 @@ export function AttemptForm({
         ))}
       </ol>
       {state.error && (
-        <p className="text-sm text-red-600">{state.error}</p>
+        <p className="text-sm text-[var(--color-destructive)]">{state.error}</p>
       )}
     </form>
   );

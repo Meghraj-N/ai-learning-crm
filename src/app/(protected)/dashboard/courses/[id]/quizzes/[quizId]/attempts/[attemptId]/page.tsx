@@ -49,15 +49,15 @@ function NotFoundCard({
   return (
     <div className="flex flex-1 items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
+        <h1 className="text-2xl font-semibold tracking-tight text-[var(--color-text-primary)]">
           Attempt not found
         </h1>
-        <p className="mt-2 text-sm text-zinc-500">
+        <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
           The attempt you are looking for does not exist or is not available.
         </p>
         <Link
           href={`/dashboard/courses/${courseId}/quizzes/${quizId}`}
-          className="mt-6 inline-block rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700"
+          className="mt-6 inline-block rounded-md bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-primary-hover)]"
         >
           Back to quiz
         </Link>
@@ -136,15 +136,15 @@ export default async function AttemptReviewPage({
     return (
       <div className="flex flex-1 items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
+          <h1 className="text-2xl font-semibold tracking-tight text-[var(--color-text-primary)]">
             Attempt not submitted
           </h1>
-          <p className="mt-2 text-sm text-zinc-500">
+          <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
             This attempt is still in progress and has no results yet.
           </p>
           <Link
             href={`/dashboard/courses/${quiz.course_id}/quizzes/${quiz.quiz_id}`}
-            className="mt-6 inline-block rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700"
+            className="mt-6 inline-block rounded-md bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-primary-hover)]"
           >
             Back to quiz
           </Link>
@@ -174,50 +174,50 @@ export default async function AttemptReviewPage({
   return (
     <div className="flex flex-1 justify-center px-4 py-8">
       <div className="w-full max-w-3xl">
-        <nav className="text-sm text-zinc-500">
-          <Link href="/dashboard/courses" className="hover:text-zinc-900">
+        <nav className="text-sm text-[var(--color-text-secondary)]">
+          <Link href="/dashboard/courses" className="hover:text-[var(--color-text-primary)]">
             Courses
           </Link>
           <span className="mx-1">/</span>
           <Link
             href={`/dashboard/courses/${quiz.course_id}`}
-            className="hover:text-zinc-900"
+            className="hover:text-[var(--color-text-primary)]"
           >
             {course?.title ?? "Course"}
           </Link>
           <span className="mx-1">/</span>
           <Link
             href={`/dashboard/courses/${quiz.course_id}/quizzes/${quiz.quiz_id}`}
-            className="hover:text-zinc-900"
+            className="hover:text-[var(--color-text-primary)]"
           >
             {quiz.title}
           </Link>
           <span className="mx-1">/</span>
-          <span className="text-zinc-900">Review</span>
+          <span className="text-[var(--color-text-primary)]">Review</span>
         </nav>
 
         <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
+            <h1 className="text-2xl font-semibold tracking-tight text-[var(--color-text-primary)]">
               {attempt.students
                 ? `${attempt.students.first_name} ${attempt.students.last_name} — `
                 : "Your "}
               result
             </h1>
-            <p className="mt-1 text-sm text-zinc-500">
+            <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
               Submitted {formatDateTime(attempt.submitted_at)}
             </p>
           </div>
           <div className="flex shrink-0 items-center gap-3">
-            <span className="text-lg font-semibold text-zinc-900">
+            <span className="text-lg font-semibold text-[var(--color-text-primary)]">
               {attempt.score} / {attempt.max_score}
               {pct !== null && ` (${pct}%)`}
             </span>
             <span
               className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
                 passed
-                  ? "bg-green-100 text-green-700"
-                  : "bg-red-100 text-red-700"
+                  ? "bg-[var(--color-success)]/10 text-[var(--color-success)]"
+                  : "bg-[var(--color-danger)]/10 text-[var(--color-danger)]"
               }`}
             >
               {passed ? "passed" : "not passed"}
@@ -226,7 +226,7 @@ export default async function AttemptReviewPage({
         </div>
 
         {questions.length === 0 ? (
-          <p className="mt-4 text-sm text-zinc-500">
+          <p className="mt-4 text-sm text-[var(--color-text-secondary)]">
             Question details are no longer available for this quiz.
           </p>
         ) : (
@@ -238,23 +238,23 @@ export default async function AttemptReviewPage({
               return (
                 <li
                   key={question.question_id}
-                  className="rounded-md border border-zinc-200 p-4"
+                  className="rounded-md border border-[var(--color-border)] p-4"
                 >
                   <div className="flex items-start justify-between gap-4">
-                    <p className="text-sm font-medium text-zinc-900">
+                    <p className="text-sm font-medium text-[var(--color-text-primary)]">
                       {index + 1}. {question.question}
                     </p>
                     <div className="shrink-0 text-right">
                       <span
                         className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
                           isCorrect
-                            ? "bg-green-100 text-green-700"
-                            : "bg-red-100 text-red-700"
+                            ? "bg-[var(--color-success)]/10 text-[var(--color-success)]"
+                            : "bg-[var(--color-danger)]/10 text-[var(--color-danger)]"
                         }`}
                       >
                         {isCorrect ? "correct" : "incorrect"}
                       </span>
-                      <p className="mt-1 text-xs text-zinc-400">
+                      <p className="mt-1 text-xs text-[var(--color-text-muted)]">
                         {answer?.points_earned ?? 0} / {question.points} pts
                       </p>
                     </div>
@@ -269,23 +269,23 @@ export default async function AttemptReviewPage({
                           key={optionIndex}
                           className={`flex items-center gap-3 rounded-md border px-3 py-2 text-sm ${
                             isCorrectOption
-                              ? "border-green-300 bg-green-50 text-green-900"
+                              ? "border-[var(--color-success)]/20 bg-[var(--color-success)]/10 text-[var(--color-success)]"
                               : isSelected
-                                ? "border-red-300 bg-red-50 text-red-900"
-                                : "border-zinc-200 text-zinc-700"
+                                ? "border-[var(--color-danger)]/30 bg-[var(--color-danger)]/10 text-[var(--color-danger)]"
+                                : "border-[var(--color-border)] text-[var(--color-text-primary)]"
                           }`}
                         >
                           <span className="font-medium">
                             {LETTERS[optionIndex] ?? optionIndex + 1}.
                           </span>
-                          <span className="text-zinc-800">{option}</span>
+                          <span className="text-[var(--color-text-primary)]">{option}</span>
                           {isCorrectOption && (
-                            <span className="ml-auto text-xs font-medium text-green-700">
+                            <span className="ml-auto text-xs font-medium text-[var(--color-success)]">
                               correct answer
                             </span>
                           )}
                           {isSelected && !isCorrectOption && (
-                            <span className="ml-auto text-xs font-medium text-red-700">
+                            <span className="ml-auto text-xs font-medium text-[var(--color-danger)]">
                               your answer
                             </span>
                           )}
@@ -301,7 +301,7 @@ export default async function AttemptReviewPage({
 
         <Link
           href={`/dashboard/courses/${quiz.course_id}/quizzes/${quiz.quiz_id}`}
-          className="mt-6 inline-block rounded-md px-3 py-2 text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900"
+          className="mt-6 inline-block rounded-md px-3 py-2 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text-primary)]"
         >
           Back to {quiz.title}
         </Link>

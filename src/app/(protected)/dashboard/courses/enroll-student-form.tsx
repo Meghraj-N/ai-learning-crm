@@ -33,7 +33,7 @@ export function EnrollStudentForm({
       <div className="min-w-64 flex-1 basis-64">
         <label
           htmlFor="studentId"
-          className="block text-sm font-medium text-zinc-700"
+          className="block text-sm font-medium text-[var(--color-text-primary)]"
         >
           Student
         </label>
@@ -41,7 +41,7 @@ export function EnrollStudentForm({
           id="studentId"
           name="studentId"
           required
-          className="mt-1 block w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500"
+          className="mt-1 block w-full rounded-md border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
         >
           <option value="">Select a student…</option>
           {students.map((student) => (
@@ -55,7 +55,7 @@ export function EnrollStudentForm({
       <button
         type="submit"
         disabled={pending}
-        className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:opacity-50"
+        className="rounded-md bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-primary)]/90 disabled:opacity-50"
       >
         {pending ? "Enrolling…" : "Enroll student"}
       </button>
@@ -65,13 +65,13 @@ export function EnrollStudentForm({
           <div
             className={`rounded-md border px-4 py-3 ${
               state.alreadyEnrolled
-                ? "border-amber-200 bg-amber-50"
-                : "border-green-200 bg-green-50"
+                ? "border-[var(--color-warning)]/20 bg-[var(--color-warning)]/10"
+                : "border-[var(--color-success)]/20 bg-[var(--color-success)]/10"
             }`}
           >
             <p
               className={`text-sm ${
-                state.alreadyEnrolled ? "text-amber-700" : "text-green-700"
+                state.alreadyEnrolled ? "text-[var(--color-warning)]" : "text-[var(--color-success)]"
               }`}
             >
               {state.alreadyEnrolled
@@ -82,15 +82,15 @@ export function EnrollStudentForm({
           <button
             type="button"
             onClick={() => router.refresh()}
-            className="mt-2 rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100"
+            className="mt-2 rounded-md border border-[var(--color-border)] px-3 py-1.5 text-sm font-medium text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-surface-highest)]"
           >
             Refresh
           </button>
         </div>
       )}
       {!state.ok && state.error && (
-        <div className="w-full rounded-md border border-red-200 bg-red-50 px-4 py-3">
-          <p className="text-sm text-red-700">{state.error}</p>
+        <div className="w-full rounded-md border border-[var(--color-danger)]/20 bg-[var(--color-danger)]/10 px-4 py-3">
+          <p className="text-sm text-[var(--color-destructive)]">{state.error}</p>
         </div>
       )}
     </form>

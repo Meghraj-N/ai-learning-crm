@@ -8,11 +8,11 @@ export default async function UsersPage() {
     return (
       <div className="flex flex-1 items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
+          <h1 className="text-2xl font-semibold tracking-tight text-[var(--color-text-primary)]">
             Access denied
           </h1>
-          <div className="mt-8 rounded-md border border-red-200 bg-red-50 px-4 py-3">
-            <p className="text-sm text-red-700">
+          <div className="mt-8 rounded-md border border-[var(--color-danger)]/20 bg-[var(--color-danger)]/10 px-4 py-3">
+            <p className="text-sm text-[var(--color-destructive)]">
               Only administrators can manage users. If you believe this is an
               error, contact your administrator.
             </p>

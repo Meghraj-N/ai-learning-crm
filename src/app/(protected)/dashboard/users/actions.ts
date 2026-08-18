@@ -3,6 +3,7 @@
 import { requireAdminContext } from "@/lib/admin";
 import { isUserRole } from "@/lib/roles";
 import type { UserRole } from "@/lib/roles";
+import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
 export type ActionState = {
   ok: boolean;
@@ -162,6 +163,83 @@ export async function toggleActive(
   if (error) {
     console.error("toggleActive: update failed", targetUserId, error.message);
     return { ok: false, error: "Status update failed. Please try again." };
+  }
+
+  return { ok: true, error: null };
+}
+
+export async function createUser(
+  _prevState: ActionState,
+  formData: FormData
+): Promise<ActionState> {
+  const ctx = await requireAdminContext();
+  if (!ctx) {
+    return { ok: false, error: "Not authorized." };
+  }
+
+  const email = String(formData.get("email") ?? "").trim();
+  const password = String(formData.get("password") ?? "");
+  const confirmPassword = String(formData.get("confirmPassword") ?? "");
+  const fullName = String(formData.get("fullName") ?? "").trim();
+  const role = String(formData.get("role") ?? "").trim();
+
+  if (!email || !password || !fullName || !role) {
+    return { ok: false, error: "All fields are required." };
+  }
+  if (password !== confirmPassword) {
+    return { ok: false, error: "Passwords do not match." };
+  }
+  if (password.length < 6) {
+    return { ok: false, error: "Password must be at least 6 characters." };
+  }
+  if (!isUserRole(role)) {
+    return { ok: false, error: "Invalid role." };
+  }
+
+  let adminSupabase;
+  try {
+    adminSupabase = createSupabaseAdminClient();
+  } catch (err) {
+    console.error("Admin Client Error:", err instanceof Error ? err.message : String(err));
+    return { ok: false, error: "Server configuration error. Ensure SUPABASE_SERVICE_ROLE_KEY is set." };
+  }
+
+  // 1. Create the Auth User securely
+  const { data: authData, error: authError } = await adminSupabase.auth.admin.createUser({
+    email,
+    password,
+    email_confirm: true, // Auto-confirm the email
+    user_metadata: { full_name: fullName },
+  });
+
+  if (authError || !authData.user) {
+    console.error("createUser: auth failed", authError?.message);
+    return { ok: false, error: authError?.message || "Failed to create authentication account." };
+  }
+
+  const newUserId = authData.user.id;
+
+  // 2. Ensure Profile exists and is updated
+  // Supabase triggers often create profiles automatically. We upsert to be safe.
+  const { error: profileError } = await ctx.supabase
+    .from("profiles")
+    .upsert(
+      {
+        user_id: newUserId,
+        email,
+        full_name: fullName,
+        organization_id: ctx.organizationId,
+        role: role as UserRole,
+        is_active: true,
+      },
+      { onConflict: "user_id" }
+    );
+
+  if (profileError) {
+    console.error("createUser: profile update failed", profileError.message);
+    // Cleanup if profile fails
+    await adminSupabase.auth.admin.deleteUser(newUserId);
+    return { ok: false, error: "Failed to create user profile. Please try again." };
   }
 
   return { ok: true, error: null };

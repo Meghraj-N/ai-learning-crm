@@ -19,16 +19,16 @@ export function EmptyState({
   return (
     <div
       className={cn(
-        "flex min-h-[400px] flex-col items-center justify-center rounded-xl border border-dashed border-[#272B33] bg-[#111318]/50 p-8 text-center animate-in fade-in-50",
+        "flex min-h-[400px] flex-col items-center justify-center rounded-[var(--radius-lg)] border border-dashed border-[var(--color-border)] bg-[var(--color-surface)]/50 p-8 text-center animate-in fade-in-50",
         className
       )}
       {...props}
     >
-      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#181B21] border border-[#272B33]">
-        <Icon className="h-6 w-6 text-[#A1A1AA]" />
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-surface-elevated)] border border-[var(--color-border)]">
+        <Icon className="h-6 w-6 text-[var(--color-text-secondary)]" />
       </div>
-      <h3 className="mt-4 text-lg font-semibold text-[#F4F4F5]">{title}</h3>
-      <p className="mt-2 text-sm text-[#A1A1AA] max-w-sm">{description}</p>
+      <h3 className="mt-4 text-lg font-semibold text-[var(--color-text-primary)]">{title}</h3>
+      <p className="mt-2 text-sm text-[var(--color-text-secondary)] max-w-sm">{description}</p>
       {action && <div className="mt-6">{action}</div>}
     </div>
   );

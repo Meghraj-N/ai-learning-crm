@@ -26,7 +26,7 @@ export default function ProvisionForm({ userId }: { userId: string }) {
         defaultValue=""
         required
         disabled={isPending}
-        className="rounded-md border border-zinc-300 px-2 py-1 text-xs text-zinc-900 shadow-sm outline-none focus:border-zinc-500 disabled:opacity-50"
+        className="rounded-md border border-[var(--color-border)] px-2 py-1 text-xs text-[var(--color-text-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none focus:border-[var(--color-primary)] disabled:opacity-50"
       >
         <option value="" disabled>
           Role…
@@ -40,11 +40,11 @@ export default function ProvisionForm({ userId }: { userId: string }) {
       <button
         type="submit"
         disabled={isPending}
-        className="rounded-md bg-zinc-900 px-3 py-1 text-xs font-medium text-white transition-colors hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-50"
+        className="rounded-md bg-[var(--color-primary)] px-3 py-1 text-xs font-medium text-white transition-colors hover:bg-[var(--color-primary)]/90 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isPending ? "Provisioning…" : "Provision"}
       </button>
-      {state.error && <span className="text-xs text-red-600">{state.error}</span>}
+      {state.error && <span className="text-xs text-[var(--color-destructive)]">{state.error}</span>}
     </form>
   );
 }

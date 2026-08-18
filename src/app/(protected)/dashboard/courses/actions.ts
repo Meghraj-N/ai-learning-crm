@@ -59,6 +59,7 @@ export async function createCourse(
 
   const title = cleanField(formData.get("title"));
   const description = cleanField(formData.get("description"));
+  const thumbnail_url = cleanField(formData.get("thumbnail_url"));
   const status = cleanField(formData.get("status"));
 
   if (!title) {
@@ -86,6 +87,7 @@ export async function createCourse(
       organization_id: ctx.organizationId,
       title,
       description: description || null,
+      thumbnail_url: thumbnail_url || null,
       status: status as CourseStatus,
       created_by: ctx.userId,
     })
@@ -112,6 +114,7 @@ export async function updateCourse(
   const courseId = cleanField(formData.get("courseId"));
   const title = cleanField(formData.get("title"));
   const description = cleanField(formData.get("description"));
+  const thumbnail_url = cleanField(formData.get("thumbnail_url"));
   const status = cleanField(formData.get("status"));
 
   if (!title) {
@@ -143,6 +146,7 @@ export async function updateCourse(
     .update({
       title,
       description: description || null,
+      thumbnail_url: thumbnail_url || null,
       status: status as CourseStatus,
     })
     .eq("course_id", courseId);
@@ -418,6 +422,7 @@ export async function createModule(
 
   const courseId = cleanField(formData.get("courseId"));
   const title = cleanField(formData.get("title"));
+  const description = cleanField(formData.get("description"));
 
   if (!courseId) {
     return { ok: false, error: "Missing course." };
@@ -448,6 +453,7 @@ export async function createModule(
     organization_id: ctx.organizationId,
     course_id: courseId,
     title,
+    description: description || null,
     position,
   });
 
@@ -470,6 +476,7 @@ export async function updateModule(
 
   const moduleId = cleanField(formData.get("moduleId"));
   const title = cleanField(formData.get("title"));
+  const description = cleanField(formData.get("description"));
 
   if (!title) {
     return { ok: false, error: "Module title is required." };
@@ -488,7 +495,7 @@ export async function updateModule(
 
   const { error } = await ctx.supabase
     .from("course_modules")
-    .update({ title })
+    .update({ title, description: description || null })
     .eq("module_id", moduleId);
 
   if (error) {
@@ -584,6 +591,8 @@ export async function createLesson(
   const moduleId = cleanField(formData.get("moduleId"));
   const title = cleanField(formData.get("title"));
   const content = String(formData.get("content") ?? "");
+  const video_url = cleanField(formData.get("video_url"));
+  const image_url = cleanField(formData.get("image_url"));
 
   if (!courseId || !moduleId) {
     return { ok: false, error: "Missing module." };
@@ -616,6 +625,8 @@ export async function createLesson(
     module_id: moduleId,
     title,
     content,
+    video_url: video_url || null,
+    image_url: image_url || null,
     position,
     is_published: false,
   });
@@ -640,6 +651,8 @@ export async function updateLesson(
   const lessonId = cleanField(formData.get("lessonId"));
   const title = cleanField(formData.get("title"));
   const content = String(formData.get("content") ?? "");
+  const video_url = cleanField(formData.get("video_url"));
+  const image_url = cleanField(formData.get("image_url"));
   const publishedValue = formData.get("is_published");
   const isPublished = publishedValue === "on";
 
@@ -666,7 +679,13 @@ export async function updateLesson(
 
   const { error } = await ctx.supabase
     .from("lessons")
-    .update({ title, content, is_published: isPublished })
+    .update({ 
+      title, 
+      content, 
+      video_url: video_url || null, 
+      image_url: image_url || null, 
+      is_published: isPublished 
+    })
     .eq("lesson_id", lessonId);
 
   if (error) {

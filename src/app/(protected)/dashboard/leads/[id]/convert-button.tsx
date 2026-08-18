@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { convertLead, type ActionState } from "../actions";
+import { Button } from "@/components/ui/button";
 
 export default function ConvertButton({ leadId }: { leadId: string }) {
   const router = useRouter();
@@ -20,39 +21,39 @@ export default function ConvertButton({ leadId }: { leadId: string }) {
 
   if (!confirming) {
     return (
-      <button
+      <Button
         type="button"
         onClick={() => setConfirming(true)}
-        className="rounded-md bg-green-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+        className="bg-[var(--color-success)] text-white hover:bg-[var(--color-success)]/90"
       >
         Convert to Student
-      </button>
+      </Button>
     );
   }
 
   return (
     <form action={formAction} className="flex flex-wrap items-center gap-3">
       <input type="hidden" name="leadId" value={leadId} />
-      <p className="text-sm text-[#A1A1AA]">
-        Converting a lead creates a student record.ntact details are copied into the
+      <p className="text-sm text-[var(--color-text-secondary)]">
+        Converting a lead creates a student record. Contact details are copied into the
         student record and the lead is marked as converted.
       </p>
-      <button
+      <Button
         type="submit"
         disabled={isPending}
-        className="rounded-md bg-green-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-600 disabled:cursor-not-allowed disabled:opacity-50"
+        className="bg-[var(--color-success)] text-white hover:bg-[var(--color-success)]/90"
       >
         {isPending ? "Converting…" : "Confirm conversion"}
-      </button>
-      <button
+      </Button>
+      <Button
         type="button"
+        variant="outline"
         onClick={() => setConfirming(false)}
         disabled={isPending}
-        className="rounded-md border border-[#272B33] bg-[#181B21] px-4 py-2 text-sm font-medium text-[#F4F4F5] transition-colors hover:bg-emerald-600 hover:text-white hover:border-emerald-600 disabled:cursor-not-allowed disabled:opacity-50"
       >
         Cancel
-      </button>
-      {state.error && <span className="text-sm text-red-600">{state.error}</span>}
+      </Button>
+      {state.error && <span className="text-sm text-[var(--color-danger)]">{state.error}</span>}
     </form>
   );
 }

@@ -33,7 +33,7 @@ export function OrderControls({
   const name =
     kind === "module" ? "moduleId" : kind === "lesson" ? "lessonId" : "questionId";
   const buttonClass =
-    "rounded-md border border-zinc-300 px-2 py-1 text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-40";
+    "rounded-md border border-[var(--color-border)] px-2 py-1 text-xs font-medium text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-surface-highest)] disabled:cursor-not-allowed disabled:opacity-40";
 
   return (
     <div className="flex items-center gap-1">
@@ -61,7 +61,7 @@ export function OrderControls({
           ↓
         </button>
       </form>
-      {state.error && <span className="text-xs text-red-600">{state.error}</span>}
+      {state.error && <span className="text-xs text-[var(--color-destructive)]">{state.error}</span>}
     </div>
   );
 }

@@ -7,6 +7,7 @@ import type { UserRole } from "@/lib/roles";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { CreateUserModal } from "./create-user-modal";
 
 export type UserRow = {
   user_id: string;
@@ -31,57 +32,58 @@ export default function UsersTable({
     <div className="flex flex-1 flex-col pb-12 w-full animate-in fade-in duration-500 max-w-6xl mx-auto px-4 mt-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight text-[#F4F4F5]">
+          <h1 className="text-3xl font-semibold tracking-tight text-[var(--color-text-primary)]">
             Users
           </h1>
-          <p className="mt-2 text-sm text-[#A1A1AA]">
+          <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
             Manage users in your organization.
           </p>
-          <p className="mt-1 text-sm font-medium text-[#71717A]">
-            Organization: <span className="text-[#F4F4F5]">{orgName}</span>
+          <p className="mt-1 text-sm font-medium text-[var(--color-text-muted)]">
+            Organization: <span className="text-[var(--color-text-primary)]">{orgName}</span>
           </p>
         </div>
+        <CreateUserModal />
       </div>
 
-      <Card className="bg-[#111318] border-[#272B33]">
+      <Card className="bg-[var(--color-surface)] border-[var(--color-border)]">
         <div className="overflow-x-auto">
           <Table>
-            <TableHeader className="bg-[#181B21]/50 border-b border-[#272B33]">
+            <TableHeader className="bg-[var(--color-surface-elevated)]/50 border-b border-[var(--color-border)]">
               <TableRow className="hover:bg-transparent border-transparent">
-                <TableHead className="text-[#A1A1AA] font-medium h-12">Name</TableHead>
-                <TableHead className="text-[#A1A1AA] font-medium h-12">Email</TableHead>
-                <TableHead className="text-[#A1A1AA] font-medium h-12">Role</TableHead>
-                <TableHead className="text-[#A1A1AA] font-medium h-12">Status</TableHead>
-                <TableHead className="text-[#A1A1AA] font-medium h-12">Created</TableHead>
-                <TableHead className="text-[#A1A1AA] font-medium h-12">Actions</TableHead>
+                <TableHead className="text-[var(--color-text-secondary)] font-medium h-12">Name</TableHead>
+                <TableHead className="text-[var(--color-text-secondary)] font-medium h-12">Email</TableHead>
+                <TableHead className="text-[var(--color-text-secondary)] font-medium h-12">Role</TableHead>
+                <TableHead className="text-[var(--color-text-secondary)] font-medium h-12">Status</TableHead>
+                <TableHead className="text-[var(--color-text-secondary)] font-medium h-12">Created</TableHead>
+                <TableHead className="text-[var(--color-text-secondary)] font-medium h-12">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {users.map((user) => {
                 const isSelf = user.user_id === ownUserId;
                 return (
-                  <TableRow key={user.user_id} className="border-[#272B33] hover:bg-[#181B21]/50 group transition-colors">
-                    <TableCell className="py-4 font-medium text-[#F4F4F5]">
+                  <TableRow key={user.user_id} className="border-[var(--color-border)] hover:bg-[var(--color-surface-elevated)]/50 group transition-colors">
+                    <TableCell className="py-4 font-medium text-[var(--color-text-primary)]">
                       {user.full_name}
                     </TableCell>
-                    <TableCell className="py-4 text-[#A1A1AA]">{user.email}</TableCell>
+                    <TableCell className="py-4 text-[var(--color-text-secondary)]">{user.email}</TableCell>
                     <TableCell className="py-4">
-                      <span className="capitalize text-[#F4F4F5] font-medium">
+                      <span className="capitalize text-[var(--color-text-primary)] font-medium">
                         {user.role ?? "Unprovisioned"}
                       </span>
                     </TableCell>
                     <TableCell className="py-4">
                       {user.is_active ? (
-                        <Badge variant="outline" className="bg-emerald-500/10 text-emerald-500 border-emerald-500/20">
+                        <Badge variant="outline" className="bg-[var(--color-success)]/10 text-[var(--color-success)] border-[var(--color-success)]/20">
                           Active
                         </Badge>
                       ) : (
-                        <Badge variant="outline" className="bg-zinc-500/10 text-zinc-500 border-zinc-500/20">
+                        <Badge variant="outline" className="bg-[var(--color-surface-elevated)]/10 text-[var(--color-text-secondary)] border-[var(--color-border)]">
                           Inactive
                         </Badge>
                       )}
                     </TableCell>
-                    <TableCell className="py-4 text-sm text-[#71717A]">
+                    <TableCell className="py-4 text-sm text-[var(--color-text-muted)]">
                       {new Date(user.created_at).toLocaleDateString("en-GB", {
                         day: "numeric",
                         month: "short",
@@ -90,11 +92,11 @@ export default function UsersTable({
                     </TableCell>
                     <TableCell className="py-4">
                       {isSelf ? (
-                        <span className="text-xs font-medium text-[#71717A] bg-[#272B33]/50 px-2.5 py-1 rounded-md">
+                        <span className="text-xs font-medium text-[var(--color-text-muted)] bg-[var(--color-border)]/50 px-2.5 py-1 rounded-md">
                           Your account
                         </span>
                       ) : user.role === "admin" ? (
-                        <span className="text-xs font-medium text-[#71717A] bg-[#272B33]/50 px-2.5 py-1 rounded-md">
+                        <span className="text-xs font-medium text-[var(--color-text-muted)] bg-[var(--color-border)]/50 px-2.5 py-1 rounded-md">
                           Protected
                         </span>
                       ) : user.role === null ? (

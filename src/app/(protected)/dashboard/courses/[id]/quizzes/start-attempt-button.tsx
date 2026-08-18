@@ -29,11 +29,11 @@ export function StartAttemptButton({
       <button
         type="submit"
         disabled={pending}
-        className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:opacity-50"
+        className="rounded-[var(--radius-md)] bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-primary)]/90 disabled:opacity-50"
       >
         {pending ? "Starting…" : label ?? "Start attempt"}
       </button>
-      {state.error && <p className="mt-2 text-xs text-red-600">{state.error}</p>}
+      {state.error && <p className="mt-2 text-xs text-[var(--color-destructive)]">{state.error}</p>}
     </form>
   );
 }

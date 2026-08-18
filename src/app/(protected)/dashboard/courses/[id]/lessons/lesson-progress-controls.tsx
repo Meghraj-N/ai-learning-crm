@@ -34,10 +34,10 @@ export function LessonProgressControls({
 
   if (status === "completed") {
     return (
-      <div className="rounded-md border border-green-200 bg-green-50 px-4 py-3">
-        <p className="text-sm font-medium text-green-800">✓ Completed</p>
+      <div className="rounded-md border border-[var(--color-success)]/20 bg-[var(--color-success)]/10 px-4 py-3">
+        <p className="text-sm font-medium text-[var(--color-success)]">✓ Completed</p>
         {completedAt && (
-          <p className="mt-0.5 text-xs text-green-700">
+          <p className="mt-0.5 text-xs text-[var(--color-success)]">
             Completed{" "}
             {new Intl.DateTimeFormat("en-GB", {
               dateStyle: "medium",
@@ -58,7 +58,7 @@ export function LessonProgressControls({
           <button
             type="submit"
             disabled={startPending}
-            className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:opacity-50"
+            className="rounded-md bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-primary)]/90 disabled:opacity-50"
           >
             {startPending ? "Starting…" : "Start lesson"}
           </button>
@@ -72,18 +72,18 @@ export function LessonProgressControls({
           disabled={completePending}
           className={`rounded-md px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50 ${
             status === "in_progress"
-              ? "bg-zinc-900 text-white hover:bg-zinc-700"
-              : "border border-zinc-300 text-zinc-700 hover:bg-zinc-100"
+              ? "bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary)]/90"
+              : "border border-[var(--color-border)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-highest)]"
           }`}
         >
           {completePending ? "Saving…" : "Complete lesson"}
         </button>
       </form>
       {startState.error && (
-        <p className="text-xs text-red-600">{startState.error}</p>
+        <p className="text-xs text-[var(--color-destructive)]">{startState.error}</p>
       )}
       {completeState.error && (
-        <p className="text-xs text-red-600">{completeState.error}</p>
+        <p className="text-xs text-[var(--color-destructive)]">{completeState.error}</p>
       )}
     </div>
   );

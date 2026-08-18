@@ -3,15 +3,15 @@ import type { LeadStatus } from "@/types/crm";
 export function statusBadgeClasses(status: LeadStatus): string {
   switch (status) {
     case "new":
-      return "bg-blue-100 text-blue-700";
+      return "bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-[var(--color-primary)]/20";
     case "contacted":
-      return "bg-amber-100 text-amber-700";
+      return "bg-[var(--color-warning)]/10 text-[var(--color-warning)] border-[var(--color-warning)]/20";
     case "qualified":
-      return "bg-purple-100 text-purple-700";
+      return "bg-[var(--color-accent-violet)]/10 text-[var(--color-accent-violet)] border-[var(--color-accent-violet)]/20";
     case "converted":
-      return "bg-green-100 text-green-700";
+      return "bg-[var(--color-success)]/10 text-[var(--color-success)] border-[var(--color-success)]/20";
     case "lost":
-      return "bg-zinc-100 text-zinc-500";
+      return "bg-[var(--color-surface-elevated)] text-[var(--color-text-muted)] border-[var(--color-border)]";
   }
 }
 

@@ -40,9 +40,9 @@ function formatDateTime(iso: string): string {
 
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between px-5 py-4 hover:bg-[#181B21] transition-colors">
-      <dt className="text-sm text-[#A1A1AA]">{label}</dt>
-      <dd className="text-sm font-medium text-[#F4F4F5] text-right">{value}</dd>
+    <div className="flex items-center justify-between px-5 py-4 hover:bg-[var(--color-surface-elevated)] transition-colors">
+      <dt className="text-sm text-[var(--color-text-secondary)]">{label}</dt>
+      <dd className="text-sm font-medium text-[var(--color-text-primary)] text-right">{value}</dd>
     </div>
   );
 }
@@ -50,11 +50,11 @@ function InfoRow({ label, value }: { label: string; value: string }) {
 function priorityClasses(priority: Followup["priority"]): string {
   switch (priority) {
     case "low":
-      return "bg-[#272B33] text-[#A1A1AA] border-transparent";
+      return "bg-[var(--color-surface-highest)] text-[var(--color-text-secondary)] border-transparent";
     case "medium":
-      return "bg-[#6366F1]/10 text-[#6366F1] border-[#6366F1]/20";
+      return "bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-[var(--color-primary)]/20";
     case "high":
-      return "bg-red-500/10 text-red-500 border-red-500/20";
+      return "bg-[var(--color-danger)]/10 text-[var(--color-danger)] border-[var(--color-danger)]/20";
   }
 }
 
@@ -129,11 +129,11 @@ export default async function LeadDetailPage({
   const nowIso = new Date().toISOString();
 
   return (
-    <div className="flex flex-1 flex-col pb-12 w-full animate-in fade-in duration-500 max-w-5xl mx-auto">
+    <div className="flex flex-1 flex-col pb-12 w-full animate-in fade-in duration-500 max-w-6xl mx-auto">
       <div className="mb-6">
         <Link
           href="/dashboard/leads"
-          className="text-sm font-medium text-[#A1A1AA] hover:text-[#F4F4F5] transition-colors inline-flex items-center"
+          className="text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors inline-flex items-center"
         >
           <ChevronLeft className="w-4 h-4 mr-1" />
           Back to leads
@@ -143,25 +143,25 @@ export default async function LeadDetailPage({
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-8">
         <div>
           <div className="flex flex-wrap items-center gap-3 mb-2">
-            <h1 className="text-3xl font-semibold tracking-tight text-[#F4F4F5]">
+            <h1 className="text-3xl font-semibold tracking-tight text-[var(--color-text-primary)]">
               {lead.first_name} {lead.last_name}
             </h1>
             <Badge variant="outline" className={statusBadgeClasses(lead.status)}>
               {lead.status}
             </Badge>
             {lead.converted_at && (
-              <Badge variant="success" className="bg-emerald-500/10 text-emerald-500 border-emerald-500/20">
+              <Badge variant="success" className="bg-[var(--color-success)]/10 text-[var(--color-success)] border-[var(--color-success)]/20">
                 Converted
               </Badge>
             )}
           </div>
-          <p className="text-sm text-[#A1A1AA]">
+          <p className="text-sm text-[var(--color-text-secondary)]">
             Added on {formatDateTime(lead.created_at)}
           </p>
         </div>
 
         {lead.student_id ? (
-          <Button asChild className="shrink-0 bg-emerald-600 hover:bg-emerald-700 text-white border-transparent">
+          <Button asChild className="shrink-0 bg-[var(--color-success)] hover:bg-[var(--color-success)]/90 text-white border-transparent">
             <Link href={`/dashboard/students/${lead.student_id}`}>
               <CheckCircle2 className="w-4 h-4 mr-2" />
               View Student Profile
@@ -177,15 +177,15 @@ export default async function LeadDetailPage({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column - Details & Settings */}
         <div className="space-y-8">
-          <Card className="bg-[#111318] border-[#272B33]">
-            <CardHeader className="pb-3 border-b border-[#272B33]">
-              <CardTitle className="flex items-center text-lg text-[#F4F4F5]">
-                <User className="w-5 h-5 mr-2 text-[#A1A1AA]" />
+          <Card className="bg-[var(--color-surface)] border-[var(--color-border)]">
+            <CardHeader className="pb-3 border-b border-[var(--color-border)]">
+              <CardTitle className="flex items-center text-lg text-[var(--color-text-primary)]">
+                <User className="w-5 h-5 mr-2 text-[var(--color-text-secondary)]" />
                 Contact Info
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              <dl className="divide-y divide-[#272B33]">
+              <dl className="divide-y divide-[var(--color-border)]">
                 <InfoRow label="Email" value={lead.email ?? "—"} />
                 <InfoRow label="Phone" value={lead.phone ?? "—"} />
                 <InfoRow label="Source" value={lead.source ?? "—"} />
@@ -217,32 +217,32 @@ export default async function LeadDetailPage({
             </CardContent>
           </Card>
 
-          <Card className="bg-[#111318] border-[#272B33]">
-            <CardHeader className="pb-4 border-b border-[#272B33]">
-              <CardTitle className="flex items-center text-lg text-[#F4F4F5]">
-                <Settings className="w-5 h-5 mr-2 text-[#A1A1AA]" />
+          <Card className="bg-[var(--color-surface)] border-[var(--color-border)]">
+            <CardHeader className="pb-4 border-b border-[var(--color-border)]">
+              <CardTitle className="flex items-center text-lg text-[var(--color-text-primary)]">
+                <Settings className="w-5 h-5 mr-2 text-[var(--color-text-secondary)]" />
                 Management
               </CardTitle>
             </CardHeader>
             <CardContent className="p-5 space-y-6">
               <div>
-                <h3 className="text-sm font-medium text-[#F4F4F5] mb-1">Lead Status</h3>
-                <p className="text-xs text-[#A1A1AA] mb-3">Changes are recorded in the timeline.</p>
+                <h3 className="text-sm font-medium text-[var(--color-text-primary)] mb-1">Lead Status</h3>
+                <p className="text-xs text-[var(--color-text-secondary)] mb-3">Changes are recorded in the timeline.</p>
                 {lead.status === "converted" ? (
-                  <div className="bg-[#181B21] rounded-md p-3 text-sm text-[#A1A1AA] border border-[#272B33]">
+                  <div className="bg-[var(--color-surface-elevated)] rounded-[var(--radius-md)] p-3 text-sm text-[var(--color-text-secondary)] border border-[var(--color-border)]">
                     Converted leads keep their status permanently.
                   </div>
                 ) : (
-                  <div className="bg-[#181B21] rounded-md p-1 border border-[#272B33]">
+                  <div className="bg-[var(--color-surface-elevated)] rounded-[var(--radius-md)] p-1 border border-[var(--color-border)]">
                     <StatusForm leadId={lead.lead_id} currentStatus={lead.status} />
                   </div>
                 )}
               </div>
 
-              <div className="pt-4 border-t border-[#272B33]">
-                <h3 className="text-sm font-medium text-[#F4F4F5] mb-1">Assignment</h3>
-                <p className="text-xs text-[#A1A1AA] mb-3">Assign to an active team member.</p>
-                <div className="bg-[#181B21] rounded-md p-1 border border-[#272B33]">
+              <div className="pt-4 border-t border-[var(--color-border)]">
+                <h3 className="text-sm font-medium text-[var(--color-text-primary)] mb-1">Assignment</h3>
+                <p className="text-xs text-[var(--color-text-secondary)] mb-3">Assign to an active team member.</p>
+                <div className="bg-[var(--color-surface-elevated)] rounded-[var(--radius-md)] p-1 border border-[var(--color-border)]">
                   <AssignForm
                     leadId={lead.lead_id}
                     currentAssignee={lead.assigned_to}
@@ -254,12 +254,12 @@ export default async function LeadDetailPage({
           </Card>
 
           {lead.notes && (
-            <Card className="bg-[#111318] border-[#272B33]">
-              <CardHeader className="pb-3 border-b border-[#272B33]">
-                <CardTitle className="text-lg text-[#F4F4F5]">Notes</CardTitle>
+            <Card className="bg-[var(--color-surface)] border-[var(--color-border)]">
+              <CardHeader className="pb-3 border-b border-[var(--color-border)]">
+                <CardTitle className="text-lg text-[var(--color-text-primary)]">Notes</CardTitle>
               </CardHeader>
               <CardContent className="p-5">
-                <p className="whitespace-pre-wrap text-sm text-[#A1A1AA] leading-relaxed">
+                <p className="whitespace-pre-wrap text-sm text-[var(--color-text-secondary)] leading-relaxed">
                   {lead.notes}
                 </p>
               </CardContent>
@@ -269,63 +269,63 @@ export default async function LeadDetailPage({
 
         {/* Right Column - Tasks & Activity */}
         <div className="lg:col-span-2 space-y-8">
-          <Card className="bg-[#111318] border-[#272B33]">
-            <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-[#272B33]">
-              <CardTitle className="flex items-center text-lg text-[#F4F4F5]">
-                <ListTodo className="w-5 h-5 mr-2 text-[#A1A1AA]" />
+          <Card className="bg-[var(--color-surface)] border-[var(--color-border)]">
+            <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-[var(--color-border)]">
+              <CardTitle className="flex items-center text-lg text-[var(--color-text-primary)]">
+                <ListTodo className="w-5 h-5 mr-2 text-[var(--color-text-secondary)]" />
                 Follow-ups
               </CardTitle>
-              <Badge variant="secondary" className="bg-[#181B21] text-[#A1A1AA]">
+              <Badge variant="secondary" className="bg-[var(--color-surface-elevated)] text-[var(--color-text-secondary)]">
                 {followups.filter((f) => f.status === "pending").length} pending
               </Badge>
             </CardHeader>
             <CardContent className="p-0">
-              <div className="p-5 bg-[#181B21]/50 border-b border-[#272B33]">
-                <h3 className="text-sm font-medium text-[#F4F4F5] mb-3">Add new follow-up</h3>
+              <div className="p-5 bg-[var(--color-surface-elevated)]/50 border-b border-[var(--color-border)]">
+                <h3 className="text-sm font-medium text-[var(--color-text-primary)] mb-3">Add new follow-up</h3>
                 <FollowupForm leadId={lead.lead_id} members={activeMembers} />
               </div>
 
               {followups.length === 0 ? (
-                <div className="p-8 text-center text-sm text-[#A1A1AA]">
+                <div className="p-8 text-center text-sm text-[var(--color-text-secondary)]">
                   No follow-ups for this lead yet.
                 </div>
               ) : (
-                <ul className="divide-y divide-[#272B33]">
+                <ul className="divide-y divide-[var(--color-border)]">
                   {followups.map((followup) => {
                     const isOverdue = followup.status === "pending" && followup.due_at < nowIso;
                     return (
-                      <li key={followup.followup_id} className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 p-5 hover:bg-[#181B21]/30 transition-colors">
+                      <li key={followup.followup_id} className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 p-5 hover:bg-[var(--color-surface-elevated)]/30 transition-colors">
                         <div className="flex-1">
                           <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                            <p className="text-sm font-medium text-[#F4F4F5]">
+                            <p className="text-sm font-medium text-[var(--color-text-primary)]">
                               {followup.title}
                             </p>
                             <Badge variant="outline" className={priorityClasses(followup.priority)}>
                               {followup.priority}
                             </Badge>
                             {followup.status === "pending" && isOverdue && (
-                              <Badge variant="outline" className="bg-red-500/10 text-red-500 border-red-500/20">
+                              <Badge variant="outline" className="bg-[var(--color-danger)]/10 text-[var(--color-danger)] border-[var(--color-danger)]/20">
                                 Overdue
                               </Badge>
                             )}
                             {followup.status === "pending" && !isOverdue && (
-                              <Badge variant="outline" className="bg-blue-500/10 text-blue-500 border-blue-500/20">
+                              <Badge variant="outline" className="bg-[var(--color-primary)]/10 text-[var(--color-primary)] border-[var(--color-primary)]/20">
                                 Pending
                               </Badge>
                             )}
                             {followup.status === "completed" && (
-                              <Badge variant="outline" className="bg-emerald-500/10 text-emerald-500 border-emerald-500/20">
+                              <Badge variant="outline" className="bg-[var(--color-success)]/10 text-[var(--color-success)] border-[var(--color-success)]/20">
                                 Completed
                               </Badge>
                             )}
                             {followup.status === "cancelled" && (
-                              <Badge variant="outline" className="bg-[#272B33] text-[#A1A1AA] border-transparent">
+                              <Badge variant="outline" className="bg-[var(--color-surface-highest)] text-[var(--color-text-secondary)] border-transparent">
                                 Cancelled
                               </Badge>
                             )}
                           </div>
 
-                          <p className="text-xs text-[#71717A] mb-2 flex flex-wrap gap-2">
+                          <p className="text-xs text-[var(--color-text-muted)] mb-2 flex flex-wrap gap-2">
                             <span>Due {formatDateTime(followup.due_at)}</span>
                             {followup.assigned_to && (
                               <>
@@ -342,7 +342,7 @@ export default async function LeadDetailPage({
                           </p>
 
                           {followup.notes && (
-                            <div className="mt-2 text-sm text-[#A1A1AA] bg-[#181B21] rounded-md p-3 border border-[#272B33]/50">
+                            <div className="mt-2 text-sm text-[var(--color-text-secondary)] bg-[var(--color-surface-elevated)] rounded-[var(--radius-md)] p-3 border border-[var(--color-border)]/50">
                               {followup.notes}
                             </div>
                           )}
@@ -361,39 +361,39 @@ export default async function LeadDetailPage({
             </CardContent>
           </Card>
 
-          <Card className="bg-[#111318] border-[#272B33]">
-            <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-[#272B33]">
-              <CardTitle className="flex items-center text-lg text-[#F4F4F5]">
-                <Activity className="w-5 h-5 mr-2 text-[#A1A1AA]" />
+          <Card className="bg-[var(--color-surface)] border-[var(--color-border)]">
+            <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-[var(--color-border)]">
+              <CardTitle className="flex items-center text-lg text-[var(--color-text-primary)]">
+                <Activity className="w-5 h-5 mr-2 text-[var(--color-text-secondary)]" />
                 Activity Timeline
               </CardTitle>
-              <Badge variant="secondary" className="bg-[#181B21] text-[#A1A1AA]">
+              <Badge variant="secondary" className="bg-[var(--color-surface-elevated)] text-[var(--color-text-secondary)]">
                 {activities.length} entries
               </Badge>
             </CardHeader>
             <CardContent className="p-0">
               {activities.length === 0 ? (
-                <div className="p-8 text-center text-sm text-[#A1A1AA]">
+                <div className="p-8 text-center text-sm text-[var(--color-text-secondary)]">
                   No activity recorded for this lead yet.
                 </div>
               ) : (
                 <div className="p-5">
-                  <div className="relative border-l border-[#272B33] ml-3 space-y-6 pb-4">
+                  <div className="relative border-l border-[var(--color-border)] ml-3 space-y-6 pb-4">
                     {activities.map((activity) => (
                       <div key={activity.activity_id} className="relative pl-6">
-                        <span className="absolute -left-1.5 top-1.5 h-3 w-3 rounded-full bg-[#6366F1] ring-4 ring-[#111318]" />
+                        <span className="absolute -left-1.5 top-1.5 h-3 w-3 rounded-full bg-[var(--color-primary)] ring-4 ring-[var(--color-surface)]" />
 
                         <div className="flex flex-col gap-1">
                           <div className="flex flex-wrap items-baseline gap-2">
-                            <p className="text-sm font-medium text-[#F4F4F5]">
+                            <p className="text-sm font-medium text-[var(--color-text-primary)]">
                               {ACTIVITY_LABELS[activity.activity_type]}
                             </p>
-                            <span className="text-xs text-[#71717A]">
+                            <span className="text-xs text-[var(--color-text-muted)]">
                               {formatDateTime(activity.occurred_at)}
                             </span>
                           </div>
 
-                          <p className="text-xs text-[#A1A1AA]">
+                          <p className="text-xs text-[var(--color-text-secondary)]">
                             by {activity.performed_by
                               ? memberNames.get(activity.performed_by) ?? "Unknown"
                               : "System"}
@@ -403,11 +403,11 @@ export default async function LeadDetailPage({
                           activity.metadata &&
                           typeof activity.metadata.from === "string" &&
                           typeof activity.metadata.to === "string" ? (
-                            <div className="mt-2 text-sm text-[#A1A1AA] bg-[#181B21] rounded-md p-3 border border-[#272B33]">
-                              Status changed from <span className="font-medium text-[#F4F4F5]">{activity.metadata.from}</span> to <span className="font-medium text-[#F4F4F5]">{activity.metadata.to}</span>
+                            <div className="mt-2 text-sm text-[var(--color-text-secondary)] bg-[var(--color-surface-elevated)] rounded-[var(--radius-md)] p-3 border border-[var(--color-border)]">
+                              Status changed from <span className="font-medium text-[var(--color-text-primary)]">{activity.metadata.from}</span> to <span className="font-medium text-[var(--color-text-primary)]">{activity.metadata.to}</span>
                             </div>
                           ) : activity.notes ? (
-                            <div className="mt-2 text-sm text-[#A1A1AA] bg-[#181B21] rounded-md p-3 border border-[#272B33] whitespace-pre-wrap">
+                            <div className="mt-2 text-sm text-[var(--color-text-secondary)] bg-[var(--color-surface-elevated)] rounded-[var(--radius-md)] p-3 border border-[var(--color-border)] whitespace-pre-wrap">
                               {activity.notes}
                             </div>
                           ) : null}

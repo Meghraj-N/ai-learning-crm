@@ -125,17 +125,17 @@ export default async function LeadsPage({
   const hasFilters = Boolean(q || status || assigned);
 
   return (
-    <div className="flex flex-1 flex-col pb-12 w-full animate-in fade-in duration-500 max-w-7xl mx-auto">
+    <div className="flex flex-1 flex-col pb-12 w-full animate-in fade-in duration-500 max-w-[1440px] mx-auto">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight text-[#F4F4F5]">
+          <h1 className="text-3xl font-semibold tracking-tight text-[var(--color-text-primary)]">
             Leads
           </h1>
-          <p className="mt-2 text-sm text-[#A1A1AA]">
+          <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
             Track prospects and follow-ups in your organization.
           </p>
         </div>
-        <Button asChild className="shrink-0 bg-[#F4F4F5] text-[#09090B] hover:bg-[#E4E4E7]">
+        <Button asChild className="shrink-0 bg-[var(--color-text-primary)] text-[var(--color-background)] hover:bg-[var(--color-text-secondary)]">
           <Link href="/dashboard/leads/new">
             <Plus className="w-4 h-4 mr-2" />
             New lead
@@ -143,23 +143,23 @@ export default async function LeadsPage({
         </Button>
       </div>
 
-      <div className="bg-[#111318] border border-[#272B33] rounded-xl p-4 mb-8 flex flex-wrap items-center gap-4">
+      <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-4 mb-8 flex flex-wrap items-center gap-4">
         <form method="get" className="flex flex-wrap items-center gap-3 w-full">
           <div className="relative flex-1 min-w-[240px]">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#71717A]" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--color-text-muted)]" />
             <input
               id="q"
               name="q"
               type="search"
               defaultValue={q}
               placeholder="Search name, email, phone…"
-              className="block w-full rounded-md border border-[#272B33] bg-[#09090B] pl-10 pr-3 py-2 text-sm text-[#F4F4F5] placeholder:text-[#71717A] focus:border-[#6366F1] focus:ring-1 focus:ring-[#6366F1] outline-none transition-all"
+              className="block w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-background)] pl-10 pr-3 py-2 text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] outline-none transition-all"
             />
           </div>
           <select
             name="status"
             defaultValue={status ?? ""}
-            className="rounded-md border border-[#272B33] bg-[#09090B] px-3 py-2 text-sm text-[#F4F4F5] focus:border-[#6366F1] focus:ring-1 focus:ring-[#6366F1] outline-none transition-all"
+            className="rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-background)] px-3 py-2 text-sm text-[var(--color-text-primary)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] outline-none transition-all"
           >
             <option value="">All statuses</option>
             {LEAD_STATUSES.map((value) => (
@@ -171,7 +171,7 @@ export default async function LeadsPage({
           <select
             name="assigned"
             defaultValue={assigned}
-            className="rounded-md border border-[#272B33] bg-[#09090B] px-3 py-2 text-sm text-[#F4F4F5] focus:border-[#6366F1] focus:ring-1 focus:ring-[#6366F1] outline-none transition-all"
+            className="rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-background)] px-3 py-2 text-sm text-[var(--color-text-primary)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] outline-none transition-all"
           >
             <option value="">All assignments</option>
             <option value="unassigned">Unassigned</option>
@@ -186,7 +186,7 @@ export default async function LeadsPage({
             Filter
           </Button>
           {hasFilters && (
-            <Button asChild variant="ghost" size="sm" className="text-[#A1A1AA] hover:text-[#F4F4F5]">
+            <Button asChild variant="ghost" size="sm" className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]">
               <Link href="/dashboard/leads">
                 <X className="w-4 h-4 mr-2" />
                 Clear
@@ -204,7 +204,7 @@ export default async function LeadsPage({
         />
       ) : leads && leads.length > 0 ? (
         <div className="flex flex-col gap-4">
-          <div className="rounded-xl border border-[#272B33] bg-[#111318] overflow-hidden">
+          <div className="rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -224,42 +224,42 @@ export default async function LeadsPage({
                       <TableCell>
                         <Link
                           href={`/dashboard/leads/${lead.lead_id}`}
-                          className="font-medium text-[#F4F4F5] hover:text-[#6366F1] transition-colors"
+                          className="font-medium text-[var(--color-text-primary)] hover:text-[var(--color-primary)] transition-colors"
                         >
                           {lead.first_name} {lead.last_name}
                         </Link>
                         {lead.source && (
-                          <p className="text-xs text-[#A1A1AA] mt-0.5">{lead.source}</p>
+                          <p className="text-xs text-[var(--color-text-secondary)] mt-0.5">{lead.source}</p>
                         )}
                       </TableCell>
-                      <TableCell className="text-[#A1A1AA]">
+                      <TableCell className="text-[var(--color-text-secondary)]">
                         {lead.email && <p>{lead.email}</p>}
-                        {lead.phone && <p className="text-xs text-[#71717A] mt-0.5">{lead.phone}</p>}
-                        {!lead.email && !lead.phone && <span className="text-[#71717A]">—</span>}
+                        {lead.phone && <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{lead.phone}</p>}
+                        {!lead.email && !lead.phone && <span className="text-[var(--color-text-muted)]">—</span>}
                       </TableCell>
                       <TableCell>
                         <Badge variant="outline" className={statusBadgeClasses(lead.status)}>
                           {lead.status}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-[#A1A1AA]">
+                      <TableCell className="text-[var(--color-text-secondary)]">
                         {lead.assigned_to
                           ? memberMap.get(lead.assigned_to) ?? "—"
                           : "—"}
                       </TableCell>
-                      <TableCell className="text-xs text-[#A1A1AA]">
+                      <TableCell className="text-xs text-[var(--color-text-secondary)]">
                         {last ? (
                           <>
-                            <span className="capitalize text-[#E4E4E7] font-medium">{last.activity_type}</span>
-                            <span className="ml-1 text-[#71717A]">
+                            <span className="capitalize text-[var(--color-text-primary)] font-medium">{last.activity_type}</span>
+                            <span className="ml-1 text-[var(--color-text-muted)]">
                               · {new Date(last.occurred_at).toLocaleDateString("en-GB")}
                             </span>
                           </>
                         ) : (
-                          <span className="text-[#71717A]">—</span>
+                          <span className="text-[var(--color-text-muted)]">—</span>
                         )}
                       </TableCell>
-                      <TableCell className="text-xs text-[#A1A1AA]">
+                      <TableCell className="text-xs text-[var(--color-text-secondary)]">
                         {new Date(lead.created_at).toLocaleDateString("en-GB")}
                       </TableCell>
                     </TableRow>
@@ -269,7 +269,7 @@ export default async function LeadsPage({
             </Table>
           </div>
 
-          <div className="flex items-center justify-between text-sm text-[#A1A1AA] px-1">
+          <div className="flex items-center justify-between text-sm text-[var(--color-text-secondary)] px-1">
             <p>
               Showing {totalCount} {totalCount === 1 ? "lead" : "leads"}
               {hasFilters ? " (filtered)" : ""}
@@ -286,7 +286,7 @@ export default async function LeadsPage({
                     Previous
                   </Link>
                 </Button>
-                <span className="px-2 font-medium text-[#F4F4F5]">
+                <span className="px-2 font-medium text-[var(--color-text-primary)]">
                   Page {page} of {totalPages}
                 </span>
                 <Button

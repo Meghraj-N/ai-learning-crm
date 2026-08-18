@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { createFollowup, type ActionState } from "../actions";
 import { FOLLOWUP_PRIORITIES } from "@/types/crm";
 import type { OrgMember } from "@/types/crm";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function FollowupForm({
   leadId,
@@ -26,46 +28,45 @@ export default function FollowupForm({
   }, [state, router]);
 
   return (
-    <form action={formAction} className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+    <form action={formAction} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       <input type="hidden" name="leadId" value={leadId} />
-      <div className="sm:col-span-2">
+      <div className="sm:col-span-2 space-y-2">
         <label
           htmlFor="title"
-          className="block text-sm font-medium text-[#F4F4F5]"
+          className="block text-[13px] font-medium text-[var(--color-text-primary)]"
         >
-          Title <span className="text-red-500">*</span>
+          Title <span className="text-[var(--color-danger)]">*</span>
         </label>
-        <input
+        <Input
           id="title"
           name="title"
           type="text"
           placeholder="e.g. Follow up on course enquiry"
           required
           disabled={isPending}
-          className="mt-1 block w-full rounded-md border border-[#272B33] bg-[#181B21] px-3 py-2 text-sm text-[#F4F4F5] shadow-sm outline-none focus:border-[#6366F1] focus:ring-1 focus:ring-[#6366F1] disabled:opacity-50 placeholder:text-[#A1A1AA]"
         />
       </div>
-      <div>
+      <div className="space-y-2">
         <label
           htmlFor="dueAt"
-          className="block text-sm font-medium text-[#F4F4F5]"
+          className="block text-[13px] font-medium text-[var(--color-text-primary)]"
         >
-          Due date and time <span className="text-red-500">*</span>
+          Due date and time <span className="text-[var(--color-danger)]">*</span>
         </label>
-        <input
+        <Input
           id="dueAt"
           name="dueAt"
           type="datetime-local"
           required
           disabled={isPending}
-          className="mt-1 block w-full rounded-md border border-[#272B33] bg-[#181B21] px-3 py-2 text-sm text-[#F4F4F5] shadow-sm outline-none focus:border-[#6366F1] focus:ring-1 focus:ring-[#6366F1] disabled:opacity-50 color-scheme-dark"
+          className="color-scheme-dark"
           style={{ colorScheme: 'dark' }}
         />
       </div>
-      <div>
+      <div className="space-y-2">
         <label
           htmlFor="priority"
-          className="block text-sm font-medium text-[#F4F4F5]"
+          className="block text-[13px] font-medium text-[var(--color-text-primary)]"
         >
           Priority
         </label>
@@ -74,7 +75,7 @@ export default function FollowupForm({
           name="priority"
           defaultValue="medium"
           disabled={isPending}
-          className="mt-1 block w-full rounded-md border border-[#272B33] bg-[#181B21] px-3 py-2 text-sm text-[#F4F4F5] shadow-sm outline-none focus:border-[#6366F1] disabled:opacity-50"
+          className="flex h-10 w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-background)] px-3 py-2 text-sm text-[var(--color-text-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none transition-colors focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] disabled:cursor-not-allowed disabled:opacity-50"
         >
           {FOLLOWUP_PRIORITIES.map((value) => (
             <option key={value} value={value}>
@@ -83,10 +84,10 @@ export default function FollowupForm({
           ))}
         </select>
       </div>
-      <div>
+      <div className="space-y-2">
         <label
           htmlFor="followupAssignedTo"
-          className="block text-sm font-medium text-[#F4F4F5]"
+          className="block text-[13px] font-medium text-[var(--color-text-primary)]"
         >
           Assigned to
         </label>
@@ -95,7 +96,7 @@ export default function FollowupForm({
           name="assignedTo"
           defaultValue=""
           disabled={isPending}
-          className="mt-1 block w-full rounded-md border border-[#272B33] bg-[#181B21] px-3 py-2 text-sm text-[#F4F4F5] shadow-sm outline-none focus:border-[#6366F1] disabled:opacity-50"
+          className="flex h-10 w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-background)] px-3 py-2 text-sm text-[var(--color-text-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none transition-colors focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] disabled:cursor-not-allowed disabled:opacity-50"
         >
           <option value="">Unassigned</option>
           {members.map((member) => (
@@ -105,10 +106,10 @@ export default function FollowupForm({
           ))}
         </select>
       </div>
-      <div>
+      <div className="sm:col-span-2 space-y-2">
         <label
           htmlFor="followupNotes"
-          className="block text-sm font-medium text-[#F4F4F5]"
+          className="block text-[13px] font-medium text-[var(--color-text-primary)]"
         >
           Notes
         </label>
@@ -117,19 +118,18 @@ export default function FollowupForm({
           name="notes"
           rows={2}
           disabled={isPending}
-          className="mt-1 block w-full rounded-md border border-[#272B33] bg-[#181B21] px-3 py-2 text-sm text-[#F4F4F5] shadow-sm outline-none focus:border-[#6366F1] focus:ring-1 focus:ring-[#6366F1] disabled:opacity-50 placeholder:text-[#A1A1AA]"
+          className="flex w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-background)] px-3 py-2 text-sm text-[var(--color-text-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none transition-colors placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] disabled:cursor-not-allowed disabled:opacity-50"
         />
       </div>
-      <div className="sm:col-span-2 flex items-center gap-3">
-        <button
+      <div className="sm:col-span-2 flex items-center gap-3 mt-2">
+        <Button
           type="submit"
           disabled={isPending}
-          className="rounded-md bg-[#6366F1] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#4F46E5] focus:outline-none focus:ring-2 focus:ring-[#6366F1] focus:ring-offset-2 focus:ring-offset-[#111318] disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isPending ? "Adding…" : "Add follow-up"}
-        </button>
+        </Button>
         {state.error && (
-          <span className="text-sm text-red-500">{state.error}</span>
+          <span className="text-sm text-[var(--color-danger)]">{state.error}</span>
         )}
       </div>
     </form>

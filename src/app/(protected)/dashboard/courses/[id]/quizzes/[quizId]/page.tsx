@@ -113,15 +113,15 @@ export default async function QuizDetailPage({
     return (
       <div className="flex flex-1 items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
+          <h1 className="text-2xl font-semibold tracking-tight text-[var(--color-text-primary)]">
             Quiz not found
           </h1>
-          <p className="mt-2 text-sm text-zinc-500">
+          <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
             The quiz you are looking for does not exist or is not available.
           </p>
           <Link
             href={`/dashboard/courses/${id}`}
-            className="mt-6 inline-block rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700"
+            className="mt-6 inline-block rounded-md bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-primary)]/90"
           >
             Back to course
           </Link>
@@ -140,12 +140,12 @@ export default async function QuizDetailPage({
     return (
       <div className="flex flex-1 items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
+          <h1 className="text-2xl font-semibold tracking-tight text-[var(--color-text-primary)]">
             Course not found
           </h1>
           <Link
             href="/dashboard/courses"
-            className="mt-6 inline-block rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700"
+            className="mt-6 inline-block rounded-md bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-primary)]/90"
           >
             Back to courses
           </Link>
@@ -270,11 +270,11 @@ export default async function QuizDetailPage({
   }
 
   const publishedBadge = quiz.is_published ? (
-    <span className="inline-flex rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+    <span className="inline-flex rounded-full bg-[var(--color-success)]/10 px-2 py-0.5 text-xs font-medium text-[var(--color-success)]">
       published
     </span>
   ) : (
-    <span className="inline-flex rounded-full bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-500">
+    <span className="inline-flex rounded-full bg-[var(--color-surface-highest)] px-2 py-0.5 text-xs font-medium text-[var(--color-text-secondary)]">
       draft
     </span>
   );
@@ -282,65 +282,65 @@ export default async function QuizDetailPage({
   return (
     <div className="flex flex-1 justify-center px-4 py-8">
       <div className="w-full max-w-3xl">
-        <nav className="text-sm text-zinc-500">
-          <Link href="/dashboard/courses" className="hover:text-zinc-900">
+        <nav className="text-sm text-[var(--color-text-secondary)]">
+          <Link href="/dashboard/courses" className="hover:text-[var(--color-text-primary)]">
             Courses
           </Link>
           <span className="mx-1">/</span>
           <Link
             href={`/dashboard/courses/${course.course_id}`}
-            className="hover:text-zinc-900"
+            className="hover:text-[var(--color-text-primary)]"
           >
             {course.title}
           </Link>
           <span className="mx-1">/</span>
-          <span className="text-zinc-900">{quiz.title}</span>
+          <span className="text-[var(--color-text-primary)]">{quiz.title}</span>
         </nav>
 
         <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
+            <h1 className="text-2xl font-semibold tracking-tight text-[var(--color-text-primary)]">
               {quiz.title}
             </h1>
             {quiz.description ? (
-              <p className="mt-2 whitespace-pre-wrap text-sm text-zinc-600">
+              <p className="mt-2 whitespace-pre-wrap text-sm text-[var(--color-text-secondary)]">
                 {quiz.description}
               </p>
             ) : (
-              <p className="mt-2 text-sm text-zinc-400">No description.</p>
+              <p className="mt-2 text-sm text-[var(--color-text-muted)]">No description.</p>
             )}
           </div>
           <div className="flex shrink-0 items-center gap-2">
             {publishedBadge}
-            <span className="text-xs text-zinc-400">
+            <span className="text-xs text-[var(--color-text-muted)]">
               {questionCount} {questionCount === 1 ? "question" : "questions"}
             </span>
           </div>
         </div>
 
-        <dl className="mt-6 divide-y divide-zinc-100 rounded-md border border-zinc-200">
+        <dl className="mt-6 divide-y divide-[var(--color-border)] rounded-md border border-[var(--color-border)]">
           <div className="flex items-center justify-between gap-4 px-4 py-3">
-            <dt className="text-sm text-zinc-500">Pass threshold</dt>
-            <dd className="text-sm font-medium text-zinc-900">
+            <dt className="text-sm text-[var(--color-text-secondary)]">Pass threshold</dt>
+            <dd className="text-sm font-medium text-[var(--color-text-primary)]">
               {quiz.pass_threshold}%
             </dd>
           </div>
           <div className="flex items-center justify-between gap-4 px-4 py-3">
-            <dt className="text-sm text-zinc-500">Attempts</dt>
-            <dd className="text-sm font-medium text-zinc-900">
+            <dt className="text-sm text-[var(--color-text-secondary)]">Attempts</dt>
+            <dd className="text-sm font-medium text-[var(--color-text-primary)]">
               {attemptCount}
             </dd>
           </div>
           <div className="flex items-center justify-between gap-4 px-4 py-3">
-            <dt className="text-sm text-zinc-500">Updated</dt>
-            <dd className="text-sm font-medium text-zinc-900">
+            <dt className="text-sm text-[var(--color-text-secondary)]">Updated</dt>
+            <dd className="text-sm font-medium text-[var(--color-text-primary)]">
               {formatDateTime(quiz.updated_at)}
             </dd>
           </div>
         </dl>
 
         {canWrite && (
-          <div className="mt-4 rounded-md border border-zinc-200 px-4 py-3">
+          <div className="mt-4 rounded-md border border-[var(--color-border)] px-4 py-3">
             <QuizForm
               courseId={quiz.course_id}
               quizId={quiz.quiz_id}
@@ -353,25 +353,25 @@ export default async function QuizDetailPage({
         )}
 
         {!isStudent && canWrite && (
-          <div className="mt-4 rounded-md border border-zinc-200 px-4 py-3">
-            <h2 className="text-sm font-semibold text-zinc-900">
+          <div className="mt-4 rounded-md border border-[var(--color-border)] px-4 py-3">
+            <h2 className="text-sm font-semibold text-[var(--color-text-primary)]">
               Questions
             </h2>
             {questions.length > 0 ? (
-              <ul className="mt-2 divide-y divide-zinc-100">
+              <ul className="mt-2 divide-y divide-[var(--color-border)]">
                 {questions.map((question) => (
                   <li key={question.question_id} className="py-3">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-sm font-medium text-zinc-900">
+                        <span className="text-sm font-medium text-[var(--color-text-primary)]">
                           {question.position}. {question.question}
                         </span>
-                        <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-xs text-zinc-500">
+                        <span className="rounded-full bg-[var(--color-surface-highest)] px-2 py-0.5 text-xs text-[var(--color-text-secondary)]">
                           {question.question_type === "true_false"
                             ? "True / false"
                             : "Multiple choice"}
                         </span>
-                        <span className="text-xs text-zinc-400">
+                        <span className="text-xs text-[var(--color-text-muted)]">
                           {question.points}{" "}
                           {question.points === 1 ? "point" : "points"}
                         </span>
@@ -387,11 +387,11 @@ export default async function QuizDetailPage({
                       {question.options.map((option, index) => (
                         <li
                           key={index}
-                          className="text-sm text-zinc-600"
+                          className="text-sm text-[var(--color-text-secondary)]"
                         >
                           {LETTERS[index] ?? index + 1}. {option}
                           {question.correct_answer.includes(index) && (
-                            <span className="ml-2 text-xs font-medium text-green-700">
+                            <span className="ml-2 text-xs font-medium text-[var(--color-success)]">
                               (correct)
                             </span>
                           )}
@@ -415,7 +415,7 @@ export default async function QuizDetailPage({
                 ))}
               </ul>
             ) : (
-              <p className="mt-1 text-sm text-zinc-500">
+              <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
                 No questions yet. Add a question to build the quiz.
               </p>
             )}
@@ -479,34 +479,34 @@ export default async function QuizDetailPage({
             {questionPerformance.length === 0 ? (
               <EmptyState message="No submitted attempts yet, so per-question accuracy is not available." />
             ) : (
-              <div className="overflow-x-auto rounded-md border border-zinc-200">
+              <div className="overflow-x-auto rounded-md border border-[var(--color-border)]">
                 <table className="w-full text-left text-sm">
-                  <thead className="border-b border-zinc-200 bg-zinc-50">
+                  <thead className="border-b border-[var(--color-border)] bg-[var(--color-surface-elevated)]/50">
                     <tr>
-                      <th className="px-4 py-3 font-medium text-zinc-500">
+                      <th className="px-4 py-3 font-medium text-[var(--color-text-secondary)]">
                         #
                       </th>
-                      <th className="px-4 py-3 font-medium text-zinc-500">
+                      <th className="px-4 py-3 font-medium text-[var(--color-text-secondary)]">
                         Question
                       </th>
-                      <th className="px-4 py-3 font-medium text-zinc-500">
+                      <th className="px-4 py-3 font-medium text-[var(--color-text-secondary)]">
                         Accuracy
                       </th>
-                      <th className="px-4 py-3 font-medium text-zinc-500">
+                      <th className="px-4 py-3 font-medium text-[var(--color-text-secondary)]">
                         Correct
                       </th>
-                      <th className="px-4 py-3 font-medium text-zinc-500">
+                      <th className="px-4 py-3 font-medium text-[var(--color-text-secondary)]">
                         Incorrect
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-200">
+                  <tbody className="divide-y divide-[var(--color-border)]">
                     {questionPerformance.map((question) => (
-                      <tr key={question.question_id} className="hover:bg-zinc-50">
-                        <td className="px-4 py-3 text-zinc-400">
+                      <tr key={question.question_id} className="hover:bg-[var(--color-surface-elevated)]/50">
+                        <td className="px-4 py-3 text-[var(--color-text-muted)]">
                           {question.position}
                         </td>
-                        <td className="px-4 py-3 text-zinc-900">
+                        <td className="px-4 py-3 text-[var(--color-text-primary)]">
                           {question.question}
                         </td>
                         <td className="px-4 py-3">
@@ -514,17 +514,17 @@ export default async function QuizDetailPage({
                             <div className="w-24">
                               <ProgressBar percent={question.accuracyPercent ?? 0} />
                             </div>
-                            <span className="text-xs font-medium text-zinc-900">
+                            <span className="text-xs font-medium text-[var(--color-text-primary)]">
                               {question.accuracyPercent === null
                                 ? "—"
                                 : `${question.accuracyPercent}%`}
                             </span>
                           </div>
                         </td>
-                        <td className="px-4 py-3 text-zinc-600">
+                        <td className="px-4 py-3 text-[var(--color-text-secondary)]">
                           {question.correct}
                         </td>
-                        <td className="px-4 py-3 text-zinc-600">
+                        <td className="px-4 py-3 text-[var(--color-text-secondary)]">
                           {question.incorrect}
                         </td>
                       </tr>
@@ -547,7 +547,7 @@ export default async function QuizDetailPage({
               <MetricCard label="Passed" value={readinessDistribution.passed} />
               <MetricCard label="Failed" value={readinessDistribution.failed} />
             </MetricGrid>
-            <p className="mt-2 text-xs text-zinc-500">
+            <p className="mt-2 text-xs text-[var(--color-text-secondary)]">
               Based on {Object.values(readinessDistribution).reduce((a, b) => a + b, 0)} active{" "}
               enrollment{Object.values(readinessDistribution).reduce((a, b) => a + b, 0) !== 1 ? "s" : ""}.
             </p>
@@ -555,9 +555,9 @@ export default async function QuizDetailPage({
         )}
 
         {isStudent && studentReadiness && (
-          <div className="mt-4 rounded-md border border-zinc-200 px-4 py-3">
+          <div className="mt-4 rounded-md border border-[var(--color-border)] px-4 py-3">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <h2 className="text-sm font-semibold text-zinc-900">
+              <h2 className="text-sm font-semibold text-[var(--color-text-primary)]">
                 Your readiness
               </h2>
               <span
@@ -566,7 +566,7 @@ export default async function QuizDetailPage({
                 {studentReadiness.state.replace("_", " ")}
               </span>
             </div>
-            <div className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-1 text-xs text-zinc-500">
+            <div className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-1 text-xs text-[var(--color-text-secondary)]">
               <span>
                 {studentReadiness.attemptCount} attempt
                 {studentReadiness.attemptCount !== 1 ? "s" : ""}
@@ -582,22 +582,22 @@ export default async function QuizDetailPage({
               )}
             </div>
             {studentReadiness.state === "passed" && (
-              <p className="mt-2 text-sm font-medium text-green-700">
+              <p className="mt-2 text-sm font-medium text-[var(--color-success)]">
                 ✓ Assessment passed
               </p>
             )}
             {studentReadiness.state === "failed" && (
-              <p className="mt-2 text-sm text-red-700">
+              <p className="mt-2 text-sm text-[var(--color-destructive)]">
                 Last attempt did not pass. You can retry — there is no attempt limit.
               </p>
             )}
             {studentReadiness.state === "in_progress" && (
-              <p className="mt-2 text-sm text-zinc-700">
+              <p className="mt-2 text-sm text-[var(--color-text-primary)]">
                 You have an attempt in progress. Resume to continue.
               </p>
             )}
             {studentReadiness.state === "not_attempted" && (
-              <p className="mt-2 text-sm text-zinc-500">
+              <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
                 Not attempted yet. Available to enrolled learners.
               </p>
             )}
@@ -605,12 +605,12 @@ export default async function QuizDetailPage({
         )}
 
         {isStudent ? (
-          <div className="mt-4 rounded-md border border-zinc-200 px-4 py-3">
-            <h2 className="text-sm font-semibold text-zinc-900">
+          <div className="mt-4 rounded-md border border-[var(--color-border)] px-4 py-3">
+            <h2 className="text-sm font-semibold text-[var(--color-text-primary)]">
               Your attempts
             </h2>
             {ownAttempts.length > 0 ? (
-              <ul className="mt-2 divide-y divide-zinc-100">
+              <ul className="mt-2 divide-y divide-[var(--color-border)]">
                 {ownAttempts.map((attempt) => {
                   const pct = percent(attempt.score, attempt.max_score);
                   const passed =
@@ -622,13 +622,13 @@ export default async function QuizDetailPage({
                       key={attempt.attempt_id}
                       className="flex flex-wrap items-center justify-between gap-3 py-2"
                     >
-                      <div className="text-sm text-zinc-700">
+                      <div className="text-sm text-[var(--color-text-primary)]">
                         {attempt.submitted_at !== null ? (
                           <>
                             Submitted {formatDateTime(attempt.submitted_at)}
                           </>
                         ) : (
-                          <span className="text-zinc-500">
+                          <span className="text-[var(--color-text-secondary)]">
                             Started {formatDateTime(attempt.started_at)} — in
                             progress
                           </span>
@@ -636,22 +636,22 @@ export default async function QuizDetailPage({
                       </div>
                       {attempt.submitted_at !== null ? (
                         <div className="flex items-center gap-3">
-                          <span className="text-sm font-medium text-zinc-900">
+                          <span className="text-sm font-medium text-[var(--color-text-primary)]">
                             {attempt.score} / {attempt.max_score}
                             {pct !== null && ` (${pct}%)`}
                           </span>
                           <span
                             className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
                               passed
-                                ? "bg-green-100 text-green-700"
-                                : "bg-red-100 text-red-700"
+                                ? "bg-[var(--color-success)]/10 text-[var(--color-success)]"
+                                : "bg-[var(--color-destructive)]/10 text-[var(--color-destructive)]"
                             }`}
                           >
                             {passed ? "passed" : "not passed"}
                           </span>
                           <Link
                             href={`/dashboard/courses/${quiz.course_id}/quizzes/${quiz.quiz_id}/attempts/${attempt.attempt_id}`}
-                            className="rounded-md border border-zinc-300 px-2.5 py-1 text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-100"
+                            className="rounded-md border border-[var(--color-border)] px-2.5 py-1 text-xs font-medium text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-surface-highest)]"
                           >
                             Review
                           </Link>
@@ -664,7 +664,7 @@ export default async function QuizDetailPage({
                 })}
               </ul>
             ) : (
-              <p className="mt-1 text-sm text-zinc-500">
+              <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
                 You have not attempted this quiz yet.
               </p>
             )}
@@ -673,12 +673,12 @@ export default async function QuizDetailPage({
             </div>
           </div>
         ) : (
-          <div className="mt-4 rounded-md border border-zinc-200 px-4 py-3">
-            <h2 className="text-sm font-semibold text-zinc-900">
+          <div className="mt-4 rounded-md border border-[var(--color-border)] px-4 py-3">
+            <h2 className="text-sm font-semibold text-[var(--color-text-primary)]">
               All attempts
             </h2>
             {staffAttempts.length > 0 ? (
-              <ul className="mt-2 divide-y divide-zinc-100">
+              <ul className="mt-2 divide-y divide-[var(--color-border)]">
                 {staffAttempts.map((attempt) => {
                   const pct = percent(attempt.score, attempt.max_score);
                   const passed =
@@ -691,43 +691,43 @@ export default async function QuizDetailPage({
                       className="flex flex-wrap items-center justify-between gap-3 py-2"
                     >
                       <div className="text-sm">
-                        <span className="font-medium text-zinc-900">
+                        <span className="font-medium text-[var(--color-text-primary)]">
                           {attempt.students?.first_name}{" "}
                           {attempt.students?.last_name}
                         </span>
                         {attempt.submitted_at !== null ? (
-                          <p className="text-xs text-zinc-400">
+                          <p className="text-xs text-[var(--color-text-muted)]">
                             Submitted {formatDateTime(attempt.submitted_at)}
                           </p>
                         ) : (
-                          <p className="text-xs text-zinc-400">In progress</p>
+                          <p className="text-xs text-[var(--color-text-muted)]">In progress</p>
                         )}
                       </div>
                       <div className="flex items-center gap-3">
                         {attempt.submitted_at !== null ? (
                           <>
-                            <span className="text-sm font-medium text-zinc-900">
+                            <span className="text-sm font-medium text-[var(--color-text-primary)]">
                               {attempt.score} / {attempt.max_score}
                               {pct !== null && ` (${pct}%)`}
                             </span>
                             <span
                               className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
                                 passed
-                                  ? "bg-green-100 text-green-700"
-                                  : "bg-red-100 text-red-700"
+                                  ? "bg-[var(--color-success)]/10 text-[var(--color-success)]"
+                                  : "bg-[var(--color-destructive)]/10 text-[var(--color-destructive)]"
                               }`}
                             >
                               {passed ? "passed" : "not passed"}
                             </span>
                             <Link
                               href={`/dashboard/courses/${quiz.course_id}/quizzes/${quiz.quiz_id}/attempts/${attempt.attempt_id}`}
-                              className="rounded-md border border-zinc-300 px-2.5 py-1 text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-100"
+                              className="rounded-md border border-[var(--color-border)] px-2.5 py-1 text-xs font-medium text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-surface-highest)]"
                             >
                               Review
                             </Link>
                           </>
                         ) : (
-                          <span className="text-xs text-zinc-400">—</span>
+                          <span className="text-xs text-[var(--color-text-muted)]">—</span>
                         )}
                       </div>
                     </li>
@@ -735,7 +735,7 @@ export default async function QuizDetailPage({
                 })}
               </ul>
             ) : (
-              <p className="mt-1 text-sm text-zinc-500">
+              <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
                 No attempts recorded yet.
               </p>
             )}
@@ -744,7 +744,7 @@ export default async function QuizDetailPage({
 
         <Link
           href={`/dashboard/courses/${quiz.course_id}`}
-          className="mt-6 inline-block rounded-md px-3 py-2 text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900"
+          className="mt-6 inline-block rounded-md px-3 py-2 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text-primary)]"
         >
           Back to {course.title}
         </Link>

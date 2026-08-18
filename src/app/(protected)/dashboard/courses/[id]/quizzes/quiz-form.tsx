@@ -43,7 +43,7 @@ export function QuizForm({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="rounded-md border border-zinc-300 px-2.5 py-1 text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-100"
+        className="rounded-md border border-[var(--color-border)] px-2.5 py-1 text-xs font-medium text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-surface-highest)]"
       >
         {isEdit ? "Edit" : "Add quiz"}
       </button>
@@ -53,7 +53,7 @@ export function QuizForm({
   return (
     <form
       action={formAction}
-      className="mt-2 space-y-3 rounded-md border border-zinc-200 bg-zinc-50 p-4"
+      className="mt-2 space-y-3 rounded-md border border-[var(--color-border)] bg-[var(--color-surface-elevated)]/50 p-4"
     >
       <input
         type="hidden"
@@ -68,9 +68,9 @@ export function QuizForm({
           maxLength={TITLE_MAX}
           defaultValue={initialTitle ?? ""}
           placeholder="Quiz title"
-          className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500"
+          className="rounded-md border border-[var(--color-border)] px-3 py-1.5 text-sm text-[var(--color-text-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
         />
-        <label className="flex items-center gap-2 text-sm text-zinc-600">
+        <label className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
           <input
             type="number"
             name="pass_threshold"
@@ -79,7 +79,7 @@ export function QuizForm({
             step={1}
             required
             defaultValue={initialThreshold ?? 70}
-            className="w-20 rounded-md border border-zinc-300 px-3 py-1.5 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500"
+            className="w-20 rounded-md border border-[var(--color-border)] px-3 py-1.5 text-sm text-[var(--color-text-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
           />
           % to pass
         </label>
@@ -90,14 +90,14 @@ export function QuizForm({
         defaultValue={initialDescription ?? ""}
         placeholder="Description (optional)"
         rows={2}
-        className="w-full rounded-md border border-zinc-300 px-3 py-1.5 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500"
+        className="w-full rounded-md border border-[var(--color-border)] px-3 py-1.5 text-sm text-[var(--color-text-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
       />
-      <label className="flex items-center gap-2 text-sm text-zinc-600">
+      <label className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
         <input
           type="checkbox"
           name="is_published"
           defaultChecked={initialPublished ?? false}
-          className="h-4 w-4 rounded border-zinc-300 text-zinc-900 focus:ring-zinc-500"
+          className="h-4 w-4 rounded border-[var(--color-border)] text-[var(--color-text-primary)] focus:ring-[var(--color-primary)]"
         />
         Published
       </label>
@@ -105,19 +105,19 @@ export function QuizForm({
         <button
           type="submit"
           disabled={pending}
-          className="rounded-md bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-zinc-700 disabled:opacity-50"
+          className="rounded-md bg-[var(--color-primary)] px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-[var(--color-primary)]/90 disabled:opacity-50"
         >
           {pending ? "Saving…" : isEdit ? "Save changes" : "Create quiz"}
         </button>
         <button
           type="button"
           onClick={() => setOpen(false)}
-          className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100"
+          className="rounded-md border border-[var(--color-border)] px-3 py-1.5 text-sm font-medium text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-surface-highest)]"
         >
           Cancel
         </button>
       </div>
-      {state.error && <p className="text-xs text-red-600">{state.error}</p>}
+      {state.error && <p className="text-xs text-[var(--color-destructive)]">{state.error}</p>}
     </form>
   );
 }

@@ -16,17 +16,17 @@ export default async function NewLeadPage() {
       <div className="mb-6">
         <Link
           href="/dashboard/leads"
-          className="text-sm font-medium text-[#A1A1AA] hover:text-[#F4F4F5] transition-colors inline-flex items-center"
+          className="text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors inline-flex items-center"
         >
           <ChevronLeft className="w-4 h-4 mr-1" />
           Back to leads
         </Link>
       </div>
 
-      <Card className="bg-[#111318] border-[#272B33]">
-        <CardHeader className="pb-4 border-b border-[#272B33]">
-          <CardTitle className="text-xl text-[#F4F4F5]">New Lead</CardTitle>
-          <CardDescription className="text-[#A1A1AA]">
+      <Card className="bg-[var(--color-surface)] border-[var(--color-border)]">
+        <CardHeader className="pb-4 border-b border-[var(--color-border)]">
+          <CardTitle className="text-xl text-[var(--color-text-primary)]">New Lead</CardTitle>
+          <CardDescription className="text-[var(--color-text-secondary)]">
             Add a prospect to your pipeline. Required fields are marked.
           </CardDescription>
         </CardHeader>

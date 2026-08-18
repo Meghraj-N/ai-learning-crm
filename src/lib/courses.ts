@@ -17,6 +17,9 @@ export type CourseLesson = {
   module_id: string;
   title: string;
   position: number;
+  video_url: string | null;
+  image_url: string | null;
+  resources: any[] | null;
   is_published: boolean;
 };
 
@@ -24,6 +27,7 @@ export type CourseModuleNode = {
   module_id: string;
   course_id: string;
   title: string;
+  description: string | null;
   position: number;
   lessons: CourseLesson[];
 };
@@ -34,7 +38,7 @@ export async function getCourseContent(
 ): Promise<CourseModuleNode[]> {
   const { data: modules } = await supabase
     .from("course_modules")
-    .select("module_id, course_id, title, position")
+    .select("module_id, course_id, title, description, position")
     .eq("course_id", courseId)
     .order("position", { ascending: true })
     .returns<Omit<CourseModuleNode, "lessons">[]>();
@@ -52,7 +56,7 @@ export async function getCourseContent(
 
   const { data: lessons } = await supabase
     .from("lessons")
-    .select("lesson_id, module_id, title, position, is_published")
+    .select("lesson_id, module_id, title, position, video_url, image_url, resources, is_published")
     .in("module_id", moduleIds)
     .order("position", { ascending: true })
     .returns<CourseLesson[]>();
@@ -82,7 +86,7 @@ export async function getCourseContents(
 
   const { data: modules } = await supabase
     .from("course_modules")
-    .select("module_id, course_id, title, position")
+    .select("module_id, course_id, title, description, position")
     .in("course_id", courseIds)
     .order("position", { ascending: true })
     .returns<Omit<CourseModuleNode, "lessons">[]>();
@@ -105,7 +109,7 @@ export async function getCourseContents(
 
   const { data: lessons } = await supabase
     .from("lessons")
-    .select("lesson_id, module_id, title, position, is_published")
+    .select("lesson_id, module_id, title, position, video_url, image_url, resources, is_published")
     .in("module_id", moduleIds)
     .order("position", { ascending: true })
     .returns<CourseLesson[]>();

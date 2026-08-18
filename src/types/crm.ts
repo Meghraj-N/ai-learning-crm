@@ -116,6 +116,7 @@ export type Course = {
   organization_id: string;
   title: string;
   description: string | null;
+  thumbnail_url: string | null;
   status: CourseStatus;
   created_by: string | null;
   created_at: string;
@@ -127,6 +128,7 @@ export type CourseModule = {
   organization_id: string;
   course_id: string;
   title: string;
+  description: string | null;
   position: number;
   created_at: string;
   updated_at: string;
@@ -138,6 +140,9 @@ export type Lesson = {
   module_id: string;
   title: string;
   content: string;
+  video_url: string | null;
+  image_url: string | null;
+  resources: any[] | null;
   position: number;
   is_published: boolean;
   created_at: string;

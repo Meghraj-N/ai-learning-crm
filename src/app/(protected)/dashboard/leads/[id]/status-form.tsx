@@ -4,6 +4,7 @@ import { useActionState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { updateLeadStatus, type ActionState } from "../actions";
 import { LEAD_STATUSES, type LeadStatus } from "@/types/crm";
+import { Button } from "@/components/ui/button";
 
 export default function StatusForm({
   leadId,
@@ -33,7 +34,7 @@ export default function StatusForm({
         name="status"
         defaultValue={currentStatus}
         disabled={isPending}
-        className="rounded-md border border-[#272B33] bg-[#181B21] px-2 py-1.5 text-sm text-[#F4F4F5] shadow-sm outline-none focus:border-[#6366F1] disabled:opacity-50"
+        className="rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-background)] px-2 py-1.5 text-sm text-[var(--color-text-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none focus:border-[var(--color-primary)] disabled:opacity-50"
       >
         {options.map((value) => (
           <option key={value} value={value}>
@@ -41,14 +42,15 @@ export default function StatusForm({
           </option>
         ))}
       </select>
-      <button
+      <Button
         type="submit"
+        variant="outline"
+        size="sm"
         disabled={isPending}
-        className="rounded-md border border-[#272B33] bg-[#181B21] px-3 py-1.5 text-sm font-medium text-[#F4F4F5] transition-colors hover:bg-[#272B33] disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isPending ? "Saving…" : "Update status"}
-      </button>
-      {state.error && <span className="text-sm text-red-600">{state.error}</span>}
+      </Button>
+      {state.error && <span className="text-sm text-[var(--color-danger)]">{state.error}</span>}
     </form>
   );
 }

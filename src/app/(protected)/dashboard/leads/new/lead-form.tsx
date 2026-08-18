@@ -3,6 +3,8 @@
 import { useActionState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createLead, type ActionState } from "../actions";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function LeadForm() {
   const router = useRouter();
@@ -18,97 +20,92 @@ export default function LeadForm() {
   }, [state, router]);
 
   return (
-    <form action={formAction} className="space-y-4">
+    <form action={formAction} className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div>
+        <div className="space-y-2">
           <label
             htmlFor="firstName"
-            className="block text-sm font-medium text-[#F4F4F5]"
+            className="block text-[13px] font-medium text-[var(--color-text-primary)]"
           >
-            First name <span className="text-red-500">*</span>
+            First name <span className="text-[var(--color-danger)]">*</span>
           </label>
-          <input
+          <Input
             id="firstName"
             name="firstName"
             type="text"
             required
             disabled={isPending}
-            className="mt-1 block w-full rounded-md border border-[#272B33] bg-[#181B21] px-3 py-2 text-sm text-[#F4F4F5] shadow-sm outline-none focus:border-[#6366F1] focus:ring-1 focus:ring-[#6366F1] disabled:opacity-50 placeholder:text-[#A1A1AA]"
           />
         </div>
-        <div>
+        <div className="space-y-2">
           <label
             htmlFor="lastName"
-            className="block text-sm font-medium text-[#F4F4F5]"
+            className="block text-[13px] font-medium text-[var(--color-text-primary)]"
           >
-            Last name <span className="text-red-500">*</span>
+            Last name <span className="text-[var(--color-danger)]">*</span>
           </label>
-          <input
+          <Input
             id="lastName"
             name="lastName"
             type="text"
             required
             disabled={isPending}
-            className="mt-1 block w-full rounded-md border border-[#272B33] bg-[#181B21] px-3 py-2 text-sm text-[#F4F4F5] shadow-sm outline-none focus:border-[#6366F1] focus:ring-1 focus:ring-[#6366F1] disabled:opacity-50 placeholder:text-[#A1A1AA]"
           />
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div>
+        <div className="space-y-2">
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-[#F4F4F5]"
+            className="block text-[13px] font-medium text-[var(--color-text-primary)]"
           >
             Email
           </label>
-          <input
+          <Input
             id="email"
             name="email"
             type="email"
             inputMode="email"
             disabled={isPending}
-            className="mt-1 block w-full rounded-md border border-[#272B33] bg-[#181B21] px-3 py-2 text-sm text-[#F4F4F5] shadow-sm outline-none focus:border-[#6366F1] focus:ring-1 focus:ring-[#6366F1] disabled:opacity-50 placeholder:text-[#A1A1AA]"
           />
         </div>
-        <div>
+        <div className="space-y-2">
           <label
             htmlFor="phone"
-            className="block text-sm font-medium text-[#F4F4F5]"
+            className="block text-[13px] font-medium text-[var(--color-text-primary)]"
           >
             Phone
           </label>
-          <input
+          <Input
             id="phone"
             name="phone"
             type="tel"
             disabled={isPending}
-            className="mt-1 block w-full rounded-md border border-[#272B33] bg-[#181B21] px-3 py-2 text-sm text-[#F4F4F5] shadow-sm outline-none focus:border-[#6366F1] focus:ring-1 focus:ring-[#6366F1] disabled:opacity-50 placeholder:text-[#A1A1AA]"
           />
         </div>
       </div>
 
-      <div>
+      <div className="space-y-2">
         <label
           htmlFor="source"
-          className="block text-sm font-medium text-[#F4F4F5]"
+          className="block text-[13px] font-medium text-[var(--color-text-primary)]"
         >
           Source
         </label>
-        <input
+        <Input
           id="source"
           name="source"
           type="text"
           placeholder="e.g. Website, Referral, Walk-in"
           disabled={isPending}
-          className="mt-1 block w-full rounded-md border border-[#272B33] bg-[#181B21] px-3 py-2 text-sm text-[#F4F4F5] shadow-sm outline-none focus:border-[#6366F1] focus:ring-1 focus:ring-[#6366F1] disabled:opacity-50 placeholder:text-[#A1A1AA]"
         />
       </div>
 
-      <div>
+      <div className="space-y-2">
         <label
           htmlFor="notes"
-          className="block text-sm font-medium text-[#F4F4F5]"
+          className="block text-[13px] font-medium text-[var(--color-text-primary)]"
         >
           Notes
         </label>
@@ -117,27 +114,26 @@ export default function LeadForm() {
           name="notes"
           rows={4}
           disabled={isPending}
-          className="mt-1 block w-full rounded-md border border-[#272B33] bg-[#181B21] px-3 py-2 text-sm text-[#F4F4F5] shadow-sm outline-none focus:border-[#6366F1] focus:ring-1 focus:ring-[#6366F1] disabled:opacity-50 placeholder:text-[#A1A1AA]"
+          className="flex w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-background)] px-3 py-2 text-sm text-[var(--color-text-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none transition-colors placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] disabled:cursor-not-allowed disabled:opacity-50"
         />
       </div>
 
       {state.error && (
         <p
           role="alert"
-          className="rounded-md border border-red-500/20 bg-red-500/10 px-3 py-2 text-sm text-red-500"
+          className="rounded-[var(--radius-md)] border border-[var(--color-danger)]/20 bg-[var(--color-danger)]/10 px-3 py-2 text-sm text-[var(--color-danger)]"
         >
           {state.error}
         </p>
       )}
 
       <div className="flex items-center gap-3">
-        <button
+        <Button
           type="submit"
           disabled={isPending}
-          className="rounded-md bg-[#6366F1] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#4F46E5] focus:outline-none focus:ring-2 focus:ring-[#6366F1] focus:ring-offset-2 focus:ring-offset-[#111318] disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isPending ? "Creating…" : "Create lead"}
-        </button>
+        </Button>
       </div>
     </form>
   );

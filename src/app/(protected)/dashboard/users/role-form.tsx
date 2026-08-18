@@ -33,7 +33,7 @@ export default function RoleForm({
         defaultValue={currentRole}
         required
         disabled={isPending}
-        className="rounded-md border border-zinc-300 px-2 py-1 text-xs text-zinc-900 shadow-sm outline-none focus:border-zinc-500 disabled:opacity-50"
+        className="rounded-md border border-[var(--color-border)] px-2 py-1 text-xs text-[var(--color-text-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] outline-none focus:border-[var(--color-primary)] disabled:opacity-50"
       >
         {USER_ROLES.map((role) => (
           <option key={role} value={role}>
@@ -44,11 +44,11 @@ export default function RoleForm({
       <button
         type="submit"
         disabled={isPending}
-        className="rounded-md border border-zinc-300 px-3 py-1 text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50"
+        className="rounded-md border border-[var(--color-border)] px-3 py-1 text-xs font-medium text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-surface-highest)] disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isPending ? "Updating…" : "Update"}
       </button>
-      {state.error && <span className="text-xs text-red-600">{state.error}</span>}
+      {state.error && <span className="text-xs text-[var(--color-destructive)]">{state.error}</span>}
     </form>
   );
 }

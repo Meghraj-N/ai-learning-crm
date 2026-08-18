@@ -31,13 +31,13 @@ export function PublishToggle({
         disabled={pending}
         className={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors disabled:opacity-50 ${
           isPublished
-            ? "border-amber-300 text-amber-700 hover:bg-amber-50"
-            : "border-green-300 text-green-700 hover:bg-green-50"
+            ? "border-[var(--color-warning)]/20 text-[var(--color-warning)] hover:bg-[var(--color-warning)]/10"
+            : "border-[var(--color-success)]/20 text-[var(--color-success)] hover:bg-[var(--color-success)]/10"
         }`}
       >
         {pending ? "Saving…" : isPublished ? "Unpublish" : "Publish"}
       </button>
-      {state.error && <span className="ml-2 text-xs text-red-600">{state.error}</span>}
+      {state.error && <span className="ml-2 text-xs text-[var(--color-destructive)]">{state.error}</span>}
     </form>
   );
 }

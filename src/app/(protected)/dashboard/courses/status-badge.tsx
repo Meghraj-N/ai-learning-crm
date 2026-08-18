@@ -3,26 +3,26 @@ import type { CourseStatus } from "@/types/crm";
 export function courseStatusBadgeClasses(status: CourseStatus): string {
   switch (status) {
     case "draft":
-      return "bg-zinc-100 text-zinc-600";
+      return "bg-[var(--color-surface-highest)] text-[var(--color-text-secondary)]";
     case "published":
-      return "bg-green-100 text-green-700";
+      return "bg-[var(--color-success)]/10 text-[var(--color-success)]";
     case "archived":
-      return "bg-red-100 text-red-700";
+      return "bg-[var(--color-destructive)]/10 text-[var(--color-destructive)]";
   }
 }
 
 export function enrollmentBadgeClasses(status: string): string {
   switch (status) {
     case "active":
-      return "bg-green-100 text-green-700";
+      return "bg-[var(--color-success)]/10 text-[var(--color-success)]";
     case "paused":
-      return "bg-amber-100 text-amber-700";
+      return "bg-[var(--color-warning)]/10 text-[var(--color-warning)]";
     case "completed":
-      return "bg-blue-100 text-blue-700";
+      return "bg-[var(--color-primary)]/10 text-[var(--color-primary)]";
     case "cancelled":
-      return "bg-zinc-100 text-zinc-500";
+      return "bg-[var(--color-surface-highest)] text-[var(--color-text-secondary)]";
     default:
-      return "bg-zinc-100 text-zinc-500";
+      return "bg-[var(--color-surface-highest)] text-[var(--color-text-secondary)]";
   }
 }
 

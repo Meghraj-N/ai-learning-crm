@@ -78,34 +78,34 @@ export default async function StudentsPage({
     <div className="flex flex-1 flex-col pb-12 w-full animate-in fade-in duration-500 max-w-6xl mx-auto">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight text-[#F4F4F5]">
+          <h1 className="text-3xl font-semibold tracking-tight text-[var(--color-text-primary)]">
             Students
           </h1>
-          <p className="mt-2 text-sm text-[#A1A1AA]">
+          <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
             Converted leads and enrolled students in your organization.
           </p>
         </div>
       </div>
 
-      <Card className="bg-[#111318] border-[#272B33]">
-        <div className="p-4 border-b border-[#272B33] flex flex-col sm:flex-row gap-4 items-center justify-between bg-[#181B21]/50 rounded-t-xl">
+      <Card className="bg-[var(--color-surface)] border-[var(--color-border)]">
+        <div className="p-4 border-b border-[var(--color-border)] flex flex-col sm:flex-row gap-4 items-center justify-between bg-[var(--color-surface-elevated)]/50 rounded-t-[var(--radius-xl)]">
           <form method="get" className="flex items-center gap-2 w-full sm:max-w-md">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A1A1AA]" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-secondary)]" />
               <Input
                 id="q"
                 name="q"
                 type="search"
                 defaultValue={q}
                 placeholder="Search name, email, phone..."
-                className="pl-9 bg-[#111318] border-[#272B33] text-[#F4F4F5] placeholder:text-[#71717A] focus-visible:ring-[#6366F1]"
+                className="pl-9 bg-[var(--color-background)] border-[var(--color-border)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus-visible:ring-[var(--color-primary)]"
               />
             </div>
-            <Button type="submit" variant="secondary" className="bg-[#272B33] text-[#F4F4F5] hover:bg-[#323642]">
+            <Button type="submit" variant="secondary" className="bg-[var(--color-surface-highest)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-highest)]/80">
               Search
             </Button>
             {q && (
-              <Button asChild variant="ghost" size="icon" className="text-[#A1A1AA] hover:text-[#F4F4F5]">
+              <Button asChild variant="ghost" size="icon" className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]">
                 <Link href="/dashboard/students">
                   <X className="w-4 h-4" />
                   <span className="sr-only">Clear</span>
@@ -114,7 +114,7 @@ export default async function StudentsPage({
             )}
           </form>
 
-          <div className="text-sm text-[#A1A1AA] whitespace-nowrap">
+          <div className="text-sm text-[var(--color-text-secondary)] whitespace-nowrap">
             {totalCount} {totalCount === 1 ? "student" : "students"} {q && "(filtered)"}
           </div>
         </div>
@@ -135,45 +135,45 @@ export default async function StudentsPage({
         ) : students && students.length > 0 ? (
           <>
             <Table>
-              <TableHeader className="bg-[#111318]">
-                <TableRow className="border-[#272B33] hover:bg-transparent">
-                  <TableHead className="text-[#A1A1AA] font-medium h-12">Name</TableHead>
-                  <TableHead className="text-[#A1A1AA] font-medium h-12">Contact Info</TableHead>
-                  <TableHead className="text-[#A1A1AA] font-medium h-12">Account Status</TableHead>
-                  <TableHead className="text-[#A1A1AA] font-medium h-12">Origin</TableHead>
-                  <TableHead className="text-[#A1A1AA] font-medium h-12">Added On</TableHead>
+              <TableHeader className="bg-[var(--color-surface)]">
+                <TableRow className="border-[var(--color-border)] hover:bg-transparent">
+                  <TableHead className="text-[var(--color-text-secondary)] font-medium h-12">Name</TableHead>
+                  <TableHead className="text-[var(--color-text-secondary)] font-medium h-12">Contact Info</TableHead>
+                  <TableHead className="text-[var(--color-text-secondary)] font-medium h-12">Account Status</TableHead>
+                  <TableHead className="text-[var(--color-text-secondary)] font-medium h-12">Origin</TableHead>
+                  <TableHead className="text-[var(--color-text-secondary)] font-medium h-12">Added On</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {students.map((student) => {
                   const leadId = linkedLeads.get(student.student_id);
                   return (
-                    <TableRow key={student.student_id} className="border-[#272B33] hover:bg-[#181B21]/50 group">
+                    <TableRow key={student.student_id} className="border-[var(--color-border)] hover:bg-[var(--color-surface-elevated)]/50 group">
                       <TableCell className="py-4">
                         <Link
                           href={`/dashboard/students/${student.student_id}`}
-                          className="font-medium text-[#F4F4F5] hover:text-[#6366F1] transition-colors flex items-center"
+                          className="font-medium text-[var(--color-text-primary)] hover:text-[var(--color-primary)] transition-colors flex items-center"
                         >
-                          <div className="w-8 h-8 rounded-full bg-[#272B33] text-[#A1A1AA] flex items-center justify-center mr-3 text-xs font-medium">
+                          <div className="w-8 h-8 rounded-full bg-[var(--color-surface-highest)] text-[var(--color-text-secondary)] flex items-center justify-center mr-3 text-xs font-medium">
                             {student.first_name.charAt(0)}{student.last_name.charAt(0)}
                           </div>
                           {student.first_name} {student.last_name}
                         </Link>
                       </TableCell>
                       <TableCell className="py-4">
-                        <div className="text-sm text-[#A1A1AA] flex flex-col gap-1">
+                        <div className="text-sm text-[var(--color-text-secondary)] flex flex-col gap-1">
                           {student.email && <span>{student.email}</span>}
-                          {student.phone && <span className="text-xs text-[#71717A]">{student.phone}</span>}
+                          {student.phone && <span className="text-xs text-[var(--color-text-muted)]">{student.phone}</span>}
                           {!student.email && !student.phone && <span>—</span>}
                         </div>
                       </TableCell>
                       <TableCell className="py-4">
                         {student.profile_id ? (
-                          <Badge variant="success" className="bg-emerald-500/10 text-emerald-500 border-emerald-500/20 gap-1.5">
+                          <Badge variant="success" className="bg-[var(--color-success)]/10 text-[var(--color-success)] border-[var(--color-success)]/20 gap-1.5">
                             <UserCheck className="w-3 h-3" /> Linked
                           </Badge>
                         ) : (
-                          <Badge variant="outline" className="bg-[#272B33] text-[#A1A1AA] border-transparent">
+                          <Badge variant="outline" className="bg-[var(--color-surface-highest)] text-[var(--color-text-secondary)] border-transparent">
                             Unlinked
                           </Badge>
                         )}
@@ -182,15 +182,15 @@ export default async function StudentsPage({
                         {leadId ? (
                           <Link
                             href={`/dashboard/leads/${leadId}`}
-                            className="inline-flex items-center text-xs font-medium text-[#6366F1] hover:text-[#818CF8] bg-[#6366F1]/10 px-2 py-1 rounded-md transition-colors"
+                            className="inline-flex items-center text-xs font-medium text-[var(--color-primary)] hover:text-[var(--color-primary)]/80 bg-[var(--color-primary)]/10 px-2 py-1 rounded-md transition-colors"
                           >
                             View Lead <ArrowRight className="w-3 h-3 ml-1" />
                           </Link>
                         ) : (
-                          <span className="text-[#71717A] text-sm">—</span>
+                          <span className="text-[var(--color-text-muted)] text-sm">—</span>
                         )}
                       </TableCell>
-                      <TableCell className="py-4 text-sm text-[#71717A]">
+                      <TableCell className="py-4 text-sm text-[var(--color-text-muted)]">
                         {new Date(student.created_at).toLocaleDateString("en-GB", {
                           day: "numeric",
                           month: "short",
@@ -203,8 +203,8 @@ export default async function StudentsPage({
               </TableBody>
             </Table>
 
-            <div className="p-4 border-t border-[#272B33] flex items-center justify-between bg-[#111318] rounded-b-xl">
-              <p className="text-sm text-[#71717A]">
+            <div className="p-4 border-t border-[var(--color-border)] flex items-center justify-between bg-[var(--color-surface)] rounded-b-[var(--radius-xl)]">
+              <p className="text-sm text-[var(--color-text-muted)]">
                 Showing page {page} of {totalPages}
               </p>
               {totalPages > 1 && (
@@ -213,7 +213,7 @@ export default async function StudentsPage({
                     asChild
                     variant="outline"
                     size="sm"
-                    className={`border-[#272B33] bg-transparent text-[#F4F4F5] hover:bg-[#272B33] ${page <= 1 ? "pointer-events-none opacity-50" : ""}`}
+                    className={`border-[var(--color-border)] bg-transparent text-[var(--color-text-primary)] hover:bg-[var(--color-surface-highest)] ${page <= 1 ? "pointer-events-none opacity-50" : ""}`}
                   >
                     <Link href={pageHref(Math.max(1, page - 1))} aria-disabled={page <= 1}>
                       Previous
@@ -223,7 +223,7 @@ export default async function StudentsPage({
                     asChild
                     variant="outline"
                     size="sm"
-                    className={`border-[#272B33] bg-transparent text-[#F4F4F5] hover:bg-[#272B33] ${page >= totalPages ? "pointer-events-none opacity-50" : ""}`}
+                    className={`border-[var(--color-border)] bg-transparent text-[var(--color-text-primary)] hover:bg-[var(--color-surface-highest)] ${page >= totalPages ? "pointer-events-none opacity-50" : ""}`}
                   >
                     <Link href={pageHref(Math.min(totalPages, page + 1))} aria-disabled={page >= totalPages}>
                       Next
@@ -240,7 +240,7 @@ export default async function StudentsPage({
               title={q ? "No students found" : "No students yet"}
               description={q ? "We couldn't find any students matching your search criteria." : "Students are created automatically when a lead is converted."}
               action={q ? (
-                <Button asChild variant="outline" className="border-[#272B33] text-[#F4F4F5]">
+                <Button asChild variant="outline" className="border-[var(--color-border)] text-[var(--color-text-primary)]">
                   <Link href="/dashboard/students">Clear search</Link>
                 </Button>
               ) : undefined}

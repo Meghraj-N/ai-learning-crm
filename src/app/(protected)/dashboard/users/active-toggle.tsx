@@ -32,8 +32,8 @@ export default function ActiveToggle({
         disabled={isPending}
         className={`rounded-md border px-3 py-1 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
           isActive
-            ? "border-red-200 text-red-600 hover:bg-red-50"
-            : "border-green-200 text-green-700 hover:bg-green-50"
+            ? "border-[var(--color-danger)]/20 text-[var(--color-destructive)] hover:bg-[var(--color-danger)]/10"
+            : "border-[var(--color-success)]/20 text-[var(--color-success)] hover:bg-[var(--color-success)]/10"
         }`}
       >
         {isPending
@@ -42,7 +42,7 @@ export default function ActiveToggle({
             ? "Deactivate"
             : "Activate"}
       </button>
-      {state.error && <span className="text-xs text-red-600">{state.error}</span>}
+      {state.error && <span className="text-xs text-[var(--color-destructive)]">{state.error}</span>}
     </form>
   );
 }

@@ -14,9 +14,9 @@ export function AnalyticsSection({
   children: ReactNode;
 }) {
   return (
-    <div className="mt-6 rounded-xl border border-[#272B33] bg-[#111318] p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-[#F4F4F5] tracking-tight">{title}</h2>
-      {subtitle && <p className="mt-1 text-sm text-[#A1A1AA]">{subtitle}</p>}
+    <div className="mt-6 rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
+      <h2 className="text-lg font-semibold text-[var(--color-text-primary)] tracking-tight">{title}</h2>
+      {subtitle && <p className="mt-1 text-sm text-[var(--color-text-secondary)]">{subtitle}</p>}
       <div className="mt-6">{children}</div>
     </div>
   );
@@ -32,13 +32,13 @@ export function MetricCard({
   sub?: ReactNode;
 }) {
   return (
-    <Card className="bg-[#181B21] border-transparent">
+    <Card className="bg-[var(--color-surface-elevated)] border-transparent">
       <CardContent className="p-5">
-        <p className="text-xs font-medium uppercase tracking-wider text-[#A1A1AA]">
+        <p className="text-xs font-medium uppercase tracking-wider text-[var(--color-text-secondary)]">
           {label}
         </p>
-        <p className="mt-2 text-3xl font-semibold tracking-tight text-[#F4F4F5]">{value}</p>
-        {sub && <p className="mt-1 text-xs font-medium text-[#71717A]">{sub}</p>}
+        <p className="mt-2 text-3xl font-semibold tracking-tight text-[var(--color-text-primary)]">{value}</p>
+        {sub && <p className="mt-1 text-xs font-medium text-[var(--color-text-muted)]">{sub}</p>}
       </CardContent>
     </Card>
   );
@@ -59,14 +59,14 @@ export function ProgressBar({
 }) {
   const barColor =
     tone === "green"
-      ? "bg-emerald-500"
+      ? "bg-[var(--color-success)]"
       : tone === "amber"
-        ? "bg-amber-500"
+        ? "bg-[var(--color-warning)]"
         : tone === "indigo"
-        ? "bg-[#6366F1]"
-        : "bg-[#71717A]";
+        ? "bg-[var(--color-primary)]"
+        : "bg-[var(--color-text-muted)]";
   return (
-    <div className="h-2 w-full overflow-hidden rounded-full bg-[#272B33]">
+    <div className="h-2 w-full overflow-hidden rounded-full bg-[var(--color-surface-highest)]">
       <div
         className={cn("h-full rounded-full transition-all duration-500", barColor)}
         style={{ width: `${Math.min(100, Math.max(0, percent))}%` }}

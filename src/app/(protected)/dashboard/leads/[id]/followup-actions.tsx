@@ -7,6 +7,7 @@ import {
   completeFollowup,
   type ActionState,
 } from "../actions";
+import { Button } from "@/components/ui/button";
 
 export default function FollowupActions({
   followupId,
@@ -34,27 +35,30 @@ export default function FollowupActions({
 
   return (
     <>
-      <form action={completeAction} className="inline-flex">
+      <form action={completeAction} className="inline-flex mr-2">
         <input type="hidden" name="followupId" value={followupId} />
-        <button
+        <Button
           type="submit"
+          variant="outline"
+          size="sm"
           disabled={pending}
-          className="rounded-md border border-green-200 px-3 py-1.5 text-xs font-medium text-green-700 transition-colors hover:bg-green-50 disabled:cursor-not-allowed disabled:opacity-50"
+          className="text-[var(--color-success)] border-[var(--color-success)]/20 hover:bg-[var(--color-success)]/10 hover:text-[var(--color-success)]"
         >
           {completePending ? "Saving…" : "Complete"}
-        </button>
+        </Button>
       </form>
       <form action={cancelAction} className="inline-flex">
         <input type="hidden" name="followupId" value={followupId} />
-        <button
+        <Button
           type="submit"
+          variant="outline"
+          size="sm"
           disabled={pending}
-          className="rounded-md border border-[#272B33] bg-[#181B21] px-3 py-1.5 text-xs font-medium text-[#A1A1AA] transition-colors hover:bg-emerald-600/20 hover:text-emerald-500 hover:border-emerald-500/50 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {cancelPending ? "Saving…" : "Cancel"}
-        </button>
+        </Button>
       </form>
-      {error && <span className="text-xs text-red-600">{error}</span>}
+      {error && <span className="text-xs text-[var(--color-danger)] block mt-2">{error}</span>}
     </>
   );
 }

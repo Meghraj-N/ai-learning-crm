@@ -189,53 +189,53 @@ export default async function LessonViewPage({
   return (
     <div className="flex flex-1 justify-center px-4 py-8">
       <div className="w-full max-w-3xl">
-        <nav className="text-sm text-zinc-500">
+        <nav className="text-sm text-[var(--color-text-secondary)]">
           <Link
             href="/dashboard/courses"
-            className="underline-offset-4 hover:text-zinc-900 hover:underline"
+            className="underline-offset-4 hover:text-[var(--color-text-primary)] hover:underline"
           >
             Courses
           </Link>
           {" / "}
           <Link
             href={`/dashboard/courses/${course.course_id}`}
-            className="underline-offset-4 hover:text-zinc-900 hover:underline"
+            className="underline-offset-4 hover:text-[var(--color-text-primary)] hover:underline"
           >
             {course.title}
           </Link>
           {" / "}
           <span>{courseModule.title}</span>
           {" / "}
-          <span className="text-zinc-900">{lesson.title}</span>
+          <span className="text-[var(--color-text-primary)]">{lesson.title}</span>
         </nav>
 
         <div className="mt-4 flex flex-wrap items-center gap-2">
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
+          <h1 className="text-2xl font-semibold tracking-tight text-[var(--color-text-primary)]">
             {lesson.title}
           </h1>
           {canWriteCourse && (
             <span
               className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
                 lesson.is_published
-                  ? "bg-green-100 text-green-700"
-                  : "bg-zinc-100 text-zinc-500"
+                  ? "bg-[var(--color-success)]/10 text-[var(--color-success)]"
+                  : "bg-[var(--color-surface-highest)] text-[var(--color-text-secondary)]"
               }`}
             >
               {lesson.is_published ? "published" : "draft"}
             </span>
           )}
         </div>
-        <p className="mt-1 text-sm text-zinc-500">
+        <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
           Module {courseModule.title} · Lesson {lesson.position}
         </p>
 
-        <div className="mt-6 rounded-md border border-zinc-200 px-4 py-4">
+        <div className="mt-6 rounded-md border border-[var(--color-border)] px-4 py-4">
           {lesson.content ? (
-            <p className="whitespace-pre-wrap text-sm leading-relaxed text-zinc-700">
+            <p className="whitespace-pre-wrap text-sm leading-relaxed text-[var(--color-text-primary)]">
               {lesson.content}
             </p>
           ) : (
-            <p className="text-sm text-zinc-400">No content.</p>
+            <p className="text-sm text-[var(--color-text-muted)]">No content.</p>
           )}
         </div>
 
@@ -247,18 +247,18 @@ export default async function LessonViewPage({
               status={currentStatus}
               completedAt={completedAt}
             />
-            <div className="rounded-md border border-zinc-200 px-4 py-3">
+            <div className="rounded-md border border-[var(--color-border)] px-4 py-3">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <p className="text-sm font-semibold text-zinc-900">
+                <p className="text-sm font-semibold text-[var(--color-text-primary)]">
                   Lesson readiness
                 </p>
                 <span
                   className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
                     currentStatus === "completed"
-                      ? "bg-green-100 text-green-700"
+                      ? "bg-[var(--color-success)]/10 text-[var(--color-success)]"
                       : currentStatus === "in_progress"
-                        ? "bg-zinc-200 text-zinc-700"
-                        : "bg-zinc-100 text-zinc-500"
+                        ? "bg-[var(--color-surface-elevated)] text-[var(--color-text-primary)]"
+                        : "bg-[var(--color-surface-highest)] text-[var(--color-text-secondary)]"
                   }`}
                 >
                   {currentStatus === "completed"
@@ -269,43 +269,43 @@ export default async function LessonViewPage({
                 </span>
               </div>
               {currentStatus === "completed" && completedAt && (
-                <p className="mt-1 text-xs text-green-700">
+                <p className="mt-1 text-xs text-[var(--color-success)]">
                   ✓ Completed {formatDateTime(completedAt)}
                 </p>
               )}
               {next && (
                 <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
-                  <span className="text-xs text-zinc-500">Next lesson:</span>
+                  <span className="text-xs text-[var(--color-text-secondary)]">Next lesson:</span>
                   <Link
                     href={next.href}
-                    className="text-sm font-medium text-zinc-900 underline-offset-4 hover:underline"
+                    className="text-sm font-medium text-[var(--color-text-primary)] underline-offset-4 hover:underline"
                   >
                     {next.title} →
                   </Link>
                 </div>
               )}
-              <p className="mt-2 text-xs text-zinc-400">
+              <p className="mt-2 text-xs text-[var(--color-text-muted)]">
                 Assessments are attached to this course, not to this lesson. See
                 the Quizzes section on the course page for assessment readiness.
               </p>
             </div>
             {courseProgress && (
-              <div className="rounded-md border border-zinc-200 px-4 py-3">
+              <div className="rounded-md border border-[var(--color-border)] px-4 py-3">
                 <div className="flex items-center justify-between gap-4">
-                  <p className="text-sm text-zinc-500">
+                  <p className="text-sm text-[var(--color-text-secondary)]">
                     Course progress: {courseProgress.completed} of{" "}
                     {courseProgress.total} lessons completed
                   </p>
                   {courseProgress.total > 0 && (
-                    <p className="text-sm font-medium text-zinc-900">
+                    <p className="text-sm font-medium text-[var(--color-text-primary)]">
                       {courseProgress.percent}%
                     </p>
                   )}
                 </div>
                 {courseProgress.total > 0 && (
-                  <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-zinc-100">
+                  <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-[var(--color-surface-highest)]">
                     <div
-                      className="h-full rounded-full bg-green-500"
+                      className="h-full rounded-full bg-[var(--color-success)]"
                       style={{ width: `${courseProgress.percent}%` }}
                     />
                   </div>
@@ -318,12 +318,12 @@ export default async function LessonViewPage({
                 nextAction.kind === "lesson" &&
                 nextAction.lessonId === lesson.lesson_id
               ) && (
-                <div className="rounded-md border border-zinc-200 px-4 py-3">
-                  <p className="text-sm text-zinc-500">Next up</p>
+                <div className="rounded-md border border-[var(--color-border)] px-4 py-3">
+                  <p className="text-sm text-[var(--color-text-secondary)]">Next up</p>
                   {nextAction.kind === "lesson" && (
                     <Link
                       href={`/dashboard/courses/${course.course_id}/lessons/${nextAction.lessonId}`}
-                      className="mt-1 inline-block rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700"
+                      className="mt-1 inline-block rounded-md bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-primary)]/90"
                     >
                       Continue: {nextAction.moduleTitle} →{" "}
                       {nextAction.lessonTitle}
@@ -332,13 +332,13 @@ export default async function LessonViewPage({
                   {nextAction.kind === "quiz" && (
                     <Link
                       href={`/dashboard/courses/${course.course_id}/quizzes/${nextAction.quizId}`}
-                      className="mt-1 inline-block rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700"
+                      className="mt-1 inline-block rounded-md bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-primary)]/90"
                     >
                       Take quiz: {nextAction.quizTitle}
                     </Link>
                   )}
                   {nextAction.kind === "completed" && (
-                    <p className="mt-1 text-sm font-medium text-green-700">
+                    <p className="mt-1 text-sm font-medium text-[var(--color-success)]">
                       ✓ Course completed
                     </p>
                   )}
@@ -351,24 +351,24 @@ export default async function LessonViewPage({
           {prev ? (
             <Link
               href={prev.href}
-              className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100"
+              className="rounded-md border border-[var(--color-border)] px-4 py-2 text-sm font-medium text-[var(--color-text-primary)] transition-colors hover:bg-[var(--color-surface-highest)]"
             >
               ← {prev.title}
             </Link>
           ) : (
-            <span className="rounded-md border border-zinc-200 px-4 py-2 text-sm text-zinc-400">
+            <span className="rounded-md border border-[var(--color-border)] px-4 py-2 text-sm text-[var(--color-text-muted)]">
               ← First lesson
             </span>
           )}
           {next ? (
             <Link
               href={next.href}
-              className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700"
+              className="rounded-md bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-primary)]/90"
             >
               {next.title} →
             </Link>
           ) : (
-            <span className="rounded-md border border-zinc-200 px-4 py-2 text-sm text-zinc-400">
+            <span className="rounded-md border border-[var(--color-border)] px-4 py-2 text-sm text-[var(--color-text-muted)]">
               Last lesson →
             </span>
           )}
@@ -376,7 +376,7 @@ export default async function LessonViewPage({
 
         <Link
           href={`/dashboard/courses/${course.course_id}`}
-          className="mt-6 inline-block rounded-md px-3 py-2 text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900"
+          className="mt-6 inline-block rounded-md px-3 py-2 text-sm font-medium text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text-primary)]"
         >
           Back to course
         </Link>
@@ -389,16 +389,16 @@ function LessonNotFound({ courseId }: { courseId: string }) {
   return (
     <div className="flex flex-1 items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
+        <h1 className="text-2xl font-semibold tracking-tight text-[var(--color-text-primary)]">
           Lesson not found
         </h1>
-        <p className="mt-2 text-sm text-zinc-500">
+        <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
           The lesson you are looking for does not exist or is not available to
           you.
         </p>
         <Link
           href={`/dashboard/courses/${courseId}`}
-          className="mt-6 inline-block rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700"
+          className="mt-6 inline-block rounded-md bg-[var(--color-primary)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-primary)]/90"
         >
           Back to course
         </Link>

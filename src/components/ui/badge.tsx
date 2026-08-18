@@ -11,16 +11,16 @@ const Badge = forwardRef<HTMLDivElement, BadgeProps>(
       <div
         ref={ref}
         className={cn(
-          "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+          "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold font-mono transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-offset-2",
           {
-            "border-transparent bg-[#6366F1] text-white hover:bg-[#4F46E5]":
+            "border-transparent bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)]":
               variant === "default",
-            "border-transparent bg-[#272B33] text-[#F4F4F5] hover:bg-[#272B33]/80":
+            "border-transparent bg-[var(--color-surface-elevated)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-highest)]":
               variant === "secondary",
-            "text-[#F4F4F5] border-[#272B33]": variant === "outline",
-            "border-transparent bg-emerald-500/15 text-emerald-500": variant === "success",
-            "border-transparent bg-amber-500/15 text-amber-500": variant === "warning",
-            "border-transparent bg-red-500/15 text-red-500": variant === "danger",
+            "text-[var(--color-text-primary)] border-[var(--color-border)]": variant === "outline",
+            "border-[var(--color-success)]/20 bg-[var(--color-success)]/10 text-[var(--color-success)]": variant === "success",
+            "border-[var(--color-warning)]/20 bg-[var(--color-warning)]/10 text-[var(--color-warning)]": variant === "warning",
+            "border-[var(--color-danger)]/20 bg-[var(--color-danger)]/10 text-[var(--color-danger)]": variant === "danger",
           },
           className
         )}
